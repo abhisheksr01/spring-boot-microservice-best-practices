@@ -1,0 +1,6 @@
+server:
+  port: 8081
+
+govCompaniesHouse:
+  endpoint: http://localhost:8005/search/companies?q={crn}
+  authUserName: dummy-auth-user

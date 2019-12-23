@@ -1,0 +1,17 @@
+[
+  {
+    "companyStatus": "active",
+    "companyType": "ltd",
+    "address": {
+      "postalCode": "ABC 1234",
+      "locality": "London",
+      "addressLine1": "Speke",
+      "premises": "First Floor Roger Street"
+    },
+    "title": "My Company",
+    "addressSnippet": "First Floor Roger Street, London, ABC 123",
+    "dateOfCreation": "2008-10-24",
+    "description": "111111111 - Incorporated on 24 October 2008",
+    "companyNumber": "111111111"
+  }
+]

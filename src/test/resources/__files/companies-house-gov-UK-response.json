@@ -1,0 +1,31 @@
+{
+  "page_number": 1,
+  "kind": "search#companies",
+  "start_index": 0,
+  "items_per_page": 20,
+  "total_results": 1,
+  "items": [
+    {
+      "description_identifier": [
+        "incorporated-on"
+      ],
+      "company_status": "active",
+      "kind": "searchresults#company",
+      "company_type": "ltd",
+      "address": {
+        "postal_code": "ABC 1234",
+        "locality": "London",
+        "address_line_1": "Speke",
+        "premises": "First Floor Roger Street"
+      },
+      "links": {
+        "self": "/company/111111111"
+      },
+      "title": "My Company",
+      "address_snippet": "First Floor Roger Street, London, ABC 123",
+      "date_of_creation": "2008-10-24",
+      "description": "111111111 - Incorporated on 24 October 2008",
+      "company_number": "111111111"
+    }
+  ]
+}
