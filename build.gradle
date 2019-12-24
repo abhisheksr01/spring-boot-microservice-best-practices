@@ -1,8 +1,16 @@
+buildscript {
+    configurations.maybeCreate("pitest")
+    dependencies {
+        classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.4.6'
+        pitest 'org.pitest:pitest-junit5-plugin:0.10'
+    }
+}
 plugins {
     id 'org.springframework.boot' version '2.2.2.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
     id 'java'
     id 'jacoco'
+    id 'info.solidsoft.pitest' version '1.4.6'
 }
 
 group = 'com.uk'
@@ -18,6 +26,7 @@ ext {
     lombokVersion = "1.18.8"
     wireMockVersion = "2.25.1"
     ioCucumberVersion = "5.0.0-RC4"
+    swaggerVersion = "2.9.2"
 }
 
 dependencies {
@@ -36,6 +45,9 @@ dependencies {
     compile "org.mapstruct:mapstruct:${mapstructVersion}"
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+    //Swagger
+    compile "io.springfox:springfox-swagger2:${swaggerVersion}"
+    compile "io.springfox:springfox-swagger-ui:${swaggerVersion}"
 }
 
 test {
@@ -80,4 +92,11 @@ jacocoTestCoverageVerification {
             }
         }
     }
+}
+apply plugin: "info.solidsoft.pitest"
+pitest {
+    pitestVersion = "1.4.9"
+    testPlugin = "junit5"
+    targetClasses = ['com.uk.companieshouse.*']  // by default "${project.group}.*"
+    targetTests = ['com.uk.companieshouse.*']  // by default "${project.group}.*"
 }
