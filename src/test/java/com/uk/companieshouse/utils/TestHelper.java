@@ -22,4 +22,9 @@ public class TestHelper {
         return convertJsonToObject
                 ("__files/companies-house-gov-UK-response.json", CompaniesHouseGovUKResponse.class);
     }
+
+    public static CompaniesHouseGovUKResponse getCompaniesHouseGovUKResponseCRNNotExist() {
+        return convertJsonToObject
+                ("__files/companies-house-gov-UK-response-crn-404.json", CompaniesHouseGovUKResponse.class);
+    }
 }

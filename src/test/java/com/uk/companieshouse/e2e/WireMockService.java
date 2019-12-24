@@ -1,6 +1,5 @@
 package com.uk.companieshouse.e2e;
 
-import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.uk.companieshouse.model.CompaniesHouseGovUKResponse;
@@ -27,7 +26,7 @@ public interface WireMockService {
         configureFor("localhost", 8005);
         givenThat(get(urlPathMatching("/search/companies"))
                 .withBasicAuth("dummy-auth-user", "")
-                .withQueryParam("q", WireMock.equalTo(TEST_CRN))
+                .withQueryParam("q", equalTo(TEST_CRN))
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.OK.value())
                         .withBodyFile("companies-house-gov-UK-response.json")
@@ -37,6 +36,23 @@ public interface WireMockService {
                 new BasicAuthenticationInterceptor("dummy-auth-user", ""));
         ResponseEntity<CompaniesHouseGovUKResponse> response = restTemplate.getForEntity
                 ("http://localhost:8005//search/companies?q={crn}", CompaniesHouseGovUKResponse.class, TEST_CRN);
+        assertEquals(200, response.getStatusCodeValue());
+    }
+
+    default void stubGovCompaniesHouseExternalServiceForNonExistentCRN() {
+        configureFor("localhost", 8005);
+        givenThat(get(urlPathMatching("/search/companies"))
+                .withBasicAuth("dummy-auth-user", "")
+                .withQueryParam("q", equalTo("222222222"))
+                .willReturn(aResponse()
+                        .withStatus(HttpStatus.OK.value())
+                        .withBodyFile("companies-house-gov-UK-response-crn-404.json")
+                        .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)));
+
+        restTemplate.getInterceptors().add(
+                new BasicAuthenticationInterceptor("dummy-auth-user", ""));
+        ResponseEntity<CompaniesHouseGovUKResponse> response = restTemplate.getForEntity
+                ("http://localhost:8005//search/companies?q={crn}", CompaniesHouseGovUKResponse.class, "222222222");
         assertEquals(200, response.getStatusCodeValue());
     }
 

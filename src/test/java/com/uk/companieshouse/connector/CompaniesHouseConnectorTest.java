@@ -5,11 +5,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import static com.uk.companieshouse.utils.TestHelper.TEST_CRN;
-import static com.uk.companieshouse.utils.TestHelper.getCompaniesHouseGovUKResponse;
+import static com.uk.companieshouse.utils.TestHelper.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -37,5 +38,18 @@ class CompaniesHouseConnectorTest {
                 companiesHouseConnector.getCompaniesHouseDetails(TEST_CRN);
 
         assertEquals(getCompaniesHouseGovUKResponse(), actualCompaniesHouseDetails);
+    }
+
+    @Test
+    void getCompaniesHouseDetails_shouldThrowException_whenItemsIsNullOrEmpty() {
+        ResponseEntity<CompaniesHouseGovUKResponse> mockResponseEntity = mock(ResponseEntity.class);
+        when(mockRestTemplate
+                .getForEntity(DUMMY_COMPANIES_HOUSE_GOV_ENDPOINT, CompaniesHouseGovUKResponse.class, "222222222"))
+                .thenReturn(mockResponseEntity);
+        when(mockResponseEntity.getBody()).thenReturn(getCompaniesHouseGovUKResponseCRNNotExist());
+
+        assertThrows(HttpClientErrorException.class, () -> {
+            companiesHouseConnector.getCompaniesHouseDetails("222222222");
+        });
     }
 }

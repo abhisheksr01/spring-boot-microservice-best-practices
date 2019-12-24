@@ -1,13 +1,16 @@
 package com.uk.companieshouse.connector;
 
-
 import com.uk.companieshouse.model.CompaniesHouseGovUKResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.support.BasicAuthenticationInterceptor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 @Component
 public class CompaniesHouseConnector {
@@ -30,6 +33,10 @@ public class CompaniesHouseConnector {
                 new BasicAuthenticationInterceptor(authUsername, ""));
         ResponseEntity<CompaniesHouseGovUKResponse> responseEntity = restTemplate
                 .getForEntity(govCompaniesHouseEndpoint, CompaniesHouseGovUKResponse.class, crn);
-        return responseEntity.getBody();
+        CompaniesHouseGovUKResponse companiesHouseGovUKResponse = responseEntity.getBody();
+        if (isEmpty(companiesHouseGovUKResponse.getItems())) {
+            throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "CRN not found");
+        }
+        return companiesHouseGovUKResponse;
     }
 }

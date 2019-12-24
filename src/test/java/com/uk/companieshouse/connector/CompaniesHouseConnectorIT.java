@@ -16,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 import static com.uk.companieshouse.utils.TestHelper.TEST_CRN;
 import static com.uk.companieshouse.utils.TestHelper.getCompaniesHouseGovUKResponse;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
