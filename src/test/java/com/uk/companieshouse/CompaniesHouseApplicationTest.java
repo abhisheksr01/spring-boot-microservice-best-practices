@@ -6,7 +6,7 @@ class CompaniesHouseApplicationTest {
 
     @Test
     void main_contextLoad() {
-        System.setProperty("server.port", "8081");
+        System.setProperty("server.port", "8082");
         CompaniesHouseApplication.main(new String[]{});
     }
 
