@@ -1,0 +1,43 @@
+node {
+    stage("Clone the project - GitHub") {
+        git 'https://github.com/abhisheksr01/companies-house-microservice-template.git'
+    }
+
+    stage("Build - Gradle") {
+        sh "./gradlew clean build -x test"
+    }
+
+    stage("Unit tests - Junit") {
+        try {
+            sh "./gradlew test --tests \"com.uk.companieshouse.*\""
+        } catch (err) {
+            step([$class: 'JUnitResultArchiver', testResults:
+                    '**/target/surefire-reports/TEST-*UnitTest.xml'])
+            throw err
+        }
+    }
+
+    stage("Code Coverage") {
+        sh "./gradlew jacocoTestCoverageVerification"
+    }
+
+    stage("BDD - Cucumber") {
+        try {
+            sh "./gradlew test --tests \"*CucumberTest*\""
+        } catch (err) {
+            step([$class: 'JUnitResultArchiver', testResults:
+                    '**/target/surefire-reports/TEST-*UnitTest.xml'])
+            throw err
+        }
+    }
+
+    stage("Mutation Testing - Pitest") {
+        try {
+            sh "./gradlew pitest"
+        } catch (err) {
+            step([$class: 'JUnitResultArchiver', testResults:
+                    '**/target/surefire-reports/TEST-*UnitTest.xml'])
+            throw err
+        }
+    }
+}
