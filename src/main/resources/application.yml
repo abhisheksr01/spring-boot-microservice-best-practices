@@ -1,6 +1,10 @@
 server:
   port: 8080
 
+spring:
+  resources:
+    add-mappings: true
+
 govCompaniesHouse:
-  endpoint: http://localhost:8005/search/companies?q={crn}
+  endpoint: https://api.companieshouse.gov.uk/search/companies?q={companyRef}
   authUserName: dummy-auth-user

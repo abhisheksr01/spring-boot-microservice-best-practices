@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
         classes = CompaniesHouseApplication.class,
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @ActiveProfiles("test")
-public abstract class SpringIntegration implements WireMockService {
+public abstract class SpringIntegration implements com.uk.companieshouse.e2e.WireMockService {
     protected final String DEFAULT_URL = "http://localhost:8081/";
     protected RestTemplate restTemplate = new RestTemplate();
 }
