@@ -1,5 +1,36 @@
-# Spring Boot Micro Service Template (WIP)
+# Spring Boot Micro Service Template
 
+### Table of Content
+----------------------------------
+- [Introduction](#introduction)
+- [Prerequisites](#prerequisites)
+- [Installation and Getting Started](#installation-and-Getting-Started)
+- [Microservice Structure](#microservice-structure)
+- [Development Practice](#development-practice)
+- [Integrations](#integrations)
+    - [1. Testing](#1-testing)
+        - [Unit Test](#unit-test)
+        - [End to End Test](#end-to-end-test)
+        - [Mutation Testing](#mutation-testing)
+    - [2. API Documentation](#2-api-documentation)
+    - [3. Development Accelerators](#3-development-accelerators)
+        - [Mapstruct](#mapstruct)
+        - [Lombok](#lombok)
+    - [4. Code Coverage, Style tests, Code Vulnerabilities](#4-code-coverage,-style-tests,-code-vulnerabilities)
+        - [Checkstyle](#checkstyle)
+        - [Jacoco](#jacoco)
+    - [5. Continuous Integration and Continuos Deployment](#5-Continuous-integration-and-continuos-deployment)
+        - [Jenkins](#jenkins)
+- [What to expect Next!](#what-to-expect-next!)
+- [Versioning](#versioning)
+- [Author](#author)
+- [Contributors](#contributors)
+- [License](#license)
+- [Acknowledgments](#acknowledgments)
+
+----------------------------------
+
+### Introduction
 This project is intended to bring arguably best practices and
 integrations available for Spring Boot based Microservice in a single
 repository.
@@ -16,13 +47,16 @@ hence returning Company Details.
 
 ### Prerequisites
 
+1. [ Installing and Getting Started ](#installation)
+2. [ Microservice Structure ](#MSStructure)
+
 * You must have [Java](https://www.oracle.com/technetwork/java/javaee/documentation/ee8-install-guide-3894351.html)
 installed (min version 8).
 * If you wish to run the application against the actual Companies House
 API. You will need to [create a free account](https://developer.companieshouse.gov.uk/developer/signin)
 and replace the apiKey in the application.yml.
 
-### Installing and Getting Started
+### Installation and Getting Started
 
 Let us get started by Cloning or Downloading repository in your local
 workstation.
@@ -36,8 +70,8 @@ Execute below gradlew command to download all the dependencies specified in the 
 ```bash
 ./gradlew clean build 
 ```
-
-### Microservice Structure 
+<a propertyName = "MSStructure"></a>
+### Microservice Structure
 
 We are following Classic Microservice "Separation of Concerns" pattern having Controller <--> Service <--> Connector layers.
 
@@ -51,7 +85,7 @@ The three different takes the responsibilities as below:
 
 ### Development Practice
 
-At the core of the Cloud Native Practices in Software Engineering lies the Behavior Driven Development(BDD) and Test-Driven Development (TDD). 
+At the core of the Cloud Native Practices in Software Engineering lies the Behavior Driven Development(BDD) and Test-Driven Development (TDD).
 While writing this exercise I followed BDD first approach where we wrote a failing feature/acceptance criteria thus driving our development and then followed by TDD.
 
 ## Integrations
@@ -108,7 +142,7 @@ An excellent* library for converting VO to DAO objects and vice versa.
 Provides excellent annotations based support for Auto generation of methods, logging, Builders, Validation etc.
 We will be using below annotations during this exercise:
 @Data: Auto generates setters, getters, hashcode and toString methods
-@Slf4j: Just add this annotation on top of any Spring Bean and start using the log 
+@Slf4j: Just add this annotation on top of any Spring Bean and start using the log
 
 
 ### 4. Code Coverage, Style tests, Code Vulnerabilities
@@ -119,44 +153,75 @@ We will be using below annotations during this exercise:
 ./gradlew check
 ```
 
-#### Jacoco
+#### [Jacoco](https://www.jacoco.org/jacoco/trunk/index.html)
 
-<!-- Explain what these tests test and why -->
+Code coverage is preliminary step to know whether our test covers all the scenarios we have developed so far.
+
+Jacoco is a free Java code coverage library distributed under the Eclipse Public License.
 
 ```
 WIP
 ```
 
-### 5. Deployment
+### 5. Continuous Integration and Continuos Deployment
+
 
 #### [Jenkins](https://jenkins.io/)
-We are starting with our good old friend Jenkins for creating an Automate Pipeline.
-[WIP]
+```Work in progress```
+
+Jenkins is one of the most famous CI/CD Build Tool used by many Organizations especially within Enterprises so one needs to know the basics of this Mammoth Build Tool.
+
+Installation Guide:
+
+1. Jenkins Image (```Recommended```): If you have docker installed, the easiest way to get started is by getting the public Jenkins image by following the
+[instructions](https://github.com/jenkinsci/docker/blob/master/README.md).
+
+2. Jenkins War: Follow the [instructions](https://www.blazemeter.com/blog/how-to-install-jenkins-on-the-apache-tomcat-server/) to install the Jenkins and run on a Web Server.
+
 
 <!-- Add additional notes about how to deploy this on a live system -->
 
-## Built With
+### Built With
 
 * [Spring Boot](https://spring.io/projects/spring-boot) - The REST framework
 used
 * [GRADLE](https://gradle.org/) - Dependency Management
 
-## Versioning
+### What to Expect Next!
+
+As the world of software engineering is evolving so we do.
+Listing down some of the exciting features am going to work on and update the github in coming days, they are:
+
+* Docker
+* Chaos Monkey
+* Hystrix
+* CORS (Cross Origin)
+* Cloud Build - GCP
+* Concourse Pipeline
+* Associated Officers - Companies House API
+
+### Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions
 available, see the
 [tags on this repository](https://github.com/your/project/tags).
 
-## Authors
+### Author
 
 * **Abhishek Singh Rajput** - *Initial work* -
 [abhisheksr01](https://github.com/abhisheksr01)
 
-## License
+### Contributors
+
+As mentioned in the [Introduction](#introduction) through this project we would like to bring the Best Practices and Integration under one umbrella.
+
+So you are most welcome to improve or add new features you could think of.
+
+### License
 
 This project is licensed under the MIT License - see the
 [LICENSE.md](LICENSE.md) file for details
 
-## Acknowledgments
+### Acknowledgments
 
-* [Eugen Paraschiv](https://www.baeldung.com/)
+* [Eugen Paraschiv](https://www.baeldung.com/) : For the wonderful tutorials
