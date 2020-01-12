@@ -113,6 +113,12 @@ We will be using below annotations during this exercise:
 
 ### 4. Code Coverage, Style tests, Code Vulnerabilities
 
+#### Checkstyle
+
+```bash
+./gradlew check
+```
+
 #### Jacoco
 
 <!-- Explain what these tests test and why -->

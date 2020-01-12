@@ -16,7 +16,8 @@ import static org.mockito.Mockito.when;
 
 class CompaniesHouseConnectorTest {
 
-    private static final String DUMMY_COMPANIES_HOUSE_GOV_ENDPOINT = "https://mock.companieshouse.gov.uk/search/companies?q=";
+    private static final String DUMMY_COMPANIES_HOUSE_GOV_ENDPOINT
+            = "https://mock.companieshouse.gov.uk/search/companies?q=";
     private static final String AUTH_USERNAME = "dummy-auth-user";
     private CompaniesHouseConnector companiesHouseConnector;
     private RestTemplate mockRestTemplate;
@@ -31,11 +32,11 @@ class CompaniesHouseConnectorTest {
     @Test
     void getCompaniesHouseDetails_shouldReturnCompaniesHouseDetails_whenExternalAPICallIsMade() {
         when(mockRestTemplate
-                .getForEntity(DUMMY_COMPANIES_HOUSE_GOV_ENDPOINT, CompaniesHouseGovUKResponse.class, TEST_CRN))
+                .getForEntity(DUMMY_COMPANIES_HOUSE_GOV_ENDPOINT, CompaniesHouseGovUKResponse.class, TESTCRN))
                 .thenReturn(new ResponseEntity<>(getCompaniesHouseGovUKResponse(), HttpStatus.OK));
 
         CompaniesHouseGovUKResponse actualCompaniesHouseDetails =
-                companiesHouseConnector.getCompaniesHouseDetails(TEST_CRN);
+                companiesHouseConnector.getCompaniesHouseDetails(TESTCRN);
 
         assertEquals(getCompaniesHouseGovUKResponse(), actualCompaniesHouseDetails);
     }
@@ -44,7 +45,8 @@ class CompaniesHouseConnectorTest {
     void getCompaniesHouseDetails_shouldThrowException_whenItemsIsNullOrEmpty() {
         ResponseEntity<CompaniesHouseGovUKResponse> mockResponseEntity = mock(ResponseEntity.class);
         when(mockRestTemplate
-                .getForEntity(DUMMY_COMPANIES_HOUSE_GOV_ENDPOINT, CompaniesHouseGovUKResponse.class, "222222222"))
+                .getForEntity(DUMMY_COMPANIES_HOUSE_GOV_ENDPOINT,
+                        CompaniesHouseGovUKResponse.class, "222222222"))
                 .thenReturn(mockResponseEntity);
         when(mockResponseEntity.getBody()).thenReturn(getCompaniesHouseGovUKResponseCRNNotExist());
 

@@ -18,16 +18,16 @@ public interface CompaniesHouseGovUKResponseToCompaniesHouseResponseMapper {
 
     List<CompaniesHouseResponse> map(List<Item> itemList);
 
-    @Mapping(source = "company_status", target = "companyStatus")
-    @Mapping(source = "company_type", target = "companyType")
+    @Mapping(source = "companyStatus", target = "companyStatus")
+    @Mapping(source = "companyType", target = "companyType")
     @Mapping(source = "title", target = "title")
-    @Mapping(source = "address_snippet", target = "addressSnippet")
-    @Mapping(source = "date_of_creation", target = "dateOfCreation")
+    @Mapping(source = "addressSnippet", target = "addressSnippet")
+    @Mapping(source = "dateOfCreation", target = "dateOfCreation")
     @Mapping(source = "description", target = "description")
-    @Mapping(source = "company_number", target = "companyNumber")
+    @Mapping(source = "companyNumber", target = "companyNumber")
     CompaniesHouseResponse mapItemToCompaniesHouseResponse(Item item);
 
-    @Mapping(source = "postal_code", target = "postalCode")
-    @Mapping(source = "address_line_1", target = "addressLine1")
+    @Mapping(source = "postalCode", target = "postalCode")
+    @Mapping(source = "addressLine1", target = "addressLine1")
     Address mapAddress(AddressGovUK addressGovUK);
 }

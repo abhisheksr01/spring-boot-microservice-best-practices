@@ -28,10 +28,10 @@ class CompaniesHouseServiceTest {
 
     @Test
     void getCompaniesHouseResponse_shouldReturnCompaniesHouseResponse_whenCRNIsPassed() {
-        when(mockCompaniesHouseConnector.getCompaniesHouseDetails(TEST_CRN)).thenReturn(companiesHouseGovUKResponse);
+        when(mockCompaniesHouseConnector.getCompaniesHouseDetails(TESTCRN)).thenReturn(companiesHouseGovUKResponse);
 
         List<CompaniesHouseResponse> actualCompaniesHouseResponse =
-                companiesHouseService.getCompaniesHouseResponse(TEST_CRN);
+                companiesHouseService.getCompaniesHouseResponse(TESTCRN);
 
         assertEquals(expectedCompaniesHouseResponse, actualCompaniesHouseResponse);
     }

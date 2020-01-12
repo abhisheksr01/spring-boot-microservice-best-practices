@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.client.RestTemplate;
 
-import static com.uk.companieshouse.utils.TestHelper.TEST_CRN;
+import static com.uk.companieshouse.utils.TestHelper.TESTCRN;
 import static com.uk.companieshouse.utils.TestHelper.getCompaniesHouseGovUKResponse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -48,7 +48,7 @@ class CompaniesHouseConnectorIT implements WireMockService {
                 new CompaniesHouseConnector(govCompaniesHouseEndpoint, authUsername, restTemplate);
 
         CompaniesHouseGovUKResponse actualCompaniesHouseGovUKResponse =
-                companiesHouseConnector.getCompaniesHouseDetails(TEST_CRN);
+                companiesHouseConnector.getCompaniesHouseDetails(TESTCRN);
 
         assertEquals(getCompaniesHouseGovUKResponse(), actualCompaniesHouseGovUKResponse);
     }

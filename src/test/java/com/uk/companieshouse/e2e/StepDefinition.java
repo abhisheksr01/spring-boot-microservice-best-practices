@@ -26,7 +26,7 @@ public class StepDefinition extends SpringIntegration {
         startService();
         stubGovCompaniesHouseExternalService();
         responseEntity = restTemplate.getForEntity
-                (DEFAULT_URL + "/getCompaniesHouse/" + crn, List.class);
+                (DEFAULTURL + "/getCompaniesHouse/" + crn, List.class);
     }
 
     @Then("^The API should return the Companies House Details$")
@@ -42,7 +42,7 @@ public class StepDefinition extends SpringIntegration {
         stubGovCompaniesHouseExternalServiceForNonExistentCRN();
         try {
             responseEntity = restTemplate.getForEntity
-                    (DEFAULT_URL + "/getCompaniesHouse/" + crn, List.class);
+                    (DEFAULTURL + "/getCompaniesHouse/" + crn, List.class);
         } catch (HttpClientErrorException exception) {
             exceptionStatusCode = exception.getRawStatusCode();
             exceptionMessage = exception.getResponseBodyAsString();

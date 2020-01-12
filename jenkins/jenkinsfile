@@ -3,6 +3,10 @@ node {
         git 'https://github.com/abhisheksr01/companies-house-microservice-template.git'
     }
 
+    stage("Static Code Analysis - Checkstyle") {
+        sh "./gradlew clean check"
+    }
+
     stage("Build - Gradle") {
         sh "./gradlew clean build -x test"
     }
@@ -17,18 +21,22 @@ node {
         }
     }
 
-    stage("Code Coverage") {
+    stage("Code Coverage - Jacoco") {
+        sh "./gradlew jacocoTestReport"
         sh "./gradlew jacocoTestCoverageVerification"
+
+        publishHTML target: [
+                allowMissing         : false,
+                alwaysLinkToLastBuild: false,
+                keepAll              : true,
+                reportDir            : 'build/reports/jacocoHtml',
+                reportFiles          : 'index.html',
+                reportName           : 'Jacoco Coverage Report'
+        ]
     }
 
     stage("BDD - Cucumber") {
-        try {
-            sh "./gradlew test --tests \"*CucumberTest*\""
-        } catch (err) {
-            step([$class: 'JUnitResultArchiver', testResults:
-                    '**/target/surefire-reports/TEST-*UnitTest.xml'])
-            throw err
-        }
+        sh "./gradlew test --tests \"*CucumberTest*\""
     }
 
     stage("Mutation Testing - Pitest") {

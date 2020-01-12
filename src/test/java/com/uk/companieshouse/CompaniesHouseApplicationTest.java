@@ -9,5 +9,4 @@ class CompaniesHouseApplicationTest {
         System.setProperty("server.port", "8082");
         CompaniesHouseApplication.main(new String[]{});
     }
-
 }

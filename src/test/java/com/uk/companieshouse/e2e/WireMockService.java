@@ -12,30 +12,29 @@ import org.springframework.http.client.support.BasicAuthenticationInterceptor;
 import org.springframework.web.client.RestTemplate;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.uk.companieshouse.utils.TestHelper.TEST_CRN;
+import static com.uk.companieshouse.utils.TestHelper.TESTCRN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public interface WireMockService {
 
     @Rule
-    public WireMockRule wireMockRule = new WireMockRule(WireMockConfiguration.wireMockConfig().port(8005));
-
-    RestTemplate restTemplate = new RestTemplate();
+    WireMockRule WIRE_MOCK_RULE = new WireMockRule(WireMockConfiguration.wireMockConfig().port(8005));
 
     default void stubGovCompaniesHouseExternalService() {
         configureFor("localhost", 8005);
         givenThat(get(urlPathMatching("/search/companies"))
                 .withBasicAuth("dummy-auth-user", "")
-                .withQueryParam("q", equalTo(TEST_CRN))
+                .withQueryParam("q", equalTo(TESTCRN))
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.OK.value())
                         .withBodyFile("companies-house-gov-UK-response.json")
                         .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)));
 
+        RestTemplate restTemplate = new RestTemplate();
         restTemplate.getInterceptors().add(
                 new BasicAuthenticationInterceptor("dummy-auth-user", ""));
         ResponseEntity<CompaniesHouseGovUKResponse> response = restTemplate.getForEntity
-                ("http://localhost:8005//search/companies?q={crn}", CompaniesHouseGovUKResponse.class, TEST_CRN);
+                ("http://localhost:8005//search/companies?q={crn}", CompaniesHouseGovUKResponse.class, TESTCRN);
         assertEquals(200, response.getStatusCodeValue());
     }
 
@@ -49,18 +48,20 @@ public interface WireMockService {
                         .withBodyFile("companies-house-gov-UK-response-crn-404.json")
                         .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)));
 
+        RestTemplate restTemplate = new RestTemplate();
         restTemplate.getInterceptors().add(
                 new BasicAuthenticationInterceptor("dummy-auth-user", ""));
         ResponseEntity<CompaniesHouseGovUKResponse> response = restTemplate.getForEntity
-                ("http://localhost:8005//search/companies?q={crn}", CompaniesHouseGovUKResponse.class, "222222222");
+                ("http://localhost:8005//search/companies?q={crn}",
+                        CompaniesHouseGovUKResponse.class, "222222222");
         assertEquals(200, response.getStatusCodeValue());
     }
 
     default void startService() {
-        wireMockRule.start();
+        WIRE_MOCK_RULE.start();
     }
 
     default void stopService() {
-        wireMockRule.stop();
+        WIRE_MOCK_RULE.stop();
     }
 }

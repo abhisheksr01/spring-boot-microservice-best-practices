@@ -8,7 +8,6 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
 class ControllerExceptionHandlerTest {
     private ControllerExceptionHandler controllerExceptionHandler;
 
@@ -22,7 +21,8 @@ class ControllerExceptionHandlerTest {
         HttpClientErrorException httpClientErrorException =
                 new HttpClientErrorException(HttpStatus.NOT_FOUND, "CRN Not Found");
 
-        ResponseEntity responseEntity = controllerExceptionHandler.handleHttpClientErrorException(httpClientErrorException);
+        ResponseEntity responseEntity = controllerExceptionHandler.
+                handleHttpClientErrorException(httpClientErrorException);
 
         assertEquals(404, responseEntity.getStatusCodeValue());
         assertEquals("CRN Not Found", responseEntity.getBody());
@@ -33,10 +33,10 @@ class ControllerExceptionHandlerTest {
         HttpClientErrorException httpClientErrorException =
                 new HttpClientErrorException(HttpStatus.BANDWIDTH_LIMIT_EXCEEDED, "BandWidthLimit Exceeded");
 
-        ResponseEntity responseEntity = controllerExceptionHandler.handleHttpClientErrorException(httpClientErrorException);
+        ResponseEntity responseEntity = controllerExceptionHandler.
+                handleHttpClientErrorException(httpClientErrorException);
 
         assertEquals(500, responseEntity.getStatusCodeValue());
         assertEquals("Internal Server Error", responseEntity.getBody());
     }
-
 }

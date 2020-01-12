@@ -1,11 +1,14 @@
 package com.uk.companieshouse.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
 public class AddressGovUK {
-    private String postal_code;
+    @JsonProperty("postal_code")
+    private String postalCode;
     private String locality;
-    private String address_line_1;
+    @JsonProperty("address_line_1")
+    private String addressLine1;
     private String premises;
 }

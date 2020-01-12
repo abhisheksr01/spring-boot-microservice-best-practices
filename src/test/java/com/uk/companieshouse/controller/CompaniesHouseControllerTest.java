@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.uk.companieshouse.utils.TestHelper.TEST_CRN;
+import static com.uk.companieshouse.utils.TestHelper.TESTCRN;
 import static com.uk.companieshouse.utils.TestHelper.getCompaniesHouseResponseList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -26,10 +26,10 @@ class CompaniesHouseControllerTest {
 
     @Test
     void getCompaniesHouse_whenCRNIsPassed_shouldReturnCompaniesHouseResponse() {
-        when(mockCompaniesHouseService.getCompaniesHouseResponse(TEST_CRN)).
+        when(mockCompaniesHouseService.getCompaniesHouseResponse(TESTCRN)).
                 thenReturn(expectedCompaniesHouseResponse);
 
-        List actualCompaniesHouseResponseList = companiesHouseController.getCompaniesHouseResponse(TEST_CRN);
+        List actualCompaniesHouseResponseList = companiesHouseController.getCompaniesHouseResponse(TESTCRN);
 
         assertEquals(expectedCompaniesHouseResponse, actualCompaniesHouseResponseList);
     }

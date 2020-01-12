@@ -11,6 +11,7 @@ plugins {
     id 'java'
     id 'jacoco'
     id 'info.solidsoft.pitest' version '1.4.6'
+    id 'checkstyle'
 }
 
 group = 'com.uk'
@@ -27,6 +28,7 @@ ext {
     wireMockVersion = "2.25.1"
     ioCucumberVersion = "5.0.0-RC4"
     swaggerVersion = "2.9.2"
+    jacocoVersion = "0.8.5"
 }
 
 dependencies {
@@ -53,10 +55,21 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+//Checkstyle for code style and quality
+checkstyle {
+    toolVersion '7.8.1'
+}
+tasks.withType(Checkstyle) {
+    reports {
+        xml.enabled false
+        html.enabled true
+        html.stylesheet resources.text.fromFile('config/xls/checksyle-style.xsl')
+    }
+}
 
 // Jacoco for Code Coverage
 jacoco {
-    toolVersion = "0.8.5"
+    toolVersion = "${jacocoVersion}"
     reportsDir = file("$buildDir/customJacocoReportDir")
 }
 
