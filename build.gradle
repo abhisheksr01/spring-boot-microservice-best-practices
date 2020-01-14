@@ -53,6 +53,9 @@ dependencies {
 }
 
 test {
+    if (project.hasProperty('excludee2e')) {
+        exclude '**/*e2e*'
+    }
     useJUnitPlatform()
 }
 //Checkstyle for code style and quality
@@ -83,6 +86,13 @@ jacocoTestReport {
         csv.enabled false
         html.destination file("${buildDir}/reports/jacocoHtml")
     }
+//    afterEvaluate {
+//        classDirectories.setFrom(files(classDirectories.files.collect {
+//            fileTree(dir: it,
+//                    exclude: ['**/mapper/**']
+//            )
+//        }))
+//    }
 }
 
 jacocoTestCoverageVerification {

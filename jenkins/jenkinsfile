@@ -5,6 +5,22 @@ node {
 
     stage("Static Code Analysis - Checkstyle") {
         sh "./gradlew clean check"
+        publishHTML target: [
+                allowMissing         : false,
+                alwaysLinkToLastBuild: false,
+                keepAll              : true,
+                reportDir            : 'build/reports/checkstyle',
+                reportFiles          : 'main.html',
+                reportName           : 'CheckStyle - Main Class Report'
+        ]
+        publishHTML target: [
+                allowMissing         : false,
+                alwaysLinkToLastBuild: false,
+                keepAll              : true,
+                reportDir            : 'build/reports/checkstyle',
+                reportFiles          : 'test.html',
+                reportName           : 'CheckStyle - Test Class Report'
+        ]
     }
 
     stage("Build - Gradle") {
@@ -13,7 +29,16 @@ node {
 
     stage("Unit tests - Junit") {
         try {
-            sh "./gradlew test --tests \"com.uk.companieshouse.*\""
+            sh "./gradlew test -Pexcludee2e=**/true*\n"
+
+            publishHTML target: [
+                    allowMissing         : false,
+                    alwaysLinkToLastBuild: false,
+                    keepAll              : true,
+                    reportDir            : 'build/reports/tests/test',
+                    reportFiles          : 'index.html',
+                    reportName           : 'Unit Test Report'
+            ]
         } catch (err) {
             step([$class: 'JUnitResultArchiver', testResults:
                     '**/target/surefire-reports/TEST-*UnitTest.xml'])
@@ -36,7 +61,16 @@ node {
     }
 
     stage("BDD - Cucumber") {
-        sh "./gradlew test --tests \"*CucumberTest*\""
+        sh "./gradlew test --tests com.uk.companieshouse.e2e"
+
+        publishHTML target: [
+                allowMissing         : false,
+                alwaysLinkToLastBuild: false,
+                keepAll              : true,
+                reportDir            : 'build/reports/cucumber',
+                reportFiles          : 'index.html',
+                reportName           : 'Cucumber BDD Report'
+        ]
     }
 
     stage("Mutation Testing - Pitest") {
