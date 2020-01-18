@@ -1,5 +1,7 @@
 server:
   port: 8081
+  servlet:
+    contextPath: /companieshouse
 
 govCompaniesHouse:
   endpoint: http://localhost:8005/search/companies?q={crn}
