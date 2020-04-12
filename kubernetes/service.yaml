@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: companies-house-microservice
+spec:
+  selector:
+    app: companies-house-microservice
+  ports:
+    - port: 80
+      targetPort: 8080
+  type: LoadBalancer

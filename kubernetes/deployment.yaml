@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: companies-house-microservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: companies-house-microservice
+  template:
+    metadata:
+      labels:
+        app: companies-house-microservice
+    spec:
+      containers:
+        - name: companies-house-microservice
+          image: abhisheksr01/companies-house-microservice:0.0.1
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: Always

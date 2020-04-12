@@ -135,8 +135,11 @@ We are using Swagger.
 Once we start the application the Swagger UI document can be accessed by URL:
 
 ```
-http://localhost:8080/swagger-ui.html
+http://localhost:8080/companieshouse/swagger-ui.html
 ```
+
+where "companieshouse" is the context path
+
 ### 3. Development Accelerators
 
 #### [Mapstruct](https://mapstruct.org/)
@@ -165,8 +168,10 @@ Code coverage is preliminary step to know whether our test covers all the scenar
 
 Jacoco is a free Java code coverage library distributed under the Eclipse Public License.
 
-```
-WIP
+```bash
+./gradlew test -Pexcludee2e=**/true*
+./gradlew jacocoTestReport
+./gradlew jacocoTestCoverageVerification
 ```
 
 ### 5. Continuous Integration and Continuos Deployment
