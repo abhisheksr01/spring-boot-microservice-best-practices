@@ -19,7 +19,6 @@ public class CompaniesHouseConnector {
 
     private String authUsername;
     private String govCompaniesHouseEndpoint;
-    @Autowired
     private RestTemplate restTemplate;
 
     public CompaniesHouseConnector(@Value("${govCompaniesHouse.endpoint}") String govCompaniesHouseEndpoint,
