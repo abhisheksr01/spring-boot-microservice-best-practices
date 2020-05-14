@@ -10,7 +10,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
     id 'jacoco'
-    id 'info.solidsoft.pitest' version '1.4.6'
+    id 'info.solidsoft.pitest' version '1.5.1'
     id 'checkstyle'
 }
 
