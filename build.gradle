@@ -2,7 +2,7 @@ buildscript {
     configurations.maybeCreate("pitest")
     dependencies {
         classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.4.6'
-        pitest 'org.pitest:pitest-junit5-plugin:0.10'
+        pitest 'org.pitest:pitest-junit5-plugin:0.12'
     }
 }
 plugins {
