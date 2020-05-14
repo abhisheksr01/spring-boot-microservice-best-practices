@@ -1,16 +1,9 @@
-buildscript {
-    configurations.maybeCreate("pitest")
-    dependencies {
-        classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.4.6'
-        pitest 'org.pitest:pitest-junit5-plugin:0.12'
-    }
-}
 plugins {
-    id 'org.springframework.boot' version '2.2.2.RELEASE'
+    id 'org.springframework.boot' version '2.2.7.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
     id 'jacoco'
-    id 'info.solidsoft.pitest' version '1.4.6'
+    id 'info.solidsoft.pitest' version '1.5.1'
     id 'checkstyle'
 }
 
@@ -51,6 +44,8 @@ dependencies {
     //Swagger
     compile "io.springfox:springfox-swagger2:${swaggerVersion}"
     compile "io.springfox:springfox-swagger-ui:${swaggerVersion}"
+    //pitest
+    pitest 'org.pitest:pitest-junit5-plugin:0.12'
 }
 
 test {
@@ -117,9 +112,8 @@ jacocoTestCoverageVerification {
         }
     }
 }
-apply plugin: "info.solidsoft.pitest"
 pitest {
-    pitestVersion = "1.4.9"
+    pitestVersion = "1.5.1"
     testPlugin = "junit5"
     targetClasses = ['com.uk.companieshouse.*']  // by default "${project.group}.*"
     targetTests = ['com.uk.companieshouse.*']  // by default "${project.group}.*"
