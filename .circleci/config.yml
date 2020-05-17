@@ -64,10 +64,10 @@ jobs:
           name: Code coverage verification
           command:
             ./gradlew jacocoTestCoverageVerification
-      - store_test_results:
+      - store_artifacts:
           path: build/reports/jacocoHtml
           when: always
-      - store_artifacts:
+      - store_test_results:
           path: build/reports/tests/test
           when: always
       - run:
@@ -123,6 +123,24 @@ jobs:
           path: build/reports/pitest
           when: always
 
+  dockerImageBuild:
+    # Remove if parallelism is not desired
+    environment:
+      # Configure the JVM and Gradle to avoid OOM errors
+      _JAVA_OPTIONS: "-Xmx3g"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
+    docker:
+      - image: circleci/openjdk:8-jdk
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run: |
+          TAG=0.1.$CIRCLE_BUILD_NUM
+          docker build -t abhisheksr01/companieshouse:$TAG -f Dockerfile .
+          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+          docker push abhisheksr01/companieshouse:$TAG
+
 workflows:
   version: 2
   workflow:
@@ -131,6 +149,15 @@ workflows:
       - test:
           requires:
             - build
-      - checkstyle
-      - mutationtest
+      - checkstyle:
+          requires:
+            - build
+      - mutationtest:
+          requires:
+            - build
+      - dockerImageBuild:
+          requires:
+            - test
+            - checkstyle
+            - mutationtest
 
