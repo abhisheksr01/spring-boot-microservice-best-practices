@@ -30,7 +30,6 @@ jobs:
             - build
   test:
     # Remove if parallelism is not desired
-    parallelism: 2
     environment:
       # Configure the JVM and Gradle to avoid OOM errors
       _JAVA_OPTIONS: "-Xmx3g"
@@ -83,7 +82,6 @@ jobs:
 
   checkstyle:
     # Remove if parallelism is not desired
-    parallelism: 2
     environment:
       # Configure the JVM and Gradle to avoid OOM errors
       _JAVA_OPTIONS: "-Xmx3g"
@@ -104,7 +102,7 @@ jobs:
 
   mutationtest:
     # Remove if parallelism is not desired
-    parallelism: 4
+    parallelism: 2
     environment:
       # Configure the JVM and Gradle to avoid OOM errors
       _JAVA_OPTIONS: "-Xmx3g"
