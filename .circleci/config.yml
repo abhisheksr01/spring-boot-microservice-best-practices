@@ -66,6 +66,7 @@ jobs:
             ./gradlew jacocoTestCoverageVerification
       - store_test_results:
           path: build/reports/jacocoHtml
+          when: always
       - store_artifacts:
           path: build/reports/tests/test
           when: always
