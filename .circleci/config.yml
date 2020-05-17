@@ -6,7 +6,7 @@ jobs:
       _JAVA_OPTIONS: "-Xmx3g"
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
     docker:
-      - image: circleci/openjdk:11.0.3-jdk-stretch
+      - image: circleci/openjdk:8-jdk
     steps:
       - checkout
       - restore_cache:
@@ -36,11 +36,7 @@ jobs:
       _JAVA_OPTIONS: "-Xmx3g"
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
     docker:
-      - image: circleci/openjdk:11.0.3-jdk-stretch
-      - image: circleci/postgres:12-alpine
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_DB: circle_test
+      - image: circleci/openjdk:8-jdk
     steps:
       - checkout
       - attach_workspace:
@@ -64,13 +60,14 @@ jobs:
           name: Generate code coverage report
           command:
             ./gradlew jacocoTestReport
+      - run:
+          name: Code coverage verification
+          command:
+            ./gradlew jacocoTestCoverageVerification
       - store_test_results:
-          path: build/test-results/test
+          path: build/reports/jacocoHtml
       - store_artifacts:
-          path: build/test-results/test
-          when: always
-      - store_artifacts:
-          path: build/reports/jacoco/test/html
+          path: build/reports/tests/test
           when: always
       - run:
           name: Assemble JAR
@@ -100,6 +97,30 @@ jobs:
           name: Generate code coverage report
           command:
             ./gradlew check
+      - store_artifacts:
+          path: build/reports/checkstyle
+          when: always
+
+  mutationtest:
+    # Remove if parallelism is not desired
+    parallelism: 4
+    environment:
+      # Configure the JVM and Gradle to avoid OOM errors
+      _JAVA_OPTIONS: "-Xmx3g"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
+    docker:
+      - image: circleci/openjdk:8-jdk
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Perform Mutation Testing on Unit Test
+          command:
+            ./gradlew pitest
+      - store_artifacts:
+          path: build/reports/pitest
+          when: always
 
 workflows:
   version: 2
@@ -110,4 +131,5 @@ workflows:
           requires:
             - build
       - checkstyle
+      - mutationtest
 
