@@ -33,17 +33,17 @@ dependencies {
     testImplementation "io.cucumber:cucumber-junit:${ioCucumberVersion}"
     testImplementation "io.cucumber:cucumber-spring:${ioCucumberVersion}"
     //WireMock Dependencies
-    testCompile "com.github.tomakehurst:wiremock:${wireMockVersion}"
+    testImplementation "com.github.tomakehurst:wiremock:${wireMockVersion}"
     //Lombok Dependencies
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     //MapStruct Dependencies
-    compile "org.mapstruct:mapstruct:${mapstructVersion}"
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     //Swagger
-    compile "io.springfox:springfox-swagger2:${swaggerVersion}"
-    compile "io.springfox:springfox-swagger-ui:${swaggerVersion}"
+    implementation "io.springfox:springfox-swagger2:${swaggerVersion}"
+    implementation "io.springfox:springfox-swagger-ui:${swaggerVersion}"
     //pitest
     pitest 'org.pitest:pitest-junit5-plugin:0.12'
 }

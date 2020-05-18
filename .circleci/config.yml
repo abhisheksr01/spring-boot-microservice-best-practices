@@ -1,12 +1,17 @@
-version: 2
-jobs:
-  build:
+version: 2.1
+
+executors:
+  base:
+    docker:
+      - image: circleci/openjdk:8-jdk
     environment:
       # Configure the JVM and Gradle to avoid OOM errors
       _JAVA_OPTIONS: "-Xmx3g"
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
-    docker:
-      - image: circleci/openjdk:8-jdk
+
+jobs:
+  build:
+    executor: base
     steps:
       - checkout
       - restore_cache:
@@ -14,8 +19,8 @@ jobs:
       - restore_cache:
           key: v1-gradle-cache-{{ checksum "build.gradle" }}
       - run:
-          name: Install dependencies
-          command: ./gradlew build -x test
+          name: Install Dependencies
+          command: ./gradlew build -x test -x checkstyleTest
       - save_cache:
           paths:
             - ~/.gradle/wrapper
@@ -29,13 +34,7 @@ jobs:
           paths:
             - build
   test:
-    # Remove if parallelism is not desired
-    environment:
-      # Configure the JVM and Gradle to avoid OOM errors
-      _JAVA_OPTIONS: "-Xmx3g"
-      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
-    docker:
-      - image: circleci/openjdk:8-jdk
+    executor: base
     steps:
       - checkout
       - attach_workspace:
@@ -81,13 +80,7 @@ jobs:
           path: build/libs
 
   checkstyle:
-    # Remove if parallelism is not desired
-    environment:
-      # Configure the JVM and Gradle to avoid OOM errors
-      _JAVA_OPTIONS: "-Xmx3g"
-      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
-    docker:
-      - image: circleci/openjdk:8-jdk
+    executor: base
     steps:
       - checkout
       - attach_workspace:
@@ -101,14 +94,9 @@ jobs:
           when: always
 
   mutationtest:
+    executor: base
     # Remove if parallelism is not desired
     parallelism: 2
-    environment:
-      # Configure the JVM and Gradle to avoid OOM errors
-      _JAVA_OPTIONS: "-Xmx3g"
-      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
-    docker:
-      - image: circleci/openjdk:8-jdk
     steps:
       - checkout
       - attach_workspace:
@@ -122,16 +110,10 @@ jobs:
           when: always
 
   dockerImageBuild:
-    # Remove if parallelism is not desired
-    environment:
-      # Configure the JVM and Gradle to avoid OOM errors
-      _JAVA_OPTIONS: "-Xmx3g"
-      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
-    docker:
-      - image: circleci/openjdk:8-jdk
+    executor: base
     steps:
       - checkout
-      - setup_remote_docker:
+      - setup_remote_docker
       - run: |
           TAG=0.1.$CIRCLE_BUILD_NUM
           echo "$DOCKER_USER"
@@ -141,7 +123,7 @@ jobs:
           docker push "$DOCKER_USER"/companieshouse:$TAG
 
 workflows:
-  version: 2
+  version: 2.1
   workflow:
     jobs:
       - build
