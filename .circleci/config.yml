@@ -134,11 +134,11 @@ jobs:
       - setup_remote_docker:
       - run: |
           TAG=0.1.$CIRCLE_BUILD_NUM
-          echo $DOCKER_USER
+          echo "$DOCKER_USER"
           echo "Building docker image and pushing"
-          docker build -t abhisheksr01/companieshouse:$TAG -f Dockerfile .
-          echo $DOCKER_PASS | docker login --username $DOCKER_USER --password-stdin
-          docker push abhisheksr01/companieshouse:$TAG
+          docker build -t "$DOCKER_USER"/companieshouse:$TAG -f Dockerfile .
+          echo "$DOCKER_PASS" | docker login --username "$DOCKER_USER" --password-stdin
+          docker push "$DOCKER_USER"/companieshouse:$TAG
 
 workflows:
   version: 2
