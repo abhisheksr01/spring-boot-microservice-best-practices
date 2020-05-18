@@ -136,9 +136,9 @@ jobs:
           TAG=0.1.$CIRCLE_BUILD_NUM
           echo $DOCKER_USER
           echo "Building docker image and pushing"
-          docker build -t "$DOCKER_USER"/companieshouse:$TAG -f Dockerfile .
-          echo "$DOCKER_PASS" | docker login --username "$DOCKER_USER" --password-stdin
-          docker push "$DOCKER_USER"/companieshouse:$TAG
+          docker build -t abhisheksr01/companieshouse:$TAG -f Dockerfile .
+          echo $DOCKER_PASS | docker login --username $DOCKER_USER --password-stdin
+          docker push abhisheksr01/companieshouse:$TAG
 
 workflows:
   version: 2
@@ -155,6 +155,7 @@ workflows:
           requires:
             - build
       - dockerImageBuild:
+          context: credentials
           requires:
             - test
             - checkstyle
