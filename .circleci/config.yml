@@ -9,16 +9,23 @@ executors:
       _JAVA_OPTIONS: "-Xmx3g"
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
 
+mount_workspace: &mount_workspace
+  attach_workspace:
+    at: .
+
+restore_cache: &restore_cache
+  - restore_cache:
+      key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+  - restore_cache:
+      key: v1-gradle-cache-{{ checksum "build.gradle" }}
+
 jobs:
   build:
     executor: base
     description: Install dependencies & Build
     steps:
       - checkout
-      - restore_cache:
-          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
-      - restore_cache:
-          key: v1-gradle-cache-{{ checksum "build.gradle" }}
+      - <<: *restore_cache
       - run:
           name: Install Dependencies
           command: ./gradlew build -x test -x checkstyleTest
@@ -38,12 +45,8 @@ jobs:
     executor: base
     description: Unit Test & Code Coverage
     steps:
-      - attach_workspace:
-          at: .
-      - restore_cache:
-          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
-      - restore_cache:
-          key: v1-gradle-cache-{{ checksum "build.gradle" }}
+      - <<: *mount_workspace
+      - <<: *restore_cache
       - run:
           name: Run tests in parallel
           # Use "./gradlew test" instead if tests are not run in parallel
@@ -90,12 +93,8 @@ jobs:
     executor: base
     description: Code Checkstyle check
     steps:
-      - attach_workspace:
-          at: .
-      - restore_cache:
-          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
-      - restore_cache:
-          key: v1-gradle-cache-{{ checksum "build.gradle" }}
+      - <<: *mount_workspace
+      - <<: *restore_cache
       - run:
           name: Generate checkstyle coverage report
           command:
@@ -110,12 +109,8 @@ jobs:
     # Remove if parallelism is not desired
     parallelism: 2
     steps:
-      - attach_workspace:
-          at: .
-      - restore_cache:
-          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
-      - restore_cache:
-          key: v1-gradle-cache-{{ checksum "build.gradle" }}
+      - <<: *mount_workspace
+      - <<: *restore_cache
       - run:
           name: Perform Mutation Testing on Unit Test
           command:
@@ -128,8 +123,7 @@ jobs:
     description: Build Docker Image & Push
     executor: base
     steps:
-      - attach_workspace:
-          at: .
+      - <<: *mount_workspace
       - setup_remote_docker
       - run: |
           TAG=0.1.$CIRCLE_BUILD_NUM
