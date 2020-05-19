@@ -12,6 +12,7 @@ executors:
 jobs:
   build:
     executor: base
+    description: Install dependencies & Build
     steps:
       - checkout
       - restore_cache:
@@ -35,9 +36,14 @@ jobs:
             - .
   test:
     executor: base
+    description: Unit Test & Code Coverage
     steps:
       - attach_workspace:
           at: .
+      - restore_cache:
+          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+      - restore_cache:
+          key: v1-gradle-cache-{{ checksum "build.gradle" }}
       - run:
           name: Run tests in parallel
           # Use "./gradlew test" instead if tests are not run in parallel
@@ -82,9 +88,14 @@ jobs:
 
   checkstyle:
     executor: base
+    description: Code Checkstyle check
     steps:
       - attach_workspace:
           at: .
+      - restore_cache:
+          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+      - restore_cache:
+          key: v1-gradle-cache-{{ checksum "build.gradle" }}
       - run:
           name: Generate checkstyle coverage report
           command:
@@ -95,11 +106,16 @@ jobs:
 
   mutationtest:
     executor: base
+    description: Mutation Testing
     # Remove if parallelism is not desired
     parallelism: 2
     steps:
       - attach_workspace:
           at: .
+      - restore_cache:
+          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+      - restore_cache:
+          key: v1-gradle-cache-{{ checksum "build.gradle" }}
       - run:
           name: Perform Mutation Testing on Unit Test
           command:
@@ -109,6 +125,7 @@ jobs:
           when: always
 
   buildAndPushImage:
+    description: Build Docker Image & Push
     executor: base
     steps:
       - attach_workspace:
