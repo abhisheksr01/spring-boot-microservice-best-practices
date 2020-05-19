@@ -32,11 +32,10 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - build
+            - .
   test:
     executor: base
     steps:
-      - checkout
       - attach_workspace:
           at: .
       - run:
@@ -76,13 +75,14 @@ jobs:
               ./gradlew assemble
             fi
       # This will be empty for all nodes except the first one
-      - store_artifacts:
-          path: build/libs
+      - persist_to_workspace:
+          root: build
+          paths:
+            - libs
 
   checkstyle:
     executor: base
     steps:
-      - checkout
       - attach_workspace:
           at: .
       - run:
@@ -98,7 +98,6 @@ jobs:
     # Remove if parallelism is not desired
     parallelism: 2
     steps:
-      - checkout
       - attach_workspace:
           at: .
       - run:
@@ -109,16 +108,15 @@ jobs:
           path: build/reports/pitest
           when: always
 
-  dockerImageBuild:
+  buildAndPushImage:
     executor: base
     steps:
-      - checkout
+      - attach_workspace:
+          at: .
       - setup_remote_docker
       - run: |
           TAG=0.1.$CIRCLE_BUILD_NUM
-          echo "$DOCKER_USER"
-          echo "Building docker image and pushing"
-          docker build -t "$DOCKER_USER"/companieshouse:$TAG -f Dockerfile .
+          docker build -t "$DOCKER_USER"/companieshouse:$TAG -f ci.Dockerfile .
           echo "$DOCKER_PASS" | docker login --username "$DOCKER_USER" --password-stdin
           docker push "$DOCKER_USER"/companieshouse:$TAG
 
@@ -136,10 +134,9 @@ workflows:
       - mutationtest:
           requires:
             - build
-      - dockerImageBuild:
+      - buildAndPushImage:
           context: credentials
           requires:
             - test
             - checkstyle
             - mutationtest
-
