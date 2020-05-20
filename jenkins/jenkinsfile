@@ -24,7 +24,7 @@ node {
     }
 
     stage("Build - Gradle") {
-        sh "./gradlew clean build -x test"
+        sh "./gradlew clean build -x test -x checkstyleTest"
     }
 
     stage("Unit tests - Junit") {
