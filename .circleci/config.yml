@@ -136,10 +136,9 @@ jobs:
       - checkout
       - run:
           name: Image Vulnerability Check
-          working_directory: .circleci
-          command: scripts/vulnerability-checks.sh
+          command: .circleci/scripts/vulnerability-checks.sh
       - store_artifacts:
-          path: /reports
+          path: reports
           when: always
 
 workflows:
