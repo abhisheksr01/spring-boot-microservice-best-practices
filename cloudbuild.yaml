@@ -10,7 +10,21 @@ steps:
       args:
         - '-c'
         - |
-          trivy eu.gcr.io/$PROJECT_ID/companieshouse:latest | grep Total
+          trivy eu.gcr.io/$PROJECT_ID/companieshouse:latest
+          echo "Starting checking vulnerabilities...."
+          TAG="latest"
+          trivy "${DOCKER_USER}/${PRODUCT}:${TAG}" > vulnerability-report.txt
+          critical_vulnerability=$(grep CRITICAL: vulnerability-report.txt | sed -n -e 's/^.*CRITICAL: //p' | cut -c1-1)
+          echo "Vulnerabilities Report Generated..."
+          if [ "$critical_vulnerability" != "0" ]; then
+            echo "Critical Vulnerabilities Identified, review the attached vulnerability report."
+            echo "Fix the CRITICAL vulnerabilities to proceed with the deployment."
+            exit 1
+          else
+            echo "Everything is good."
+            echo "No Critical Vulnerabilities Identified, review full list of other vulnerabilities identified."
+          fi
+          echo "Trivy Vulnerabilities Check Ends.."
   - name: 'gcr.io/cloud-builders/gcloud'
     args: [
       'run',
