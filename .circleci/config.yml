@@ -127,8 +127,7 @@ jobs:
       - setup_remote_docker
       - run:
           name: Docker Image build and push
-          working_directory: .circleci
-          command: scripts/docker-build.sh
+          command: .circleci/scripts/docker-build.sh
 
   checkImageVulnerability:
     description: Use Trivy to check the final docker image vulnerabilities before deployment
