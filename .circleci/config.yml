@@ -99,8 +99,7 @@ jobs:
       - *restore_cache
       - run:
           name: Generate checkstyle coverage report
-          command:
-            ./gradlew check
+          command: ./gradlew check
       - store_artifacts:
           path: build/reports/checkstyle
           when: always
@@ -115,8 +114,7 @@ jobs:
       - *restore_cache
       - run:
           name: Perform Mutation Testing on Unit Test
-          command:
-            ./gradlew pitest
+          command: ./gradlew pitest
       - store_artifacts:
           path: build/reports/pitest
           when: always
@@ -127,49 +125,22 @@ jobs:
     steps:
       - *mount_workspace
       - setup_remote_docker
-      - run: |
-          TAG=0.1.$CIRCLE_BUILD_NUM
-          docker build -t "$DOCKER_USER"/companieshouse:$TAG -f ci.Dockerfile .
-          echo "$DOCKER_PASS" | docker login --username "$DOCKER_USER" --password-stdin
-          docker push "$DOCKER_USER"/companieshouse:$TAG
+      - run:
+          name: Docker Image build and push
+          working_directory: .circleci
+          command: scripts/docker-build.sh
 
-  checkImageVulenerability:
+  checkImageVulnerability:
     description: Use Trivy to check the final docker image vulnerabilities before deployment
     executor: ubuntu
     steps:
-      - restore_cache:
-          key: v1-trivy-cache-1
+      - checkout
       - run:
-          command: |
-            #!/usr/bin/env bash
-            apt-get update
-            echo "Installing Trivy"
-            apt-get -y install wget apt-transport-https gnupg lsb-release
-            wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | apt-key add -
-            echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | tee -a /etc/apt/sources.list.d/trivy.list
-            apt-get update
-            export DEBIAN_FRONTEND=noninteractive
-            apt-get -y install trivy
-            echo "Trivy Installation completed and starting checking vulnerabilities ....."
-
-            TAG=0.1.$CIRCLE_BUILD_NUM
-            echo "Testing vulnerability"
-            trivy -s CRITICAL abhisheksr01/companieshouse:$TAG
-            critical_vulnerability=$(trivy -s CRITICAL abhisheksr01/companieshouse:$TAG | grep Total | sed "s/Total: //g" | cut -c1-1)
-            trivy abhisheksr01/companieshouse:0.1.55 > vulenerability-report.txt
-            if [ "$critical_vulnerability" != "0" ]; then
-                echo "Critical Vulenerabilities identified, review the attached vulnerability report"
-                echo Fix the CRITICAL vulnerabilites to proceed with the deployment in the atatched report1>&2
-                exit 1
-            else
-              echo "Everything is good"
-            fi
-      - save_cache:
-          paths:
-            - /root/.cache/trivy
-          key: v1-trivy-cache-1
+          name: Image Vulnerability Check
+          working_directory: .circleci
+          command: scripts/vulnerability-checks.sh
       - store_artifacts:
-          path: .
+          path: /reports
           when: always
 
 workflows:
@@ -192,6 +163,7 @@ workflows:
             - test
             - checkstyle
             - mutationtest
-      - checkImageVulenerability:
+      - checkImageVulnerability:
+          context: credentials
           requires:
             - buildAndPushImage
