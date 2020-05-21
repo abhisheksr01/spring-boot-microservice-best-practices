@@ -139,7 +139,9 @@ jobs:
       - checkout
       - run:
           name: Image Vulnerability Check
-          command: .circleci/scripts/vulnerability-checks.sh
+          command: |
+            apk add --no-cache bash
+            .circleci/scripts/vulnerability-checks.sh
       - store_artifacts:
           path: reports
           when: always
