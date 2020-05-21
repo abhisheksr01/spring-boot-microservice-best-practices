@@ -11,6 +11,9 @@ executors:
   ubuntu:
     docker:
       - image: ubuntu:latest
+  trivy:
+    docker:
+      - image: aquasec/trivy:latest
 
 aliases:
   - &mount_workspace
@@ -131,7 +134,7 @@ jobs:
 
   checkImageVulnerability:
     description: Use Trivy to check the final docker image vulnerabilities before deployment
-    executor: ubuntu
+    executor: trivy
     steps:
       - checkout
       - run:
