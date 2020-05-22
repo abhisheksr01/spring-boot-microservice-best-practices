@@ -160,6 +160,7 @@ jobs:
       release:
         type: string
     steps:
+      - *mount_workspace
       - checkout
       - run:
           name: aws eks config update

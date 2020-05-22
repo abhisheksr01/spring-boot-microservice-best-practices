@@ -4,9 +4,6 @@ set -euo pipefail
 
 : "${EKS_NAMESPACE}"
 : "${RELEASE_NAME}"
-echo "I am inside"
-pwd
-ls
 VERSION=$(cat version.txt)
 helm upgrade \
 --install \
