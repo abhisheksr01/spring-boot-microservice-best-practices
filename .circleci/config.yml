@@ -141,7 +141,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Image Vulnerability Check
+          name: Trivy Image Vulnerability Check
           command: |
             apk add --no-cache bash
             .circleci/scripts/vulnerability-checks.sh
@@ -175,27 +175,32 @@ workflows:
     jobs:
       - build
       - test:
+          name: Unit Test
           requires:
             - build
       - checkstyle:
+          name: Checkstyle
           requires:
             - build
       - mutationtest:
+          name: Mutation Tests
           requires:
             - build
       - buildAndPushImage:
           context: credentials
+          name: Docker Image build and push
           requires:
             - test
             - checkstyle
             - mutationtest
       - checkImageVulnerability:
+          name: Image Vulnerability Check
           context: credentials
           requires:
             - buildAndPushImage
       - helm_deploy:
           context: credentials
-          name: Deploy UAT
+          name: Deploy app to K8S
           release: companieshouse-release
           requires:
             - checkImageVulnerability
