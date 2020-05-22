@@ -134,11 +134,16 @@ jobs:
       - run:
           name: Docker Image build and push
           command: .circleci/scripts/docker-build.sh
+      - persist_to_workspace:
+          root: .circleci
+          paths:
+            - version.txt
 
   checkImageVulnerability:
     description: Use Trivy to check the final docker image vulnerabilities before deployment
     executor: trivy
     steps:
+      - *mount_workspace
       - checkout
       - run:
           name: Trivy Image Vulnerability Check
@@ -190,17 +195,17 @@ workflows:
           context: credentials
           name: Docker Image build and push
           requires:
-            - test
-            - checkstyle
-            - mutationtest
+            - Unit Test
+            - Checkstyle
+            - Mutation Tests
       - checkImageVulnerability:
           name: Image Vulnerability Check
           context: credentials
           requires:
-            - buildAndPushImage
+            - Docker Image build and push
       - helm_deploy:
           context: credentials
           name: Deploy app to K8S
           release: companieshouse-release
           requires:
-            - checkImageVulnerability
+            - Image Vulnerability Check
