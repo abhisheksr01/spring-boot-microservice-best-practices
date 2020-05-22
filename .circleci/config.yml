@@ -167,6 +167,8 @@ jobs:
       - run:
           name: helm release
           command: |
+            pwd
+            ls
             RELEASE_NAME="<< parameters.release >>" \
             EKS_NAMESPACE="${EKS_NAMESPACE}" \
             ./.circleci/scripts/helm-deploy.sh
