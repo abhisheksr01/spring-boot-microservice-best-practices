@@ -181,7 +181,7 @@ jobs:
 
 workflows:
   version: 2.1
-  workflow-alljobs:
+  workflow-all-jobs:
     jobs:
       - build:
           name: Build
@@ -216,6 +216,19 @@ workflows:
           requires:
             - Image Vulnerability Check
       - health_check:
+          context: credentials
           name: Health Check
           requires:
             - Deploy app to K8S
+  scheduled-vulnerability-check:
+    triggers:
+      - schedule:
+          cron: "45 19 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - check_image_vulnerability:
+          name: Image Vulnerability Check
+          context: credentials
