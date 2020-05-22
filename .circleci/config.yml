@@ -14,6 +14,9 @@ executors:
   trivy:
     docker:
       - image: aquasec/trivy:latest
+  helm:
+    docker:
+      - image: nukengprodservice/helm:latest
 
 aliases:
   - &mount_workspace
@@ -146,6 +149,26 @@ jobs:
           path: reports
           when: always
 
+  helm_deploy:
+    executor: helm
+    parameters:
+      release:
+        type: string
+      namespace:
+        type: env_var_name
+        default: NAMESPACE
+    steps:
+      - checkout
+      - run:
+          name: aws eks config update
+          command: aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig --name ${EKS_CLUSTER_NAME}
+      - run:
+          name: helm release
+          command: |
+            RELEASE_NAME="<< parameters.release >>" \
+            NAMESPACE="<< parameters.namespace >>" \
+            ./.circleci/scripts/helm-deploy.sh
+
 workflows:
   version: 2.1
   workflow-alljobs:
@@ -170,3 +193,9 @@ workflows:
           context: credentials
           requires:
             - buildAndPushImage
+      - helm_deploy:
+          context: credentials
+          name: Deploy UAT
+          release: companieshouse-release
+          requires:
+            - checkImageVulnerability
