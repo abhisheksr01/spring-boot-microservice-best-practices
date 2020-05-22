@@ -110,7 +110,7 @@ jobs:
           path: build/reports/checkstyle
           when: always
 
-  mutation_test:
+  mutationtest:
     executor: base
     description: Mutation Testing
     # Remove if parallelism is not desired
@@ -125,7 +125,7 @@ jobs:
           path: build/reports/pitest
           when: always
 
-  build_and_push_image:
+  buildAndPushImage:
     description: Build Docker Image & Push
     executor: base
     steps:
@@ -139,7 +139,7 @@ jobs:
           paths:
             - version.txt
 
-  check_image_vulnerability:
+  checkImageVulnerability:
     description: Use Trivy to check the final docker image vulnerabilities before deployment
     executor: trivy
     steps:
@@ -173,7 +173,7 @@ jobs:
 
 workflows:
   version: 2.1
-  workflow_alljobs:
+  workflow-alljobs:
     jobs:
       - build:
           name: Buid
@@ -185,18 +185,18 @@ workflows:
           name: Checkstyle
           requires:
             - Buid
-      - mutation_test:
+      - mutationtest:
           name: Mutation Tests
           requires:
             - Buid
-      - build_and_push_image:
+      - buildAndPushImage:
           context: credentials
           name: Docker Image build and push
           requires:
             - Unit Test
             - Checkstyle
             - Mutation Tests
-      - check_image_vulnerability:
+      - checkImageVulnerability:
           name: Image Vulnerability Check
           context: credentials
           requires:
