@@ -216,5 +216,6 @@ workflows:
           requires:
             - Image Vulnerability Check
       - health_check:
+          name: Health Check
           requires:
             - Deploy app to K8S
