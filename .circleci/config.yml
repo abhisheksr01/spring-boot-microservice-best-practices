@@ -110,7 +110,7 @@ jobs:
           path: build/reports/checkstyle
           when: always
 
-  mutationtest:
+  mutation_test:
     executor: base
     description: Mutation Testing
     # Remove if parallelism is not desired
@@ -125,7 +125,7 @@ jobs:
           path: build/reports/pitest
           when: always
 
-  buildAndPushImage:
+  build_and_push_image:
     description: Build Docker Image & Push
     executor: base
     steps:
@@ -135,11 +135,11 @@ jobs:
           name: Docker Image build and push
           command: .circleci/scripts/docker-build.sh
       - persist_to_workspace:
-          root: .circleci
+          root: /home/circleci/project
           paths:
             - version.txt
 
-  checkImageVulnerability:
+  check_image_vulnerability:
     description: Use Trivy to check the final docker image vulnerabilities before deployment
     executor: trivy
     steps:
@@ -149,7 +149,7 @@ jobs:
           name: Trivy Image Vulnerability Check
           command: |
             apk add --no-cache bash
-            .circleci/scripts/vulnerability-checks.sh
+            /root/project/.circleci/scripts/vulnerability-checks.sh
       - store_artifacts:
           path: reports
           when: always
@@ -159,9 +159,6 @@ jobs:
     parameters:
       release:
         type: string
-      namespace:
-        type: env_var_name
-        default: NAMESPACE
     steps:
       - checkout
       - run:
@@ -171,34 +168,35 @@ jobs:
           name: helm release
           command: |
             RELEASE_NAME="<< parameters.release >>" \
-            NAMESPACE="<< parameters.namespace >>" \
+            EKS_NAMESPACE="${EKS_NAMESPACE}" \
             ./.circleci/scripts/helm-deploy.sh
 
 workflows:
   version: 2.1
-  workflow-alljobs:
+  workflow_alljobs:
     jobs:
-      - build
+      - build:
+          name: Buid
       - test:
           name: Unit Test
           requires:
-            - build
+            - Buid
       - checkstyle:
           name: Checkstyle
           requires:
-            - build
-      - mutationtest:
+            - Buid
+      - mutation_test:
           name: Mutation Tests
           requires:
-            - build
-      - buildAndPushImage:
+            - Buid
+      - build_and_push_image:
           context: credentials
           name: Docker Image build and push
           requires:
             - Unit Test
             - Checkstyle
             - Mutation Tests
-      - checkImageVulnerability:
+      - check_image_vulnerability:
           name: Image Vulnerability Check
           context: credentials
           requires:
