@@ -110,7 +110,7 @@ jobs:
           path: build/reports/checkstyle
           when: always
 
-  mutationtest:
+  mutation_test:
     executor: base
     description: Mutation Testing
     # Remove if parallelism is not desired
@@ -125,7 +125,7 @@ jobs:
           path: build/reports/pitest
           when: always
 
-  buildAndPushImage:
+  build_and_push_image:
     description: Build Docker Image & Push
     executor: base
     steps:
@@ -139,7 +139,7 @@ jobs:
           paths:
             - version.txt
 
-  checkImageVulnerability:
+  check_image_vulnerability:
     description: Use Trivy to check the final docker image vulnerabilities before deployment
     executor: trivy
     steps:
@@ -168,38 +168,43 @@ jobs:
       - run:
           name: helm release
           command: |
-            pwd
-            ls
             RELEASE_NAME="<< parameters.release >>" \
             EKS_NAMESPACE="${EKS_NAMESPACE}" \
             ./.circleci/scripts/helm-deploy.sh
+
+  health_check:
+    executor: ubuntu
+    steps:
+      - checkout
+      - run:
+          command: ./.circleci/scripts/health-check.sh
 
 workflows:
   version: 2.1
   workflow-alljobs:
     jobs:
       - build:
-          name: Buid
+          name: Build
       - test:
           name: Unit Test
           requires:
-            - Buid
+            - Build
       - checkstyle:
           name: Checkstyle
           requires:
-            - Buid
-      - mutationtest:
+            - Build
+      - mutation_test:
           name: Mutation Tests
           requires:
-            - Buid
-      - buildAndPushImage:
+            - Build
+      - build_and_push_image:
           context: credentials
           name: Docker Image build and push
           requires:
             - Unit Test
             - Checkstyle
             - Mutation Tests
-      - checkImageVulnerability:
+      - check_image_vulnerability:
           name: Image Vulnerability Check
           context: credentials
           requires:
@@ -210,3 +215,6 @@ workflows:
           release: companieshouse-release
           requires:
             - Image Vulnerability Check
+      - health_check:
+          requires:
+            - Deploy app to K8S
