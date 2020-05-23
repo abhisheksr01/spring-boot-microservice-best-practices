@@ -24,9 +24,9 @@ aliases:
       at: .
   - &restore_cache
     restore_cache:
-      key: >-
-        v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
-        v1-gradle-cache-{{ checksum "build.gradle" }}
+      keys:
+        - v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+        - v1-gradle-cache-{{ checksum "build.gradle" }}
 jobs:
   build:
     executor: base-jdk8
