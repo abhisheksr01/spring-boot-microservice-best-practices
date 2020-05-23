@@ -81,8 +81,11 @@ jobs:
       - store_artifacts:
           path: build/reports/jacocoHtml
           when: always
-      - store_test_results:
+      - store_artifacts:
           path: build/reports/tests/test
+          when: always
+      - store_test_results:
+          path: build/test-results/test
           when: always
       - run:
           name: Assemble JAR
@@ -185,7 +188,7 @@ workflows:
       - build:
           name: Build
       - test:
-          name: Unit Test
+          name: Unit Test & Code Coverage
           requires:
             - Build
       - checkstyle:
@@ -200,7 +203,7 @@ workflows:
           context: credentials
           name: Docker Image build and push
           requires:
-            - Unit Test
+            - Unit Test & Code Coverage
             - Checkstyle
             - Mutation Tests
       - check_image_vulnerability:
