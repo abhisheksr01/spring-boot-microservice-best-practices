@@ -22,18 +22,23 @@ aliases:
   - &mount_workspace
     attach_workspace:
       at: .
-  - &restore_cache
+  - &restore_gradlew_cache
     restore_cache:
       keys:
         - v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+  - &restore_gradle_cache
+    restore_cache:
+      keys:
         - v1-gradle-cache-{{ checksum "build.gradle" }}
+
 jobs:
   build:
     executor: base-jdk8
     description: Install dependencies & Build
     steps:
       - checkout
-      - *restore_cache
+      - *restore_gradlew_cache
+      - *restore_gradle_cache
       - run:
           name: Install Dependencies
           command: ./gradlew build -x test -x checkstyleTest
@@ -54,7 +59,8 @@ jobs:
     description: Unit Test & Code Coverage
     steps:
       - *mount_workspace
-      - *restore_cache
+      - *restore_gradlew_cache
+      - *restore_gradle_cache
       - run:
           name: Run tests in parallel
           # Use "./gradlew test" instead if tests are not run in parallel
@@ -105,7 +111,8 @@ jobs:
     description: Code Checkstyle check
     steps:
       - *mount_workspace
-      - *restore_cache
+      - *restore_gradlew_cache
+      - *restore_gradle_cache
       - run:
           name: Generate checkstyle coverage report
           command: ./gradlew check
@@ -120,7 +127,8 @@ jobs:
     parallelism: 2
     steps:
       - *mount_workspace
-      - *restore_cache
+      - *restore_gradlew_cache
+      - *restore_gradle_cache
       - run:
           name: Perform Mutation Testing on Unit Test
           command: ./gradlew pitest
