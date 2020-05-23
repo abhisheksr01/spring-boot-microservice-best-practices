@@ -1,16 +1,16 @@
 version: 2.1
 
 executors:
-  base:
+  base-jdk8:
     docker:
       - image: circleci/openjdk:8-jdk
     environment:
       # Configure the JVM and Gradle to avoid OOM errors
       _JAVA_OPTIONS: "-Xmx3g"
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
-  ubuntu:
+  circleci-ubuntu:
     docker:
-      - image: ubuntu:latest
+      - image: cimg/base:2020.01
   trivy:
     docker:
       - image: aquasec/trivy:latest
@@ -29,7 +29,7 @@ aliases:
         v1-gradle-cache-{{ checksum "build.gradle" }}
 jobs:
   build:
-    executor: base
+    executor: base-jdk8
     description: Install dependencies & Build
     steps:
       - checkout
@@ -50,7 +50,7 @@ jobs:
           paths:
             - .
   test:
-    executor: base
+    executor: base-jdk8
     description: Unit Test & Code Coverage
     steps:
       - *mount_workspace
@@ -98,7 +98,7 @@ jobs:
             - libs
 
   checkstyle:
-    executor: base
+    executor: base-jdk8
     description: Code Checkstyle check
     steps:
       - *mount_workspace
@@ -111,7 +111,7 @@ jobs:
           when: always
 
   mutation_test:
-    executor: base
+    executor: base-jdk8
     description: Mutation Testing
     # Remove if parallelism is not desired
     parallelism: 2
@@ -127,7 +127,7 @@ jobs:
 
   build_and_push_image:
     description: Build Docker Image & Push
-    executor: base
+    executor: base-jdk8
     steps:
       - *mount_workspace
       - setup_remote_docker
@@ -143,7 +143,6 @@ jobs:
     description: Use Trivy to check the final docker image vulnerabilities before deployment
     executor: trivy
     steps:
-      - *mount_workspace
       - checkout
       - run:
           name: Trivy Image Vulnerability Check
@@ -173,7 +172,7 @@ jobs:
             ./.circleci/scripts/helm-deploy.sh
 
   health_check:
-    executor: ubuntu
+    executor: circleci-ubuntu
     steps:
       - checkout
       - run:
@@ -223,7 +222,7 @@ workflows:
   scheduled-vulnerability-check:
     triggers:
       - schedule:
-          cron: "20 20 * * *"
+          cron: "55 13 * * *"
           filters:
             branches:
               only:
