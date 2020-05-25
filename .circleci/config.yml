@@ -233,7 +233,7 @@ workflows:
   scheduled-vulnerability-check:
     triggers:
       - schedule:
-          cron: "55 13 * * *"
+          cron: "55 13 * * 2"
           filters:
             branches:
               only:
