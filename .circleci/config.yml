@@ -30,6 +30,12 @@ aliases:
     restore_cache:
       keys:
         - v1-gradle-cache-{{ checksum "build.gradle" }}
+  - &only_master
+    filters:
+      branches:
+        only: master
+  - &credential_context
+    context: credential
 
 jobs:
   build:
@@ -194,39 +200,48 @@ workflows:
   workflow-all-jobs:
     jobs:
       - build:
+          <<: *only_master
           name: Build
+
       - test:
+          <<: *only_master
           name: Unit Test & Code Coverage
           requires:
             - Build
       - checkstyle:
+          <<: *only_master
           name: Checkstyle
           requires:
             - Build
       - mutation_test:
+          <<: *only_master
           name: Mutation Tests
           requires:
             - Build
       - build_and_push_image:
-          context: credentials
+          <<: *only_master
+          <<: *credential_context
           name: Docker Image build and push
           requires:
             - Unit Test & Code Coverage
             - Checkstyle
             - Mutation Tests
       - check_image_vulnerability:
+          <<: *only_master
+          <<: *credential_context
           name: Image Vulnerability Check
-          context: credentials
           requires:
             - Docker Image build and push
       - helm_deploy:
-          context: credentials
+          <<: *only_master
+          <<: *credential_context
           name: Deploy app to K8S
           release: companieshouse-release
           requires:
             - Image Vulnerability Check
       - health_check:
-          context: credentials
+          <<: *only_master
+          <<: *credential_context
           name: Health Check
           requires:
             - Deploy app to K8S
@@ -234,11 +249,8 @@ workflows:
     triggers:
       - schedule:
           cron: "55 13 * * 2"
-          filters:
-            branches:
-              only:
-                - master
+          <<: *only_master
     jobs:
       - check_image_vulnerability:
           name: Image Vulnerability Check
-          context: credentials
+          <<: *credential_context
