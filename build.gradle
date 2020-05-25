@@ -22,11 +22,13 @@ ext {
     ioCucumberVersion = "5.0.0-RC4"
     swaggerVersion = "2.9.2"
     jacocoVersion = "0.8.5"
+    springCloud = "1.1.2.RELEASE"
 }
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation "org.springframework.cloud:spring-cloud-starter-kubernetes-config:${springCloud}"
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     // Cucumber Dependencies for BDD
     testImplementation "io.cucumber:cucumber-java:${ioCucumberVersion}"

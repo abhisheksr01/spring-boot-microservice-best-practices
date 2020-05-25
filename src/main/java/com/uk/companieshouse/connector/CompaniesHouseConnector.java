@@ -1,7 +1,9 @@
 package com.uk.companieshouse.connector;
 
+import com.uk.companieshouse.config.SpringKubeConfigMap;
 import com.uk.companieshouse.model.CompaniesHouseGovUKResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,8 @@ public class CompaniesHouseConnector {
     private String authUsername;
     private String govCompaniesHouseEndpoint;
     private RestTemplate restTemplate;
+    @Autowired
+    private SpringKubeConfigMap springKubeConfigMap;
 
     public CompaniesHouseConnector(@Value("${govCompaniesHouse.endpoint}") String govCompaniesHouseEndpoint,
                                    @Value("${govCompaniesHouse.authUserName}") String authUsername,
@@ -29,9 +33,10 @@ public class CompaniesHouseConnector {
     }
 
     public CompaniesHouseGovUKResponse getCompaniesHouseDetails(String crn) {
+        log.info("Printing ConfigMap value: {}", springKubeConfigMap.getMessage());
         log.info("CompaniesHouseConnector:getCompaniesHouseDetails: Init...");
         restTemplate.getInterceptors().add(
-                new BasicAuthenticationInterceptor(authUsername, ""));
+                new BasicAuthenticationInterceptor(springKubeConfigMap.getPassword(), ""));
 
         log.debug("CompaniesHouseConnector:getCompaniesHouseDetails: Make External call to {} with CRN {}",
                 govCompaniesHouseEndpoint, crn);

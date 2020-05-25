@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: companies-house-microservice
+data:
+  application.properties: |-
+    app.message=Hello Everyone i am version 2
+    app.password=dummy-password

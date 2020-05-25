@@ -1,0 +1,18 @@
+spring:
+  cloud:
+    kubernetes:
+      config:
+        enabled: true
+        sources:
+          - namespace: ak-learn
+            name: companies-house-microservice
+      reload:
+        enabled: true
+        mode: event
+        strategy: refresh
+
+management:
+  endpoint:
+    restart:
+      enabled: true
+

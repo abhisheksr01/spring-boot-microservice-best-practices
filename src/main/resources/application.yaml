@@ -3,7 +3,15 @@ server:
   servlet:
     contextPath: /companieshouse
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info,refresh,keepalive,health
+
 spring:
+  application:
+    name: companies-house-microservice
   resources:
     add-mappings: true
   profiles:
@@ -14,6 +22,8 @@ logging:
     org:
       springframework:
         web: ERROR
+        cloud:
+          kubernetes: DEBUG
     com:
       uk:
         companieshouse: DEBUG
