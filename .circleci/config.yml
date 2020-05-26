@@ -35,7 +35,7 @@ aliases:
       branches:
         only: master
   - &credential_context
-    context: credential
+    context: credentials
 
 jobs:
   build:
