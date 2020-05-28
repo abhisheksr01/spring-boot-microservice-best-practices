@@ -142,6 +142,25 @@ jobs:
           path: build/reports/pitest
           when: always
 
+  check-dependency-vulnerability:
+    executor: base-jdk8
+    description: Dependency Vulnerability Check
+    # Remove if parallelism is not desired
+    parallelism: 2
+    steps:
+      - *mount_workspace
+      - *restore_gradlew_cache
+      - *restore_gradle_cache
+      - run:
+          name: Perform Dependency Vulnerability Checks
+          command: ./gradlew dependencyCheckAnalyze
+      - store_test_results:
+          path: build/reports/dependency-vulnerabilities
+          when: always
+      - store_artifacts:
+          path: build/reports/dependency-vulnerabilities
+          when: always
+
   build_and_push_image:
     description: Build Docker Image & Push
     executor: base-jdk8
@@ -202,7 +221,6 @@ workflows:
       - build:
           <<: *only_master
           name: Build
-
       - test:
           <<: *only_master
           name: Unit Test & Code Coverage
@@ -216,6 +234,11 @@ workflows:
       - mutation_test:
           <<: *only_master
           name: Mutation Tests
+          requires:
+            - Build
+      - check-dependency-vulnerability:
+          <<: *only_master
+          name: Dependency Vulnerability Checks
           requires:
             - Build
       - build_and_push_image:

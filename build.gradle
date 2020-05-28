@@ -5,6 +5,7 @@ plugins {
     id 'jacoco'
     id 'info.solidsoft.pitest' version '1.5.1'
     id 'checkstyle'
+    id "org.owasp.dependencycheck" version "5.3.2.1"
 }
 
 group = 'com.uk'
@@ -119,4 +120,12 @@ pitest {
     targetTests = ['com.uk.companieshouse.*']  // by default "${project.group}.*"
     // TODO: Mutation tests failing due to port already in use exception, fix them and then we can remove below
     excludedTestClasses = ['com.uk.companieshouse.e2e.*', 'com.uk.companieshouse.CompaniesHouseApplicationTest*']
+}
+// dependency vulnerability check
+dependencyCheck {
+    analyzedTypes = ['jar'] // the default artifact types that will be analyzed.
+    format = 'ALL' // CI-tools usually needs XML-reports, but humans needs HTML.
+    failBuildOnCVSS = 7 // Specifies if the build should be failed if a CVSS score equal to or above a specified level is identified.
+    outputDirectory = "build/reports/dependency-vulnerabilities"
+    suppressionFiles = ["$projectDir/config/dependencycheck/dependency-check-suppression.xml"] // specify a list of known issues which contain false-positives
 }
