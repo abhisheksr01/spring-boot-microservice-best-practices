@@ -142,13 +142,12 @@ jobs:
           path: build/reports/pitest
           when: always
 
-  check-dependency-vulnerability:
+  check_dependency_vulnerability:
     executor: base-jdk8
     description: Dependency Vulnerability Check
-    # Remove if parallelism is not desired
-    parallelism: 2
     steps:
       - *mount_workspace
+      - checkout
       - *restore_gradlew_cache
       - *restore_gradle_cache
       - run:
@@ -236,7 +235,7 @@ workflows:
           name: Mutation Tests
           requires:
             - Build
-      - check-dependency-vulnerability:
+      - check_dependency_vulnerability:
           <<: *only_master
           name: Dependency Vulnerability Checks
           requires:
@@ -249,6 +248,7 @@ workflows:
             - Unit Test & Code Coverage
             - Checkstyle
             - Mutation Tests
+            - Dependency Vulnerability Checks
       - check_image_vulnerability:
           <<: *only_master
           <<: *credential_context
@@ -274,6 +274,9 @@ workflows:
           cron: "55 13 * * 2"
           <<: *only_master
     jobs:
+      - check_dependency_vulnerability:
+          <<: *only_master
+          name: Dependency Vulnerability Checks
       - check_image_vulnerability:
           name: Image Vulnerability Check
           <<: *credential_context
