@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.2.7.RELEASE'
+    id 'org.springframework.boot' version '2.3.0.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
     id 'jacoco'
@@ -47,6 +47,29 @@ dependencies {
     implementation "io.springfox:springfox-swagger-ui:${swaggerVersion}"
     //pitest
     pitest 'org.pitest:pitest-junit5-plugin:0.12'
+
+    // Fixing vulnerabilities
+    implementation "com.google.guava:guava:29.0-jre"
+    /*
+     *https://docs.gradle.org/current/userguide/dependency_management.html#sec:module_substitution
+     * Example 109. Example: Blacklisting a version with a replacement
+    */
+    configurations.all {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            if (details.requested.group == 'com.google.guava' && details.requested.name == 'guava' && details.requested.version == '21.0') {
+                details.useVersion '29.0-jre'
+                details.because 'Fixes vulnerability in prior guava versions'
+            }
+        }
+    }
+    configurations.all {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            if (details.requested.group == 'commons-beanutils' && details.requested.name == 'commons-beanutils' && details.requested.version == '1.9.3') {
+                details.useVersion '1.9.4'
+                details.because 'Fixes vulnerability in prior versions'
+            }
+        }
+    }
 }
 
 test {
