@@ -129,8 +129,6 @@ jobs:
   mutation_test:
     executor: base-jdk8
     description: Mutation Testing
-    # Remove if parallelism is not desired
-    parallelism: 2
     steps:
       - *mount_workspace
       - *restore_gradlew_cache
@@ -271,11 +269,10 @@ workflows:
   scheduled-vulnerability-check:
     triggers:
       - schedule:
-          cron: "55 13 * * 2"
+          cron: "20 17 * * 0"
           <<: *only_master
     jobs:
       - check_dependency_vulnerability:
-          <<: *only_master
           name: Dependency Vulnerability Checks
       - check_image_vulnerability:
           name: Image Vulnerability Check
