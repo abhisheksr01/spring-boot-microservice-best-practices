@@ -18,18 +18,18 @@
     - [Mapstruct](#mapstruct)
     - [Lombok](#lombok)
     - [WireMock](#wiremock)
-  - [3. Code Coverage, Style tests, Code Vulnerabilities](#3-code-coverage,-style-tests,-code-vulnerabilities)
+  - [3. Code Analysis and Quality](#3-code-analysis-and-quality)
     - [Checkstyle](#checkstyle)
     - [Jacoco](#jacoco)
   - [4. Swagger API Documentation](#4-swagger-api-documentation)
-  - [5. Continuous Integration and Continuos Delivery/Deployment](#5-Continuous-integration-and-continuos-delivery/deployment)
+  - [5. Continuous Integration, Delivery and Deployment](#5-continuous-integration,-delivery-and-deployment)
     - [5.1 Docker Containerization](#5.1-docker-containerization)
     - [5.2 CI and CD Pipeline Tools](#5.2-ci-and-cd-pipeline-tools)
       - [CircleCI](#circleci)
       - [Jenkins](#jenkins)
       - [Google Cloud Build](#google-cloud-build)
   - [6. Platforms](#6-platforms)
-    - [6.1 Kubernetes](#kubernetes)
+    - [6.1 Kubernetes](#6.1-kubernetes)
     - [6.2 Google Cloud Run](#6.2-gcp-cloud-run)
     - [6.3 Cloud Foundry](#6.3-cloud-foundry)
 - [What to expect Next!](#what-to-expect-next!)
@@ -89,12 +89,15 @@ We are following Classic Microservice "Separation of Concerns" pattern having Co
 
 The three different takes the responsibilities as below:
 
-- Controller: Controller layer allows access and handles requests coming from the client. Then invoke a business class to process business-related tasks and then finally respond. Additionally Controller may take responsibility of validating the incoming request Payload thus ensuring that any invalid or malicious data do not pass this layer.
+- Controller: Controller layer allows access and handles requests coming from the client.<br/> 
+Then invoke a business class to process business-related tasks and then finally respond.<br/>
+Additionally Controller may take responsibility of validating the incoming request Payload thus ensuring that any invalid or malicious data do not pass this layer.
 
 - Service: The business logic is implemented within this layer, thus keeping the logic separate and secure from the controller layer.
   This layer may further call a Connector or Repository/DAO layer to get the Data to process and act accordingly.
 
-- Connector/Repository: The only responsibility of this layer is to fetch data which is required by the Service layer to perform the business logic to serve the request. When our Microservice makes a call to another Service we would like to name it as Connector (as in our case) layer whereas when interacting with a DB commonly it's known as Repository.
+- Connector/Repository: The only responsibility of this layer is to fetch data which is required by the Service layer to perform the business logic to serve the request.<br/>
+When our Microservice makes a call to another Service we would like to name it as Connector (as in our case) layer whereas when interacting with a DB commonly it's known as Repository.
 
 ### Development Practice
 
@@ -105,6 +108,7 @@ driving our development through behavior and then followed by Test Driven Develo
 A feature is not considered as developed until all the Uni Tests (TDD) and feature (BDD) passes.
 
 ![](images/bdd-tdd-cycle.png)
+
 ## Integrations
 
 ### 1. Testing
@@ -153,16 +157,52 @@ An excellent\* library for converting VO to DAO objects and vice versa.
 #### [Lombok](https://projectlombok.org/)
 
 Provides excellent annotations based support for Auto generation of methods, logging, Builders, Validation etc.
-We will be using below annotations during this exercise:
-@Data: Auto generates setters, getters, hashcode and toString methods
+We will be using below annotations during this exercise:<br/>
+@Data: Auto generates setters, getters, hashcode and toString methods<br/>
 @Slf4j: Just add this annotation on top of any Spring Bean and start using the log
 
-### 3. Code Coverage, Style tests, Code Vulnerabilities
+#### [WireMock](http://wiremock.org/)
+
+**Updating instructions WIP**
+
+Click [here](src/test/java/com/uk/companieshouse/e2e/WireMockService.java) to see implementation.
+
+### 3. Code Analysis and Quality
 
 #### Checkstyle
 
+Checkstyle is a static code analysis tool used in software development for checking if Java source code complies with coding rules.
+
+Below config snippet is configured in the [build.gradle](./build.gradle) to include checkstyling.
+
+```
+plugins {
+    id 'checkstyle'
+}
+checkstyle {
+    toolVersion '7.8.1'
+}
+tasks.withType(Checkstyle) {
+    reports {
+        xml.enabled false
+        html.enabled true
+        html.stylesheet resources.text.fromFile('config/xls/checksyle-style.xsl')
+    }
+}
+```
+
+and checkstyle [config at this location](config/checkstyle).
+
+Execute below command to perform static code analysis.
+
 ```bash
 ./gradlew check
+```
+
+Once successfully executed Checkstyle report will be generated at:
+
+```
+build/reports/checkstyle
 ```
 
 #### [Jacoco](https://www.jacoco.org/jacoco/trunk/index.html)
@@ -195,15 +235,17 @@ http://[HOST_URL]/companieshouse/swagger-ui.html
 
 where "companieshouse" is the context path.
 
-### 5. Continuous Integration and Continuos Delivery/Deployment
+### 5. Continuous Integration, Delivery and Deployment
 
-**Continuous Integration**: It's a software development practise where members of a team integrate their work frequently, usually each person integrates at least daily - leading to multiple integrations per day. Each integration is verified by an automated build (including test) to detect integration errors as quickly as possible.
+**Continuous Integration**: It's a software development practise where members of a team integrate their work frequently, usually each person integrates at least daily - leading to multiple integrations per day.<br/>
+Each integration is verified by an automated build (including test) to detect integration errors as quickly as possible.
 
 Continuous Integration is a key step to digital transformation.
 
 **Continuous Delivery**: It's software engineering approach in which teams produce software in short cycles, ensuring that the software can be reliably released at any time and, when releasing the software, doing so **manually**.
 
-**Continuous Deployment**: It means that every change goes through the pipeline and **automatically** gets put into production, resulting in many production deployments every day. To do Continuous Deployment you must be doing Continuous Delivery.
+**Continuous Deployment**: It means that every change goes through the pipeline and **automatically** gets put into production, resulting in many production deployments every day.<br/>
+To do Continuous Deployment you must be doing Continuous Delivery.
 
 Pictorial representation of the above two approaches:
 ![](images/continuous-delivery-deployment.png)
@@ -245,19 +287,20 @@ Now let us look at the key building blocks for achieving CI/CD.
      ![](images/circleci-pipeline.png)
   5. If you wish to use this config file in your project you must create a context "credentials" and add below Environment Variables to it with appropriate values.
 
-        Follow [link](https://circleci.com/docs/2.0/env-vars/?utm_medium=SEM&utm_source=gnb&utm_campaign=SEM-gb-DSA-Eng-ni&utm_content=&utm_term=dynamicSearch-&gclid=EAIaIQobChMIm_2blLze6QIVQeztCh3FGwh0EAAYASAAEgITlPD_BwE#setting-an-environment-variable-in-a-context) to learn how to do it.
+     Follow [link](https://circleci.com/docs/2.0/env-vars/?utm_medium=SEM&utm_source=gnb&utm_campaign=SEM-gb-DSA-Eng-ni&utm_content=&utm_term=dynamicSearch-&gclid=EAIaIQobChMIm_2blLze6QIVQeztCh3FGwh0EAAYASAAEgITlPD_BwE#setting-an-environment-variable-in-a-context) to learn how to do it.
 
-        ```
-        AWS_ACCESS_KEY_ID
-        AWS_DEFAULT_REGION
-        AWS_SECRET_ACCESS_KEY
-        DOCKER_USER (Your docker username)
-        DOCKER_PASS (Your docker user's password)
-        EKS_CLUSTER_NAME (Kubernetes cluster    name)
-        DOCKER_IMAGE (Docker Image name)
-        EKS_NAMESPACE (Kubernetes namespace to which the aws user has access to and you would like to deploy)
-        HEALTH_ENDPOINT (Health Endpoint of your app)
-        ```
+     ```
+     AWS_ACCESS_KEY_ID
+     AWS_DEFAULT_REGION
+     AWS_SECRET_ACCESS_KEY
+     DOCKER_USER (Your docker username)
+     DOCKER_PASS (Your docker user's password)
+     EKS_CLUSTER_NAME (Kubernetes cluster    name)
+     DOCKER_IMAGE (Docker Image name)
+     EKS_NAMESPACE (Kubernetes namespace to which the aws user has access to and you would like to deploy)
+     HEALTH_ENDPOINT (Health Endpoint of your app)
+     ```
+
   6. [Scheduled Workflows](https://circleci.com/docs/2.0/workflows/?utm_medium=SEM&utm_source=gnb&utm_campaign=SEM-gb-DSA-Eng-ni&utm_content=&utm_term=dynamicSearch-&gclid=EAIaIQobChMI4fi6icfe6QIVBbTtCh3YRwFcEAAYASAAEgJKhPD_BwE#scheduling-a-workflow):
      CircleCI supports scheduled execution of the workflow, look for **scheduled-vulnerability-check** in the [config.yml](.circleci/config.yml).<br/>
      Here I am checking for vulnerabilities within my code libs and docker images at scheduled intervals.
@@ -265,38 +308,42 @@ Now let us look at the key building blocks for achieving CI/CD.
 
 - #### [Jenkins](https://jenkins.io/)
 
-  `Work in progress`
+    Jenkins is one of the most widely used CI/CD Build  Tool preferred by many Organizations especially  within Enterprises so one needs
+    to know the basics of this Mammoth Build Tool.
 
-  Jenkins is one of the most widely used CI/CD Build Tool preferred by many Organizations especially within Enterprises so one needs
-  to know the basics of this Mammoth Build Tool.
+    Installation Guide:
 
-  Installation Guide:
+    1. Jenkins Image (`Recommended`): If you have docker installed, the easiest way to get started  is by getting the
+       public Jenkins image by following the
+       [instructions](https://github.com/jenkinsci/docker/blob/master/README.md).
 
-  1. Jenkins Image (`Recommended`): If you have docker installed, the easiest way to get started is by getting the
-     public Jenkins image by following the
-     [instructions](https://github.com/jenkinsci/docker/blob/master/ README.md).
+    2. Jenkins War: Follow the [instructions](https://www.blazemeter.com/blog/how-to-install-jenkins-on-the-apache-tomcat-server/)
+       to install the Jenkins and run on a Web Server.
 
-  2. Jenkins War: Follow the [instructions](https://www.blazemeter. com/blog/how-to-install-jenkins-on-the-apache-tomcat-server/)
-     to install the Jenkins and run on a Web Server.
+        **Updating instructions WIP**
 
-- #### Google Cloud Build
+        Click [here](jenkins/jenkinsfile) to see implementation.
 
-  [WIP]
+- #### [Google Cloud Build](https://cloud.google.com/cloud-build/docs/)
 
-  ##### [Cloud Build:](https://cloud.google.com/cloud-build/docs/)
-
-  Cloud Build is a service that executes your builds on Google Cloud Platform infrastructure.
+  Cloud Build is a service that executes your builds on Google Cloud Platform infrastructure.<br/>
   Cloud Build can import source code from Google Cloud Storage, Cloud Source Repositories, GitHub, or Bitbucket,
-  execute a build to your specifications, and produce artefacts such as Docker containers or Java archives.
+  execute a build to your specifications, and produce artifacts such as Docker containers or Java archives.
 
   Cloud Build executes your build as a series of build steps, where each build step is run in a Docker container.
 
   We can either trigger Cloud Build through `gcloud` CLI or by declaring the steps in `cloudbuild.yaml`.
 
+    **Updating instructions WIP**
+
+    Click [here](./cloudbuild.yaml) to see implementation.
+
   #### Exercise:
 
-  To perform this exercise you must have signed for [Google Cloud Platform account](https://console.cloud.google.com/ free trial/signup/tos)
-  and [gcloud SDK configured](https://cloud.google.com/sdk/docs/ quickstarts).
+  To perform this exercise you must have signed for [Google Cloud Platform account](https://cloud.google.com)
+  and [gcloud SDK configured](https://cloud.google.com/sdk/docs/quickstarts).
+
+  You can register [here](https://cloud.google.com/free) for GCP Free Tier.
 
   We are going to deploy our Microservice container to Cloud Run (Fully Managed through Cloud Build).
 
@@ -309,20 +356,42 @@ Now let us look at the key building blocks for achieving CI/CD.
   gcloud builds submit
   ```
 
-#### 5.3 Kubernetes
-
 ### 6. Platforms
 
 #### 6.1 Kubernetes
 
+ **Updating instructions WIP**
+
+- Standard App Deployment
+
+  Source files at :
+  ```
+  kubernetes/std/
+  ```
+
+  ```
+   kubectl apply -f kubernetes/std/ -n [NAMESPACE] 
+  ```
+
+- Helm Chart
+
+  Source files at :
+
+  ```
+  kubernetes/helm-chart/
+  ```
+
+  ```
+   kubectl apply -f kubernetes/helm-chart/ -n [NAMESPACE] 
+  ```
+
 #### 6.2 [Google Cloud Run](https://cloud.google.com/run/)
 
-    Cloud Run is a fully managed to compute platform that automatically scales your stateless containers.
-    Cloud Run is Serverless: it abstracts away all infrastructure management, so you can focus on what matters most—building great applications.
-
-    Cloud Run is available in below two flavours:
-    * Cloud Run Fully Managed
-    * Cloud Run on Anthos, which supports both Google Cloud and on‐premises environments.
+Cloud Run is a fully managed to compute platform that automatically scales your stateless containers.<br/>
+Cloud Run is Serverless: it abstracts away all infrastructure management, so you can focus on what matters most - building great applications.<br/>
+Cloud Run is available in below two flavours:
+* Cloud Run Fully Managed
+* Cloud Run on Anthos, which supports both Google Cloud and on‐premises environments.
 
 #### 6.3 Cloud Foundry
 
@@ -336,7 +405,7 @@ Now let us look at the key building blocks for achieving CI/CD.
 
 ### What to Expect Next!
 
-As the world of software engineering is evolving so we do.
+As the world of software engineering is evolving so we do.<br/>
 Listing down some of the exciting features am going to work on and update the GitHub in coming days, they are:
 
 - Chaos Monkey
