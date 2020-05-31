@@ -269,7 +269,7 @@ workflows:
   scheduled-vulnerability-check:
     triggers:
       - schedule:
-          cron: "20 17 * * 0"
+          cron: "05 18 * * *"
           <<: *only_master
     jobs:
       - check_dependency_vulnerability:

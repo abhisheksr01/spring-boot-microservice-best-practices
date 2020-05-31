@@ -99,10 +99,12 @@ The three different takes the responsibilities as below:
 ### Development Practice
 
 At the core of the Cloud Native Practices in Software Engineering lies the Behavior Driven Development(BDD) and
-Test-Driven Development (TDD).
-While writing this exercise I followed BDD first approach where we wrote a failing feature/acceptance criteria thus
-driving our development and then followed by TDD.
+Test-Driven Development (TDD).<br/>
+While developing the code I followed BDD first approach where I wrote a failing feature/acceptance criteria thus
+driving our development through behavior and then followed by Test Driven Development.<br/>
+A feature is not considered as developed until all the Uni Tests (TDD) and feature (BDD) passes.
 
+![](images/bdd-tdd-cycle.png)
 ## Integrations
 
 ### 1. Testing
@@ -220,7 +222,8 @@ Now let us look at the key building blocks for achieving CI/CD.
 
 - #### [CircleCI](https://circleci.com/)
 
-  CircleCI is a Software as a Service (SaaS) CI/CD pipeline tool chain in the DevOps world. Personally I found it quite easy to integrate with the GitHub repo and start building my CI/CD pipeline. CircleCI runs each job in a separate container or VM. That is, each time your job runs CircleCI spins up a container or VM to run the job in.
+  CircleCI is a Software as a Service (SaaS) CI/CD pipeline tool chain in the DevOps world. Personally I found it quite easy to integrate with the GitHub repo and start building my CI/CD pipeline.<br/>
+  CircleCI runs each job in a separate container or VM. That is, each time your job runs CircleCI spins up a container or VM to run the job in.
 
   At the time of writing this article CircleCI's free-tier provides 2500 free credits to run GitHub & Bit Bucket repositories based pipelines.
 
@@ -242,19 +245,23 @@ Now let us look at the key building blocks for achieving CI/CD.
      ![](images/circleci-pipeline.png)
   5. If you wish to use this config file in your project you must create a context "credentials" and add below Environment Variables to it with appropriate values.
 
-  Follow [this link](https://circleci.com/docs/2.0/env-vars/?utm_medium=SEM&utm_source=gnb&utm_campaign=SEM-gb-DSA-Eng-ni&utm_content=&utm_term=dynamicSearch-&gclid=EAIaIQobChMIm_2blLze6QIVQeztCh3FGwh0EAAYASAAEgITlPD_BwE#setting-an-environment-variable-in-a-context) to learn how to do it.
+        Follow [link](https://circleci.com/docs/2.0/env-vars/?utm_medium=SEM&utm_source=gnb&utm_campaign=SEM-gb-DSA-Eng-ni&utm_content=&utm_term=dynamicSearch-&gclid=EAIaIQobChMIm_2blLze6QIVQeztCh3FGwh0EAAYASAAEgITlPD_BwE#setting-an-environment-variable-in-a-context) to learn how to do it.
 
-  ```
-  AWS_ACCESS_KEY_ID
-  AWS_DEFAULT_REGION
-  AWS_SECRET_ACCESS_KEY
-  DOCKER_USER (Your docker username)
-  DOCKER_PASS (Your docker user's password)
-  EKS_CLUSTER_NAME (Kubernetes cluster name)
-  DOCKER_IMAGE (Docker Image name)
-  EKS_NAMESPACE (Kubernetes namespace to which the aws user has access to and you would like to deploy)
-  HEALTH_ENDPOINT (Health Endpoint of your app)
-  ```
+        ```
+        AWS_ACCESS_KEY_ID
+        AWS_DEFAULT_REGION
+        AWS_SECRET_ACCESS_KEY
+        DOCKER_USER (Your docker username)
+        DOCKER_PASS (Your docker user's password)
+        EKS_CLUSTER_NAME (Kubernetes cluster    name)
+        DOCKER_IMAGE (Docker Image name)
+        EKS_NAMESPACE (Kubernetes namespace to which the aws user has access to and you would like to deploy)
+        HEALTH_ENDPOINT (Health Endpoint of your app)
+        ```
+  6. [Scheduled Workflows](https://circleci.com/docs/2.0/workflows/?utm_medium=SEM&utm_source=gnb&utm_campaign=SEM-gb-DSA-Eng-ni&utm_content=&utm_term=dynamicSearch-&gclid=EAIaIQobChMI4fi6icfe6QIVBbTtCh3YRwFcEAAYASAAEgJKhPD_BwE#scheduling-a-workflow):
+     CircleCI supports scheduled execution of the workflow, look for **scheduled-vulnerability-check** in the [config.yml](.circleci/config.yml).<br/>
+     Here I am checking for vulnerabilities within my code libs and docker images at scheduled intervals.
+     <br/>The good about this is I don't need to create a separate pipeline file or steps to run the jobs.
 
 - #### [Jenkins](https://jenkins.io/)
 
