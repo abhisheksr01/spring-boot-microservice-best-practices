@@ -96,10 +96,12 @@ jacoco {
     reportsDir = file("$buildDir/customJacocoReportDir")
 }
 
+// Runs Jacoco tasks when build task is executed
 build {
     finalizedBy jacocoTestReport
     finalizedBy jacocoTestCoverageVerification
 }
+// Setting custom parameters when executing jacocoTestReport task
 jacocoTestReport {
     reports {
         xml.enabled false
@@ -115,6 +117,7 @@ jacocoTestReport {
 //    }
 }
 
+// Setting custom parameters when executing jacocoTestCoverageVerification task for setting rules
 jacocoTestCoverageVerification {
     violationRules {
         rule {

@@ -99,6 +99,8 @@ Additionally Controller may take responsibility of validating the incoming reque
 - Connector/Repository: The only responsibility of this layer is to fetch data which is required by the Service layer to perform the business logic to serve the request.<br/>
 When our Microservice makes a call to another Service we would like to name it as Connector (as in our case) layer whereas when interacting with a DB commonly it's known as Repository.
 
+  ![](doc-resources/images/microservice-structure.png)
+
 ### Development Practice
 
 At the core of the Cloud Native Practices in Software Engineering lies the Behavior Driven Development(BDD) and
@@ -107,7 +109,7 @@ While developing the code I followed BDD first approach where I wrote a failing 
 driving our development through behavior and then followed by Test Driven Development.<br/>
 A feature is not considered as developed until all the Uni Tests (TDD) and feature (BDD) passes.
 
-![](images/bdd-tdd-cycle.png)
+![](doc-resources/images/bdd-tdd-cycle.png)
 
 ## Integrations
 
@@ -211,12 +213,72 @@ Code coverage is a preliminary step to know whether our test covers all the scen
 
 Jacoco is a free Java code coverage library distributed under the Eclipse Public License.
 
+Add below configuration in [build.gradle](./build.gradle) to enable Jacoco in your project.
+```
+plugins{
+  id 'jacoco'
+}
+ext{
+  jacocoVersion = "0.8.5"
+}
+// Jacoco for Code Coverage
+jacoco {
+    toolVersion = "${jacocoVersion}"
+    reportsDir = file("$buildDir/customJacocoReportDir")
+}
+
+// Runs Jacoco tasks when build task is executed
+build {
+    finalizedBy jacocoTestReport
+    finalizedBy jacocoTestCoverageVerification
+}
+// Setting custom parameters when executing jacocoTestReport task
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/reports/jacocoHtml")
+    }
+}
+
+// Setting custom parameters when executing jacocoTestCoverageVerification task for setting rules
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 1.0
+            }
+        }
+
+        rule {
+            enabled = false
+            element = 'CLASS'
+            includes = ['org.gradle.*']
+
+            limit {
+                counter = 'LINE'
+                value = 'TOTALCOUNT'
+                maximum = 1.0
+            }
+        }
+    }
+}
+```
+
+Execute below commands to generate and test code coverage(jacoco tasks depends on test task).
+
 ```bash
 ./gradlew test -Pexcludee2e=**/true*
 ./gradlew jacocoTestReport
 ./gradlew jacocoTestCoverageVerification
 ```
 
+Once successfully executed a report as shown below will be generated at path
+
+```
+build/reports/jacocoHtml/index.html
+```
+![](doc-resources/images/jacoco-report.png)
 ### 4. Swagger API Documentation
 
 We are using Swagger.
@@ -226,7 +288,7 @@ To test it locally start the application to and the Swagger UI document can be a
 http://localhost:8080/companieshouse/swagger-ui.html
 ```
 
-![](images/swagger-ui.png)
+![](doc-resources/images/swagger-ui.png)
 Once application is deployed in a Platform the same documentation will be accessible by below URL:
 
 ```
@@ -248,7 +310,7 @@ Continuous Integration is a key step to digital transformation.
 To do Continuous Deployment you must be doing Continuous Delivery.
 
 Pictorial representation of the above two approaches:
-![](images/continuous-delivery-deployment.png)
+![](doc-resources/images/continuous-delivery-deployment.png)
 
 Reference :
 
@@ -284,7 +346,7 @@ Now let us look at the key building blocks for achieving CI/CD.
   - [Orbs](https://circleci.com/docs/2.0/jobs-steps/#orbs-overview): Reusable & Shareable packages of configs which can be imported to ease the pipeline configurable.
 
   4. Click [here](.circleci/config.yml) to open the CircleCI config file for this project. When this config runs for the "workflow-all-jobs" the output pipeline is shown below and deploys the app to AWS EKS Cluster.
-     ![](images/circleci-pipeline.png)
+     ![](doc-resources/images/circleci-pipeline.png)
   5. If you wish to use this config file in your project you must create a context "credentials" and add below Environment Variables to it with appropriate values.
 
      Follow [link](https://circleci.com/docs/2.0/env-vars/?utm_medium=SEM&utm_source=gnb&utm_campaign=SEM-gb-DSA-Eng-ni&utm_content=&utm_term=dynamicSearch-&gclid=EAIaIQobChMIm_2blLze6QIVQeztCh3FGwh0EAAYASAAEgITlPD_BwE#setting-an-environment-variable-in-a-context) to learn how to do it.
