@@ -47,7 +47,10 @@ jobs:
       - *restore_gradle_cache
       - run:
           name: Install Dependencies
-          command: ./gradlew build -x test -x checkstyleTest
+          command: |
+          pwd
+          ./gradlew build -x test -x checkstyleTest
+          ls
       - save_cache:
           paths:
             - ~/.gradle/wrapper
@@ -99,18 +102,6 @@ jobs:
       - store_test_results:
           path: build/test-results/test
           when: always
-      - run:
-          name: Assemble JAR
-          command: |
-            # Skip this for other nodes
-            if [ "$CIRCLE_NODE_INDEX" == 0 ]; then
-              ./gradlew assemble
-            fi
-      # This will be empty for all nodes except the first one
-      - persist_to_workspace:
-          root: build
-          paths:
-            - libs
 
   gradle_execute_task:
     executor: base-jdk8
@@ -208,6 +199,7 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Perform API Health Check
           command: ./.circleci/scripts/health-check.sh
 
 workflows:

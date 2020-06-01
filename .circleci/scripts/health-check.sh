@@ -5,7 +5,6 @@ emojiFunction() {
   done
   printf '\n'
 }
-echo ${HEALTH_ENDPOINT}
 apt-get update && apt-get install -y curl jq
 response=$(curl -s -X GET -H "Header:Value" ${HEALTH_ENDPOINT})
 response_status=$(jq -r '.status' <<<"${response}")
