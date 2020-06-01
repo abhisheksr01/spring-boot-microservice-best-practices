@@ -142,6 +142,11 @@ jobs:
 
   check_dependency_vulnerability:
     executor: base-jdk8
+    parameters:
+      timeout:
+        description: Execution timeout for running the step command
+        type: string
+        default: 10m
     description: Dependency Vulnerability Check
     steps:
       - *mount_workspace
@@ -150,6 +155,7 @@ jobs:
       - *restore_gradle_cache
       - run:
           name: Perform Dependency Vulnerability Checks
+          no_output_timeout: << parameters.timeout >>
           command: ./gradlew dependencyCheckAnalyze
       - store_test_results:
           path: build/reports/dependency-vulnerabilities
@@ -236,6 +242,7 @@ workflows:
       - check_dependency_vulnerability:
           <<: *only_master
           name: Dependency Vulnerability Checks
+          timeout: 20m
           requires:
             - Build
       - build_and_push_image:
@@ -274,6 +281,7 @@ workflows:
     jobs:
       - check_dependency_vulnerability:
           name: Dependency Vulnerability Checks
+          timeout: 20m
       - check_image_vulnerability:
           name: Image Vulnerability Check
           <<: *credential_context

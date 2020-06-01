@@ -147,11 +147,18 @@ pitest {
     // TODO: Mutation tests failing due to port already in use exception, fix them and then we can remove below
     excludedTestClasses = ['com.uk.companieshouse.e2e.*', 'com.uk.companieshouse.CompaniesHouseApplicationTest*']
 }
-// dependency vulnerability check
+// owasp dependency vulnerability check
+// Reference doc : https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/configuration.html
 dependencyCheck {
-    analyzedTypes = ['jar'] // the default artifact types that will be analyzed.
-    format = 'ALL' // CI-tools usually needs XML-reports, but humans needs HTML.
-    failBuildOnCVSS = 7 // Specifies if the build should be failed if a CVSS score equal to or above a specified level is identified.
+    // the default artifact types that will be analyzed.
+    analyzedTypes = ['jar']
+    // CI-tools usually needs XML-reports, but humans needs HTML.
+    formats = ['HTML', 'XML']
+    // Specifies if the build should be failed if a CVSS score equal to or above a specified level is identified.
+    failBuildOnCVSS = 7
     outputDirectory = "build/reports/dependency-vulnerabilities"
-    suppressionFiles = ["$projectDir/config/dependencycheck/dependency-check-suppression.xml"] // specify a list of known issues which contain false-positives
+    // specify a list of known issues which contain false-positives
+    suppressionFiles = ["$projectDir/config/dependencycheck/dependency-check-suppression.xml"]
+    // Sets the number of hours to wait before checking for new updates from the NVD, defaults to 4.
+    cveValidForHours = 24
 }

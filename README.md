@@ -89,15 +89,15 @@ We are following Classic Microservice "Separation of Concerns" pattern having Co
 
 The three different takes the responsibilities as below:
 
-- Controller: Controller layer allows access and handles requests coming from the client.<br/> 
-Then invoke a business class to process business-related tasks and then finally respond.<br/>
-Additionally Controller may take responsibility of validating the incoming request Payload thus ensuring that any invalid or malicious data do not pass this layer.
+- Controller: Controller layer allows access and handles requests coming from the client.<br/>
+  Then invoke a business class to process business-related tasks and then finally respond.<br/>
+  Additionally Controller may take responsibility of validating the incoming request Payload thus ensuring that any invalid or malicious data do not pass this layer.
 
 - Service: The business logic is implemented within this layer, thus keeping the logic separate and secure from the controller layer.
   This layer may further call a Connector or Repository/DAO layer to get the Data to process and act accordingly.
 
 - Connector/Repository: The only responsibility of this layer is to fetch data which is required by the Service layer to perform the business logic to serve the request.<br/>
-When our Microservice makes a call to another Service we would like to name it as Connector (as in our case) layer whereas when interacting with a DB commonly it's known as Repository.
+  When our Microservice makes a call to another Service we would like to name it as Connector (as in our case) layer whereas when interacting with a DB commonly it's known as Repository.
 
   ![](doc-resources/images/microservice-structure.png)
 
@@ -123,6 +123,14 @@ We are using JUnit 5 for running our unit test cases.
 ./gradlew test
 ```
 
+Once executed a report as below will be generated at local path
+
+```
+build/reports/tests/test/index.html
+```
+
+![](doc-resources/images/test-report.png)
+
 #### End to End Test
 
 We are using one of the most famous BDD implementation i.e., Cucumber.
@@ -132,7 +140,7 @@ Open Class `CucumberTest` in package `com.uk.companieshouse.e2e` and execute Cuc
 Once the test execution completes you can see the Cucumber Test Report at :
 
 ```
-../companies-house-microservice-template/reports/cucumber/index.html
+../build/reports/cucumber/index.html
 ```
 
 #### Mutation Testing
@@ -147,8 +155,10 @@ To execute the mutation test run :
 once the test execution completes report should be accessible at:
 
 ```
-../companies-house-microservice-template/build/reports/pitest/[TIMESTAMP]/index.html
+../build/reports/pitest/[TIMESTAMP]/index.html
 ```
+
+![](doc-resources/images/pitest-report.png)
 
 ### 2. Development Accelerators
 
@@ -214,6 +224,7 @@ Code coverage is a preliminary step to know whether our test covers all the scen
 Jacoco is a free Java code coverage library distributed under the Eclipse Public License.
 
 Add below configuration in [build.gradle](./build.gradle) to enable Jacoco in your project.
+
 ```
 plugins{
   id 'jacoco'
@@ -278,7 +289,9 @@ Once successfully executed a report as shown below will be generated at path
 ```
 build/reports/jacocoHtml/index.html
 ```
+
 ![](doc-resources/images/jacoco-report.png)
+
 ### 4. Swagger API Documentation
 
 We are using Swagger.
@@ -366,25 +379,25 @@ Now let us look at the key building blocks for achieving CI/CD.
   6. [Scheduled Workflows](https://circleci.com/docs/2.0/workflows/?utm_medium=SEM&utm_source=gnb&utm_campaign=SEM-gb-DSA-Eng-ni&utm_content=&utm_term=dynamicSearch-&gclid=EAIaIQobChMI4fi6icfe6QIVBbTtCh3YRwFcEAAYASAAEgJKhPD_BwE#scheduling-a-workflow):
      CircleCI supports scheduled execution of the workflow, look for **scheduled-vulnerability-check** in the [config.yml](.circleci/config.yml).<br/>
      Here I am checking for vulnerabilities within my code libs and docker images at scheduled intervals.
-     <br/>The good about this is I don't need to create a separate pipeline file or steps to run the jobs.
+     <br/>What I like about this feature is we do not need to create a separate pipeline file or steps to run the jobs.
 
 - #### [Jenkins](https://jenkins.io/)
 
-    Jenkins is one of the most widely used CI/CD Build  Tool preferred by many Organizations especially  within Enterprises so one needs
-    to know the basics of this Mammoth Build Tool.
+  Jenkins is one of the most widely used CI/CD Build Tool preferred by many Organizations especially within Enterprises so one needs
+  to know the basics of this Mammoth Build Tool.
 
-    Installation Guide:
+  Installation Guide:
 
-    1. Jenkins Image (`Recommended`): If you have docker installed, the easiest way to get started  is by getting the
-       public Jenkins image by following the
-       [instructions](https://github.com/jenkinsci/docker/blob/master/README.md).
+  1. Jenkins Image (`Recommended`): If you have docker installed, the easiest way to get started is by getting the
+     public Jenkins image by following the
+     [instructions](https://github.com/jenkinsci/docker/blob/master/README.md).
 
-    2. Jenkins War: Follow the [instructions](https://www.blazemeter.com/blog/how-to-install-jenkins-on-the-apache-tomcat-server/)
-       to install the Jenkins and run on a Web Server.
+  2. Jenkins War: Follow the [instructions](https://www.blazemeter.com/blog/how-to-install-jenkins-on-the-apache-tomcat-server/)
+     to install the Jenkins and run on a Web Server.
 
-        **Updating instructions WIP**
+     **Updating instructions WIP**
 
-        Click [here](jenkins/jenkinsfile) to see implementation.
+     Click [here](jenkins/jenkinsfile) to see implementation.
 
 - #### [Google Cloud Build](https://cloud.google.com/cloud-build/docs/)
 
@@ -396,9 +409,9 @@ Now let us look at the key building blocks for achieving CI/CD.
 
   We can either trigger Cloud Build through `gcloud` CLI or by declaring the steps in `cloudbuild.yaml`.
 
-    **Updating instructions WIP**
+  **Updating instructions WIP**
 
-    Click [here](./cloudbuild.yaml) to see implementation.
+  Click [here](./cloudbuild.yaml) to see implementation.
 
   #### Exercise:
 
@@ -422,17 +435,18 @@ Now let us look at the key building blocks for achieving CI/CD.
 
 #### 6.1 Kubernetes
 
- **Updating instructions WIP**
+**Updating instructions WIP**
 
 - Standard App Deployment
 
   Source files at :
+
   ```
   kubernetes/std/
   ```
 
   ```
-   kubectl apply -f kubernetes/std/ -n [NAMESPACE] 
+   kubectl apply -f kubernetes/std/ -n [NAMESPACE]
   ```
 
 - Helm Chart
@@ -444,7 +458,7 @@ Now let us look at the key building blocks for achieving CI/CD.
   ```
 
   ```
-   kubectl apply -f kubernetes/helm-chart/ -n [NAMESPACE] 
+   kubectl apply -f kubernetes/helm-chart/ -n [NAMESPACE]
   ```
 
 #### 6.2 [Google Cloud Run](https://cloud.google.com/run/)
@@ -452,8 +466,9 @@ Now let us look at the key building blocks for achieving CI/CD.
 Cloud Run is a fully managed to compute platform that automatically scales your stateless containers.<br/>
 Cloud Run is Serverless: it abstracts away all infrastructure management, so you can focus on what matters most - building great applications.<br/>
 Cloud Run is available in below two flavours:
-* Cloud Run Fully Managed
-* Cloud Run on Anthos, which supports both Google Cloud and on‐premises environments.
+
+- Cloud Run Fully Managed
+- Cloud Run on Anthos, which supports both Google Cloud and on‐premises environments.
 
 #### 6.3 Cloud Foundry
 
