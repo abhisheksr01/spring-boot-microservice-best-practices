@@ -48,9 +48,9 @@ jobs:
       - run:
           name: Install Dependencies
           command: |
-          pwd
-          ./gradlew build -x test -x checkstyleTest
-          ls
+            pwd
+            ./gradlew build -x test -x checkstyleTest
+            ls
       - save_cache:
           paths:
             - ~/.gradle/wrapper
