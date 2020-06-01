@@ -153,7 +153,7 @@ dependencyCheck {
     // the default artifact types that will be analyzed.
     analyzedTypes = ['jar']
     // CI-tools usually needs XML-reports, but humans needs HTML.
-    formats = ['HTML', 'XML']
+    formats = ['HTML', 'JUNIT']
     // Specifies if the build should be failed if a CVSS score equal to or above a specified level is identified.
     failBuildOnCVSS = 7
     outputDirectory = "build/reports/dependency-vulnerabilities"

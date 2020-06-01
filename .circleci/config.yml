@@ -112,32 +112,25 @@ jobs:
           paths:
             - libs
 
-  checkstyle:
+  gradle_execute_task:
     executor: base-jdk8
-    description: Code Checkstyle check
+    parameters:
+      step_name:
+        type: string
+        default: executing the task
+      gradle_task:
+        type: string
+      artifact_path:
+        type: string
     steps:
       - *mount_workspace
       - *restore_gradlew_cache
       - *restore_gradle_cache
       - run:
-          name: Generate checkstyle coverage report
-          command: ./gradlew check
+          name: << parameters.step_name >>
+          command: ./gradlew '<< parameters.gradle_task >>'
       - store_artifacts:
-          path: build/reports/checkstyle
-          when: always
-
-  mutation_test:
-    executor: base-jdk8
-    description: Mutation Testing
-    steps:
-      - *mount_workspace
-      - *restore_gradlew_cache
-      - *restore_gradle_cache
-      - run:
-          name: Perform Mutation Testing on Unit Test
-          command: ./gradlew pitest
-      - store_artifacts:
-          path: build/reports/pitest
+          path: << parameters.artifact_path >>
           when: always
 
   check_dependency_vulnerability:
@@ -229,14 +222,20 @@ workflows:
           name: Unit Test & Code Coverage
           requires:
             - Build
-      - checkstyle:
+      - gradle_execute_task:
           <<: *only_master
           name: Checkstyle
+          step_name: Check styling and generate report
+          gradle_task: check
+          artifact_path: build/reports/checkstyle
           requires:
             - Build
-      - mutation_test:
+      - gradle_execute_task:
           <<: *only_master
           name: Mutation Tests
+          step_name: Perform Mutation Testing on Unit Tests
+          gradle_task: pitest
+          artifact_path: build/reports/pitest
           requires:
             - Build
       - check_dependency_vulnerability:

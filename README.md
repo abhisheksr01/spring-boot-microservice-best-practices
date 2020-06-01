@@ -22,16 +22,19 @@
     - [Checkstyle](#checkstyle)
     - [Jacoco](#jacoco)
   - [4. Swagger API Documentation](#4-swagger-api-documentation)
-  - [5. Continuous Integration, Delivery and Deployment](#5-continuous-integration,-delivery-and-deployment)
-    - [5.1 Docker Containerization](#5.1-docker-containerization)
-    - [5.2 CI and CD Pipeline Tools](#5.2-ci-and-cd-pipeline-tools)
+  - [5. DevSecOps](#5-devsecops)
+    - [5.1 OWASP Dependency Vulnerability Check](#5.1-owasp-dependency-vulnerability-check)
+    - [5.2 Trivy for Docker Image Vulnerability Check](#5.2-trivy-for-docker-image-vulnerability-check)
+  - [6. Continuous Integration, Delivery and Deployment](#6-continuous-integration,-delivery-and-deployment)
+    - [6.1 Docker Containerization](#6.1-docker-containerization)
+    - [6.2 CI and CD Pipeline Tools](#6.2-ci-and-cd-pipeline-tools)
       - [CircleCI](#circleci)
       - [Jenkins](#jenkins)
       - [Google Cloud Build](#google-cloud-build)
-  - [6. Platforms](#6-platforms)
-    - [6.1 Kubernetes](#6.1-kubernetes)
-    - [6.2 Google Cloud Run](#6.2-gcp-cloud-run)
-    - [6.3 Cloud Foundry](#6.3-cloud-foundry)
+  - [7. Platforms](#7-platforms)
+    - [7.1 Kubernetes](#7.1-kubernetes)
+    - [7.2 Google Cloud Run](#7.2-gcp-cloud-run)
+    - [7.3 Cloud Foundry](#7.3-cloud-foundry)
 - [What to expect Next!](#what-to-expect-next!)
 - [Versioning](#versioning)
 - [Author](#author)
@@ -129,7 +132,7 @@ Once executed a report as below will be generated at local path
 build/reports/tests/test/index.html
 ```
 
-![](doc-resources/images/test-report.png)
+![](doc-resources/images/unit-test-report.png)
 
 #### End to End Test
 
@@ -211,11 +214,14 @@ Execute below command to perform static code analysis.
 ./gradlew check
 ```
 
-Once successfully executed Checkstyle report will be generated at:
+Once successfully executed Checkstyle reports will be generated at:
 
 ```
-build/reports/checkstyle
+build/reports/checkstyle/main.html
+build/reports/checkstyle/test.html
 ```
+
+![](doc-resources/images/checkstyle-report.png)
 
 #### [Jacoco](https://www.jacoco.org/jacoco/trunk/index.html)
 
@@ -310,7 +316,71 @@ http://[HOST_URL]/companieshouse/swagger-ui.html
 
 where "companieshouse" is the context path.
 
-### 5. Continuous Integration, Delivery and Deployment
+### 5. DevSecOps
+
+  #### 5.1 OWASP Dependency Vulnerability Check
+
+  **Updating instructions WIP**
+
+  Add below config snippet in your [build.gradle](./build.gradle) to include dependency vulnerability checks.
+
+  ```
+  plugin {
+    id "org.owasp.dependencycheck" version "5.3.2.1"
+  }
+  dependencyCheck {
+      // the default artifact types that will be analyzed.
+      analyzedTypes = ['jar']
+      // CI-tools usually needs XML-reports or JUnit XML reports, but humans needs HTML.
+      formats = ['HTML', 'JUNIT']
+      // Specifies if the build should be failed if a CVSS score equal to or above a specified level is identified.
+      failBuildOnCVSS = 7
+      outputDirectory = "build/reports/dependency-vulnerabilities"
+      // specify a list of known issues which contain false-positives
+      suppressionFiles = ["$projectDir/config/dependencycheck/dependency-check-suppression.xml"]
+      // Sets the number of hours to wait before checking for new updates from the NVD, defaults to 4.
+      cveValidForHours = 24
+  }
+  ```
+
+  then run below gradle task to trigger the checks
+
+  ```
+  ./gradlew dependencyCheckAnalyze
+  ```
+
+  Note: First execution may take 10 mins or so (as this task downloads a copy of the vulnerabilities db locally).
+
+  once successfully executed the task will generate a vulnerability report at path (assuming the above path was used) as below:
+
+  ```
+  build/reports/dependency-vulnerabilities
+  ```
+
+  ![](doc-resources/images/dependency-check-report.png)
+
+  #### 5.2 Trivy for Docker Image Vulnerability Check
+
+  **Updating instructions WIP**
+  The easiest way to start using Trivy is pull docker image:
+
+  ```
+  docker pull aquasec/trivy
+  ```
+
+  and run the container run commands against the image to be checked as 
+
+  ```
+  Syntax : docker run aquasec/trivy:latest [DOCKER_HUB_REPO]/[DOCKER_IMAGE_NAME]:[TAG]
+  Example: docker run aquasec/trivy:latest abhisheksr01/companieshouse:latest
+  ```
+  Once executed successfully it output a tabular report.
+
+  You can use trivy in container based Pipelines as I have used in CircleCI [config.yml](.circleci/config.yml) and GCP Cloud Build [cloudbuild.yaml](./cloudbuild.yaml).
+
+  Refer the trivy [github doc](https://github.com/aquasecurity/trivy) for further reference.
+
+### 6. Continuous Integration, Delivery and Deployment
 
 **Continuous Integration**: It's a software development practise where members of a team integrate their work frequently, usually each person integrates at least daily - leading to multiple integrations per day.<br/>
 Each integration is verified by an automated build (including test) to detect integration errors as quickly as possible.
@@ -333,9 +403,9 @@ Reference :
 
 Now let us look at the key building blocks for achieving CI/CD.
 
-#### 5.1 Docker Containerization
+#### 6.1 Docker Containerization
 
-#### 5.2 CI and CD Pipeline Tools
+#### 6.2 CI and CD Pipeline Tools
 
 - #### [CircleCI](https://circleci.com/)
 
@@ -431,9 +501,9 @@ Now let us look at the key building blocks for achieving CI/CD.
   gcloud builds submit
   ```
 
-### 6. Platforms
+### 7. Platforms
 
-#### 6.1 Kubernetes
+#### 7.1 Kubernetes
 
 **Updating instructions WIP**
 
@@ -470,7 +540,7 @@ Cloud Run is available in below two flavours:
 - Cloud Run Fully Managed
 - Cloud Run on Anthos, which supports both Google Cloud and on‐premises environments.
 
-#### 6.3 Cloud Foundry
+#### 7.3 Cloud Foundry
 
      [WIP]
 
