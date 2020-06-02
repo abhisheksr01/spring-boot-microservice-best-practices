@@ -194,7 +194,7 @@ workflows:
           <<: *only_master
           name: Jacoco Code Coverage
           step_name: Check Jacoco Code Coverage
-          gradle_task: jacocoTestReport && ./gradlew dependencyCheckAnalyze
+          gradle_task: jacocoTestReport jacocoTestCoverageVerification
           artifact_path: build/reports/jacocoHtml
           requires:
             - Unit & E2E Tests

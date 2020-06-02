@@ -11,31 +11,31 @@
 - [Development Practice](#development-practice)
 - [Integrations](#integrations)
   - [1. Testing](#1-testing)
-    - [Unit Test](#unit-test)
-    - [End to End Test (Cucumber)](#end-to-end-test)
-    - [Mutation Testing](#mutation-testing)
+    - [1.1 Unit Test](#11-unit-test)
+    - [1.2 Cucumber End to End Test](#12-cucumber-end-to-end-test)
+    - [1.3 Mutation Testing](#13-mutation-testing)
   - [2. Development Accelerators](#2-development-accelerators)
-    - [Mapstruct](#mapstruct)
-    - [Lombok](#lombok)
-    - [WireMock](#wiremock)
+    - [2.1 Mapstruct](#21-mapstruct)
+    - [2.2 Lombok](#22-lombok)
+    - [2.3 WireMock](#23-wiremock)
   - [3. Code Analysis and Quality](#3-code-analysis-and-quality)
-    - [Checkstyle](#checkstyle)
-    - [Jacoco](#jacoco)
+    - [3.1 Checkstyle](#31-checkstyle)
+    - [3.2 Jacoco](#32-jacoco)
   - [4. Swagger API Documentation](#4-swagger-api-documentation)
   - [5. DevSecOps](#5-devsecops)
-    - [OWASP Dependency Vulnerability Check](#owasp-dependency-vulnerability-check)
-    - [Trivy for Docker Image Vulnerability Check](#trivy-for-docker-image-vulnerability-check)
-  - [6. Continuous Integration, Delivery and Deployment](#6-continuous-integration/,-delivery-and-deployment)
-    - [6.1 Docker Containerization](#6/.1-docker-containerization)
-    - [6.2 CI and CD Pipeline Tools](#6/.2-ci-and-cd-pipeline-tools)
+    - [5.1 OWASP Dependency Vulnerability Check](#51-owasp-dependency-vulnerability-check)
+    - [5.2 Trivy for Docker Image Vulnerability Check](#52-trivy-for-docker-image-vulnerability-check)
+  - [6. Continuous Integration, Delivery and Deployment](#6-continuous-integration-delivery-and-deployment)
+    - [6.1 Docker Containerization](#61-docker-containerization)
+    - [6.2 CI and CD Pipeline Tools](#62-ci-and-cd-pipeline-tools)
       - [CircleCI](#circleci)
       - [Jenkins](#jenkins)
       - [Google Cloud Build](#google-cloud-build)
   - [7. Platforms](#7-platforms)
-    - [Kubernetes](#kubernetes)
-    - [Google Cloud Run](#gcp-cloud-run)
-    - [Cloud Foundry](#cloud-foundry)
-- [What to expect Next!](#what-to-expect-next!)
+    - [7.1 Kubernetes](#71-kubernetes)
+    - [7.2 Google Cloud Run](#72-google-cloud-run)
+    - [7.3 Cloud Foundry](#73-cloud-foundry)
+- [What to expect Next!](#what-to-expect-next)
 - [Versioning](#versioning)
 - [Author](#author)
 - [Contributors](#contributors)
@@ -118,7 +118,7 @@ A feature is not considered as developed until all the Uni Tests (TDD) and featu
 
 ### 1. Testing
 
-#### Unit Test
+#### 1.1 Unit Test
 
 We are using JUnit 5 for running our unit test cases.
 
@@ -134,7 +134,7 @@ build/reports/tests/test/index.html
 
 ![](doc-resources/images/unit-test-report.png)
 
-#### End to End Test
+#### 1.2 Cucumber End to End Test
 
 We are using one of the most famous BDD implementation i.e., Cucumber.
 
@@ -146,7 +146,7 @@ Once the test execution completes you can see the Cucumber Test Report at :
 ../build/reports/cucumber/index.html
 ```
 
-#### Mutation Testing
+#### 1.3 Mutation Testing
 
 Pitest is used for performing mutation testing.
 To execute the mutation test run :
@@ -165,18 +165,18 @@ once the test execution completes report should be accessible at:
 
 ### 2. Development Accelerators
 
-#### [Mapstruct](https://mapstruct.org/)
+#### [2.1 Mapstruct](https://mapstruct.org/)
 
 An excellent\* library for converting VO to DAO objects and vice versa.
 
-#### [Lombok](https://projectlombok.org/)
+#### [2.2 Lombok](https://projectlombok.org/)
 
 Provides excellent annotations based support for Auto generation of methods, logging, Builders, Validation etc.
 We will be using below annotations during this exercise:<br/>
 @Data: Auto generates setters, getters, hashcode and toString methods<br/>
 @Slf4j: Just add this annotation on top of any Spring Bean and start using the log
 
-#### [WireMock](http://wiremock.org/)
+#### [2.3 WireMock](http://wiremock.org/)
 
 **Updating instructions WIP**
 
@@ -184,7 +184,7 @@ Click [here](src/test/java/com/uk/companieshouse/e2e/WireMockService.java) to se
 
 ### 3. Code Analysis and Quality
 
-#### Checkstyle
+#### 3.1 Checkstyle
 
 Checkstyle is a static code analysis tool used in software development for checking if Java source code complies with coding rules.
 
@@ -223,7 +223,7 @@ build/reports/checkstyle/test.html
 
 ![](doc-resources/images/checkstyle-report.png)
 
-#### [Jacoco](https://www.jacoco.org/jacoco/trunk/index.html)
+#### [3.2 Jacoco](https://www.jacoco.org/jacoco/trunk/index.html)
 
 Code coverage is a preliminary step to know whether our test covers all the scenarios we have developed so far.
 
@@ -318,7 +318,7 @@ where "companieshouse" is the context path.
 
 ### 5. DevSecOps
 
-  #### OWASP Dependency Vulnerability Check
+  #### 5.1 OWASP Dependency Vulnerability Check
 
   **Updating instructions WIP**
 
@@ -359,7 +359,7 @@ where "companieshouse" is the context path.
 
   ![](doc-resources/images/dependency-check-report.png)
 
-  #### Trivy for Docker Image Vulnerability Check
+  #### 5.2 Trivy for Docker Image Vulnerability Check
 
   **Updating instructions WIP**
   The easiest way to start using Trivy is pull docker image:
@@ -503,7 +503,7 @@ Now let us look at the key building blocks for achieving CI/CD.
 
 ### 7. Platforms
 
-#### Kubernetes
+#### 7.1 Kubernetes
 
 **Updating instructions WIP**
 
@@ -531,7 +531,7 @@ Now let us look at the key building blocks for achieving CI/CD.
    kubectl apply -f kubernetes/helm-chart/ -n [NAMESPACE]
   ```
 
-#### [Google Cloud Run](https://cloud.google.com/run/)
+#### [7.2 Google Cloud Run](https://cloud.google.com/run/)
 
 Cloud Run is a fully managed to compute platform that automatically scales your stateless containers.<br/>
 Cloud Run is Serverless: it abstracts away all infrastructure management, so you can focus on what matters most - building great applications.<br/>
@@ -540,7 +540,7 @@ Cloud Run is available in below two flavours:
 - Cloud Run Fully Managed
 - Cloud Run on Anthos, which supports both Google Cloud and on‐premises environments.
 
-#### Cloud Foundry
+#### 7.3 Cloud Foundry
 
      [WIP]
 
