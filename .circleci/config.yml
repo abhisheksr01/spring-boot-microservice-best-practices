@@ -78,8 +78,7 @@ jobs:
           name: Run Unit and E2E tests
           command: ./gradlew test
       - store_artifacts:
-          path: build/reports/tests/test
-          destination: index.html
+          path: build/reports/tests/test/index.html
           when: always
       - store_test_results:
           path: build/test-results/test
@@ -192,10 +191,9 @@ jobs:
           name: Perform Penetration Test
           command: |
             mkdir wrk
-            zap-baseline.py -t ${HEALTH_ENDPOINT}) -g gen.conf -r penetration-test-report.html
+            zap-baseline.py -t ${HEALTH_ENDPOINT} -g gen.conf -r penetration-test-report.html
       - store_artifacts:
-          path: wrk
-          destination: penetration-test-report.html
+          path: wrk/penetration-test-report.html
 
 workflows:
   version: 2.1
@@ -205,20 +203,17 @@ workflows:
           <<: *only_master
           name: Build
       - test:
-          <<: *only_master
           name: Unit & E2E Tests
           requires:
             - Build
       - gradle_execute_task:
-          <<: *only_master
           name: Jacoco Code Coverage
           step_name: Check Jacoco code coverage & generate report
           gradle_task: jacocoTestCoverageVerification
-          artifact_path: build/reports/jacocoHtml
+          artifact_path: build/reports/jacocoHtml/index.html
           requires:
             - Unit & E2E Tests
       - gradle_execute_task:
-          <<: *only_master
           name: Checkstyle
           step_name: Check styling and generate report
           gradle_task: check
@@ -226,7 +221,6 @@ workflows:
           requires:
             - Build
       - gradle_execute_task:
-          <<: *only_master
           name: Mutation Tests
           step_name: Perform Mutation Testing on Unit Tests
           gradle_task: pitest
@@ -234,13 +228,11 @@ workflows:
           requires:
             - Build
       - check_dependency_vulnerability:
-          <<: *only_master
           name: Dependency Vulnerability Checks
           timeout: 20m
           requires:
             - Build
       - build_and_push_image:
-          <<: *only_master
           <<: *credential_context
           name: Docker Image build and push
           requires:
@@ -249,29 +241,25 @@ workflows:
             - Mutation Tests
             - Dependency Vulnerability Checks
       - check_image_vulnerability:
-          <<: *only_master
           <<: *credential_context
           name: Image Vulnerability Check
           requires:
             - Docker Image build and push
       - helm_deploy:
-          <<: *only_master
           <<: *credential_context
           name: Deploy app to K8S
           release: companieshouse-release
           requires:
             - Image Vulnerability Check
       - health_check:
-          <<: *only_master
           <<: *credential_context
           name: Health Check
           requires:
             - Deploy app to K8S
       - penetration_test:
-          <<: *only_master
           name: Penetration Test
           requires:
-            - Health Check
+            - Deploy app to K8S
   scheduled-vulnerability-check:
     triggers:
       - schedule:
