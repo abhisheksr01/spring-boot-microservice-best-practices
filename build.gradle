@@ -119,6 +119,7 @@ jacocoTestReport {
 
 // Setting custom parameters when executing jacocoTestCoverageVerification task for setting rules
 jacocoTestCoverageVerification {
+    dependsOn jacocoTestReport
     violationRules {
         rule {
             limit {
