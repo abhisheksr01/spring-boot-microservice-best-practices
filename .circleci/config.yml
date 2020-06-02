@@ -34,6 +34,11 @@ aliases:
     filters:
       branches:
         only: master
+  - &persist_to_workspace
+    persist_to_workspace:
+      root: .
+      paths:
+        - .
   - &credential_context
     context: credentials
 
@@ -57,10 +62,7 @@ jobs:
           paths:
             - ~/.gradle/caches
           key: v1-gradle-cache-{{ checksum "build.gradle" }}
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
+      - *persist_to_workspace
 
   test:
     executor: base-jdk8
@@ -78,6 +80,7 @@ jobs:
       - store_test_results:
           path: build/test-results/test
           when: always
+      - *persist_to_workspace
 
   gradle_execute_task:
     executor: base-jdk8
