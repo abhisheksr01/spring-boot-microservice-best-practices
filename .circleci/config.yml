@@ -17,6 +17,9 @@ executors:
   helm:
     docker:
       - image: nukengprodservice/helm:latest
+  owasp-zap:
+    docker:
+      - image: owasp/zap2docker-stable:latest
 
 aliases:
   - &mount_workspace
@@ -76,6 +79,7 @@ jobs:
           command: ./gradlew test
       - store_artifacts:
           path: build/reports/tests/test
+          destination: index.html
           when: always
       - store_test_results:
           path: build/test-results/test
@@ -181,6 +185,18 @@ jobs:
           name: Perform API Health Check
           command: ./.circleci/scripts/health-check.sh
 
+  penetration_test:
+    executor: owasp-zap
+    steps:
+      - run:
+          name: Perform Penetration Test
+          command: |
+            mkdir wrk
+            zap-baseline.py -t ${HEALTH_ENDPOINT}) -g gen.conf -r penetration-test-report.html
+      - store_artifacts:
+          path: wrk
+          destination: penetration-test-report.html
+
 workflows:
   version: 2.1
   workflow-all-jobs:
@@ -251,6 +267,11 @@ workflows:
           name: Health Check
           requires:
             - Deploy app to K8S
+      - penetration_test:
+          <<: *only_master
+          name: Penetration Test
+          requires:
+            - Health Check
   scheduled-vulnerability-check:
     triggers:
       - schedule:
