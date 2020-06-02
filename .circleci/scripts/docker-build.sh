@@ -3,8 +3,6 @@
 set -euo pipefail
 
 TAG="0.1.${CIRCLE_BUILD_NUM}"
-pwd
-ls
 echo "${TAG}" >version.txt
 echo "New Docker Image Version : ${TAG}"
 echo "${DOCKER_PASS}" | docker login --username "${DOCKER_USER}" --password-stdin

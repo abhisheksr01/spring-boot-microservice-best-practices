@@ -48,9 +48,7 @@ jobs:
       - run:
           name: Install Dependencies
           command: |
-            pwd
             ./gradlew build -x test -x checkstyleTest
-            ls
       - save_cache:
           paths:
             - ~/.gradle/wrapper
@@ -63,6 +61,7 @@ jobs:
           root: .
           paths:
             - .
+
   test:
     executor: base-jdk8
     description: Unit Test & Code Coverage
@@ -71,31 +70,8 @@ jobs:
       - *restore_gradlew_cache
       - *restore_gradle_cache
       - run:
-          name: Run tests in parallel
-          # Use "./gradlew test" instead if tests are not run in parallel
-          command: |
-            cd src/test/java
-            # Get list of classnames of tests that should run on this node
-            CLASSNAMES=$(circleci tests glob "**/*.java" \
-              | cut -c 1- | sed 's@/@.@g' \
-              | sed 's/.\{5\}$//' \
-              | circleci tests split --split-by=timings --timings-type=classname)
-            cd ../../..
-            # Format the arguments to "./gradlew test"
-            GRADLE_ARGS=$(echo $CLASSNAMES | awk '{for (i=1; i<=NF; i++) print "--tests",$i}')
-            echo "Prepared arguments for Gradle: $GRADLE_ARGS"
-            ./gradlew test $GRADLE_ARGS
-      - run:
-          name: Generate code coverage report
-          command:
-            ./gradlew jacocoTestReport
-      - run:
-          name: Code coverage verification
-          command:
-            ./gradlew jacocoTestCoverageVerification
-      - store_artifacts:
-          path: build/reports/jacocoHtml
-          when: always
+          name: Run Unit and E2E tests
+          command: ./gradlew test
       - store_artifacts:
           path: build/reports/tests/test
           when: always
@@ -211,9 +187,17 @@ workflows:
           name: Build
       - test:
           <<: *only_master
-          name: Unit Test & Code Coverage
+          name: Unit & E2E Tests
           requires:
             - Build
+      - gradle_execute_task:
+          <<: *only_master
+          name: Jacoco Code Coverage
+          step_name: Check Jacoco Code Coverage
+          gradle_task: jacocoTestReport && ./gradlew dependencyCheckAnalyze
+          artifact_path: build/reports/jacocoHtml
+          requires:
+            - Unit & E2E Tests
       - gradle_execute_task:
           <<: *only_master
           name: Checkstyle
@@ -241,7 +225,7 @@ workflows:
           <<: *credential_context
           name: Docker Image build and push
           requires:
-            - Unit Test & Code Coverage
+            - Jacoco Code Coverage
             - Checkstyle
             - Mutation Tests
             - Dependency Vulnerability Checks

@@ -23,18 +23,18 @@
     - [Jacoco](#jacoco)
   - [4. Swagger API Documentation](#4-swagger-api-documentation)
   - [5. DevSecOps](#5-devsecops)
-    - [5.1 OWASP Dependency Vulnerability Check](#5.1-owasp-dependency-vulnerability-check)
-    - [5.2 Trivy for Docker Image Vulnerability Check](#5.2-trivy-for-docker-image-vulnerability-check)
-  - [6. Continuous Integration, Delivery and Deployment](#6-continuous-integration,-delivery-and-deployment)
-    - [6.1 Docker Containerization](#6.1-docker-containerization)
-    - [6.2 CI and CD Pipeline Tools](#6.2-ci-and-cd-pipeline-tools)
+    - [OWASP Dependency Vulnerability Check](#owasp-dependency-vulnerability-check)
+    - [Trivy for Docker Image Vulnerability Check](#trivy-for-docker-image-vulnerability-check)
+  - [6. Continuous Integration, Delivery and Deployment](#6-continuous-integration/,-delivery-and-deployment)
+    - [6.1 Docker Containerization](#6/.1-docker-containerization)
+    - [6.2 CI and CD Pipeline Tools](#6/.2-ci-and-cd-pipeline-tools)
       - [CircleCI](#circleci)
       - [Jenkins](#jenkins)
       - [Google Cloud Build](#google-cloud-build)
   - [7. Platforms](#7-platforms)
-    - [7.1 Kubernetes](#7.1-kubernetes)
-    - [7.2 Google Cloud Run](#7.2-gcp-cloud-run)
-    - [7.3 Cloud Foundry](#7.3-cloud-foundry)
+    - [Kubernetes](#kubernetes)
+    - [Google Cloud Run](#gcp-cloud-run)
+    - [Cloud Foundry](#cloud-foundry)
 - [What to expect Next!](#what-to-expect-next!)
 - [Versioning](#versioning)
 - [Author](#author)
@@ -318,7 +318,7 @@ where "companieshouse" is the context path.
 
 ### 5. DevSecOps
 
-  #### 5.1 OWASP Dependency Vulnerability Check
+  #### OWASP Dependency Vulnerability Check
 
   **Updating instructions WIP**
 
@@ -359,7 +359,7 @@ where "companieshouse" is the context path.
 
   ![](doc-resources/images/dependency-check-report.png)
 
-  #### 5.2 Trivy for Docker Image Vulnerability Check
+  #### Trivy for Docker Image Vulnerability Check
 
   **Updating instructions WIP**
   The easiest way to start using Trivy is pull docker image:
@@ -503,7 +503,7 @@ Now let us look at the key building blocks for achieving CI/CD.
 
 ### 7. Platforms
 
-#### 7.1 Kubernetes
+#### Kubernetes
 
 **Updating instructions WIP**
 
@@ -531,7 +531,7 @@ Now let us look at the key building blocks for achieving CI/CD.
    kubectl apply -f kubernetes/helm-chart/ -n [NAMESPACE]
   ```
 
-#### 6.2 [Google Cloud Run](https://cloud.google.com/run/)
+#### [Google Cloud Run](https://cloud.google.com/run/)
 
 Cloud Run is a fully managed to compute platform that automatically scales your stateless containers.<br/>
 Cloud Run is Serverless: it abstracts away all infrastructure management, so you can focus on what matters most - building great applications.<br/>
@@ -540,7 +540,7 @@ Cloud Run is available in below two flavours:
 - Cloud Run Fully Managed
 - Cloud Run on Anthos, which supports both Google Cloud and on‐premises environments.
 
-#### 7.3 Cloud Foundry
+#### Cloud Foundry
 
      [WIP]
 
