@@ -78,7 +78,7 @@ jobs:
           name: Run Unit and E2E tests
           command: ./gradlew test
       - store_artifacts:
-          path: build/reports/tests/test/index.html
+          path: build/reports/tests/test
           when: always
       - store_test_results:
           path: build/test-results/test
@@ -190,10 +190,13 @@ jobs:
       - run:
           name: Perform Penetration Test
           command: |
-            mkdir wrk
-            zap-baseline.py -t ${HEALTH_ENDPOINT} -g gen.conf -r penetration-test-report.html
+            cd ../../../zap/
+            echo "Running from containers home zap directory..."
+            mkdir wrk && zap-baseline.py -t "${HEALTH_ENDPOINT}" -g gen.conf -r penetration-test-report.html || :
+            echo "Moving Pen Test report to the circleci job working dir.."
+            mv wrk/* ../home/zap/project/
       - store_artifacts:
-          path: wrk/penetration-test-report.html
+          path: .
 
 workflows:
   version: 2.1
@@ -210,7 +213,7 @@ workflows:
           name: Jacoco Code Coverage
           step_name: Check Jacoco code coverage & generate report
           gradle_task: jacocoTestCoverageVerification
-          artifact_path: build/reports/jacocoHtml/index.html
+          artifact_path: build/reports/jacocoHtml
           requires:
             - Unit & E2E Tests
       - gradle_execute_task:
@@ -257,6 +260,7 @@ workflows:
           requires:
             - Deploy app to K8S
       - penetration_test:
+          <<: *credential_context
           name: Penetration Test
           requires:
             - Deploy app to K8S
