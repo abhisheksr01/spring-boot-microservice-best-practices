@@ -1,5 +1,4 @@
 version: 2.1
-
 executors:
   base-jdk8:
     docker:
@@ -42,10 +41,17 @@ aliases:
     restore_cache:
       keys:
         - v1-dependency-cache-{{ checksum "build.gradle" }}
+  - &only_allowed_branches
+    filters:
+      branches:
+        only:
+          - master
+          - /dependabot.*/
   - &only_master
     filters:
       branches:
-        only: master
+        only:
+          - master
   - &persist_to_workspace
     persist_to_workspace:
       root: .
@@ -75,7 +81,6 @@ jobs:
             - ~/.gradle/caches
           key: v1-gradle-cache-{{ checksum "build.gradle" }}
       - *persist_to_workspace
-
   test:
     executor: base-jdk8
     description: Unit Test & Code Coverage
@@ -93,7 +98,8 @@ jobs:
           path: build/test-results/test
           when: always
       - *persist_to_workspace
-
+#  This is a generic parameterized gradle task execution job.
+#  At the moment it's being used by Jacoco,Checkstyle and Mutation Test jobs
   gradle_execute_task:
     executor: base-jdk8
     parameters:
@@ -114,7 +120,6 @@ jobs:
       - store_artifacts:
           path: << parameters.artifact_path >>
           when: always
-
   check_dependency_vulnerability:
     executor: base-jdk8
     parameters:
@@ -140,7 +145,6 @@ jobs:
       - store_artifacts:
           path: build/reports/dependency-vulnerabilities
           when: always
-
   build_and_push_image:
     description: Build Docker Image & Push
     executor: base-jdk8
@@ -154,7 +158,6 @@ jobs:
           root: /home/circleci/project
           paths:
             - version.txt
-
   check_image_vulnerability:
     description: Use Trivy to check the final docker image vulnerabilities before deployment
     executor: trivy
@@ -168,7 +171,6 @@ jobs:
       - store_artifacts:
           path: reports
           when: always
-
   helm_deploy:
     executor: helm
     parameters:
@@ -186,7 +188,6 @@ jobs:
             RELEASE_NAME="<< parameters.release >>" \
             EKS_NAMESPACE="${EKS_NAMESPACE}" \
             ./.circleci/scripts/helm-deploy.sh
-
   health_check:
     executor: circleci-ubuntu
     steps:
@@ -194,7 +195,6 @@ jobs:
       - run:
           name: Perform API Health Check
           command: ./.circleci/scripts/health-check.sh
-
   penetration_test:
     executor: owasp-zap
     steps:
@@ -214,7 +214,7 @@ workflows:
   workflow-all-jobs:
     jobs:
       - build:
-          <<: *only_master
+          <<: *only_allowed_branches
           name: Build
       - test:
           name: Unit & E2E Tests
@@ -261,6 +261,8 @@ workflows:
             - Docker Image build and push
       - hold:
           type: approval
+          description: Not desired but added to avoid unintentional deployment
+          name: Manual Approval before Deployment
           requires:
             - Image Vulnerability Check
       - helm_deploy:
@@ -269,7 +271,7 @@ workflows:
           release: companieshouse-release
           requires:
             - Image Vulnerability Check
-            - hold
+            - Manual Approval before Deployment
       - health_check:
           <<: *credential_context
           name: Health Check
@@ -290,5 +292,5 @@ workflows:
           name: Dependency Vulnerability Checks
           timeout: 20m
       - check_image_vulnerability:
-          name: Image Vulnerability Check
           <<: *credential_context
+          name: Image Vulnerability Check

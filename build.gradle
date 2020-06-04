@@ -36,7 +36,7 @@ dependencies {
     //WireMock Dependencies
     testImplementation "com.github.tomakehurst:wiremock:${wireMockVersion}"
     //Lombok Dependencies
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    implementation "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     //MapStruct Dependencies
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
@@ -46,7 +46,7 @@ dependencies {
     implementation "io.springfox:springfox-swagger2:${swaggerVersion}"
     implementation "io.springfox:springfox-swagger-ui:${swaggerVersion}"
     //pitest
-    pitest 'org.pitest:pitest-junit5-plugin:0.12'
+    implementation 'org.pitest:pitest-junit5-plugin:0.12'
 
     // Fixing vulnerabilities
     implementation "com.google.guava:guava:29.0-jre"
