@@ -59,14 +59,11 @@ to the Companies House API hence returning Company Details.
 
 ### Prerequisites
 
-1. [ Installing and Getting Started ](#installation)
-2. [ Microservice Structure ](#MSStructure)
-
 - You must have [Java](https://www.oracle.com/technetwork/java/javaee/documentation/ee8-install-guide-3894351.html)
   installed (min version 8).
 - If you wish to run the application against the actual Companies House
-  API. You will need to [create a free account](https://developer.companieshouse.gov.uk/developer/signin)
-  and replace the apiKey in the application.yml.
+  API and You will need to [create a free account](https://developer.companieshouse.gov.uk/developer/signin)
+  and replace the `authUserName` in the [application.yaml](src/main/resources/application.yaml).
 
 ### Installation and Getting Started
 
@@ -110,7 +107,7 @@ At the core of the Cloud Native Practices in Software Engineering lies the Behav
 Test-Driven Development (TDD).<br/>
 While developing the code I followed BDD first approach where I wrote a failing feature/acceptance criteria thus
 driving our development through behavior and then followed by Test Driven Development.<br/>
-A feature is not considered as developed until all the Uni Tests (TDD) and feature (BDD) passes.
+A feature is not considered as developed until all the Unit Tests (TDD) and feature (BDD) passes.
 
 ![](doc-resources/images/bdd-tdd-cycle.png)
 

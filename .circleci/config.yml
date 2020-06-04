@@ -33,6 +33,15 @@ aliases:
     restore_cache:
       keys:
         - v1-gradle-cache-{{ checksum "build.gradle" }}
+  - &save_dependency_vulnerability_cache
+    save_cache:
+      key: v1-dependency-cache-{{ checksum "build.gradle" }}
+      paths:
+        - /home/circleci/.gradle/dependency-check-data/4.0/
+  - &restore_dependency_vulnerability_cache
+    restore_cache:
+      keys:
+        - v1-dependency-cache-{{ checksum "build.gradle" }}
   - &only_master
     filters:
       branches:
@@ -119,10 +128,12 @@ jobs:
       - checkout
       - *restore_gradlew_cache
       - *restore_gradle_cache
+      - *restore_dependency_vulnerability_cache
       - run:
           name: Perform Dependency Vulnerability Checks
           no_output_timeout: << parameters.timeout >>
           command: ./gradlew dependencyCheckAnalyze
+      - *save_dependency_vulnerability_cache
       - store_test_results:
           path: build/reports/dependency-vulnerabilities
           when: always
@@ -248,12 +259,17 @@ workflows:
           name: Image Vulnerability Check
           requires:
             - Docker Image build and push
+      - hold:
+          type: approval
+          requires:
+            - Image Vulnerability Check
       - helm_deploy:
           <<: *credential_context
           name: Deploy app to K8S
           release: companieshouse-release
           requires:
             - Image Vulnerability Check
+            - hold
       - health_check:
           <<: *credential_context
           name: Health Check
