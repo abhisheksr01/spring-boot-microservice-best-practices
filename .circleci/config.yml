@@ -262,7 +262,7 @@ workflows:
       - hold:
           type: approval
           description: Not desired but added to avoid unintentional deployment
-          name: Manual Approval before Deployment
+          name: Approve Deployment
           requires:
             - Image Vulnerability Check
       - helm_deploy:
@@ -270,8 +270,7 @@ workflows:
           name: Deploy app to K8S
           release: companieshouse-release
           requires:
-            - Image Vulnerability Check
-            - Manual Approval before Deployment
+            - Approve Deployment
       - health_check:
           <<: *credential_context
           name: Health Check
