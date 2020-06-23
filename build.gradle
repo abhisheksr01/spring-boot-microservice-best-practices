@@ -21,7 +21,7 @@ ext {
     lombokVersion = "1.18.12"
     wireMockVersion = "2.25.1"
     ioCucumberVersion = "6.1.0"
-    swaggerVersion = "2.9.2"
+    swaggerVersion = "2.10.0"
     jacocoVersion = "0.8.5"
 }
 
