@@ -10,4 +10,5 @@ helm upgrade \
 --wait \
 --namespace "${EKS_NAMESPACE}" \
 --set buildno="${VERSION}" \
+--set authUserName="${AUTH_USERNAME}" \
 "${RELEASE_NAME}" ./kubernetes/helm-chart

@@ -6,6 +6,9 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
     nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      more_set_headers "Server: api";
+      more_set_headers "X-Content-Type-Options: nosniff";
 spec:
   rules:
     - host: companieshouse.labs.armakuni.co.uk

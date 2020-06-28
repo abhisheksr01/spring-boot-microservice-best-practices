@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: abhisheksr01/companieshouse
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 
@@ -45,7 +45,8 @@ ingress:
   annotations: {
     nginx.ingress.kubernetes.io/ssl-redirect: "false",
     nginx.ingress.kubernetes.io/force-ssl-redirect: "false",
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/configuration-snippet: 'more_set_headers "Server: api"; more_set_headers "X-Content-Type-Options: nosniff";',
+    nginx.ingress.kubernetes.io/rewrite-target: /,
   }
     # kubernetes.io/ingress.class: nginx
   # kubernetes.io/tls-acme: "true"

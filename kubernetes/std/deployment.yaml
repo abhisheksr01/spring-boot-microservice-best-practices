@@ -18,3 +18,6 @@ spec:
           ports:
             - containerPort: 8080
           imagePullPolicy: Always
+          env:
+            - name: "govCompaniesHouse.authUserName"
+              value: "dummy-user"
