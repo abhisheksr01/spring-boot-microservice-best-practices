@@ -23,8 +23,8 @@
     - [3.2 Jacoco](#32-jacoco)
   - [4. Swagger API Documentation](#4-swagger-api-documentation)
   - [5. DevSecOps](#5-devsecops)
-    - [5.1 OWASP Dependency Vulnerability Check](#51-owasp-dependency-vulnerability-check)
-    - [5.2 Trivy for Docker Image Vulnerability Check](#52-trivy-for-docker-image-vulnerability-check)
+    - [5.1 Dependency Vulnerability Check](#51-dependency-vulnerability-check)
+    - [5.2 Docker Image Vulnerability Check](#52-docker-image-vulnerability-check)
   - [6. Continuous Integration, Delivery and Deployment](#6-continuous-integration-delivery-and-deployment)
     - [6.1 Docker Containerization](#61-docker-containerization)
     - [6.2 CI and CD Pipeline Tools](#62-ci-and-cd-pipeline-tools)
@@ -56,6 +56,8 @@ In the below section I will try to explain each integration we have made and how
 
 At the moment the microservice exposes a GET API and expects the company reference as path parameter then makes a call
 to the Companies House API hence returning Company Details.
+
+**Note: Texts highlighted in light blue colour are clickable hyperlinks for additional references.**
 
 ### Prerequisites
 
@@ -315,10 +317,15 @@ where "companieshouse" is the context path.
 
 ### 5. DevSecOps
 
-  #### 5.1 OWASP Dependency Vulnerability Check
+  #### 5.1 Dependency Vulnerability Check
 
-  **Updating instructions WIP**
+  Introduction:<br/>
+  A vulnerability is a hole or a weakness in the application, which can be a design flaw or an implementation bug, that allows an attacker to cause harm to the stakeholders of an application.<br/>
+  In this section we are focusing on identifying [vulnerabilities](https://owasp.org/www-community/vulnerabilities/) within dependencies used in the code base.
 
+  We will be using the [**OWASP Dependency-Check**](https://owasp.org/www-project-dependency-check/) for this.
+
+  Configuration:<br/>
   Add below config snippet in your [build.gradle](./build.gradle) to include dependency vulnerability checks.
 
   ```
@@ -340,7 +347,8 @@ where "companieshouse" is the context path.
   }
   ```
 
-  then run below gradle task to trigger the checks
+  Execution:<br/>
+  Run below gradle task to trigger the vulnerability checks
 
   ```
   ./gradlew dependencyCheckAnalyze
@@ -348,7 +356,7 @@ where "companieshouse" is the context path.
 
   Note: First execution may take 10 mins or so (as this task downloads a copy of the vulnerabilities db locally).
 
-  once successfully executed the task will generate a vulnerability report at path (assuming the above path was used) as below:
+  Once successfully executed the task will generate a vulnerability report at path (assuming the above path was used) as below:
 
   ```
   build/reports/dependency-vulnerabilities
@@ -356,7 +364,17 @@ where "companieshouse" is the context path.
 
   ![](doc-resources/images/dependency-check-report.png)
 
-  #### 5.2 Trivy for Docker Image Vulnerability Check
+  Suppression:<br/>
+  If you wish to suppress dependencies from vulnerability analysis (maybe because of breaking changes) declare them in the [dependency-check-suppression.xml](config/dependencycheck/dependency-check-suppression.xml) as below:
+  ```
+  <suppress>
+     <notes><![CDATA[file name: checkstyle-7.8.1.jar]]></notes>
+     <sha1>7b4a274696a92f3feae14d734b7b8155560a888c</sha1>
+     <cve>CVE-2019-10782</cve>
+  /suppress>
+  ```
+
+  #### 5.2 Docker Image Vulnerability Check
 
   **Updating instructions WIP**
   The easiest way to start using Trivy is pull docker image:
@@ -365,7 +383,7 @@ where "companieshouse" is the context path.
   docker pull aquasec/trivy
   ```
 
-  and run the container run commands against the image to be checked as 
+  and run the container run commands against the image to be checked as
 
   ```
   Syntax : docker run aquasec/trivy:latest [DOCKER_HUB_REPO]/[DOCKER_IMAGE_NAME]:[TAG]
