@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 emojiFunction() {
   for i in {1..68}; do
-    printf $1
+    printf "$1"
   done
   printf '\n'
 }

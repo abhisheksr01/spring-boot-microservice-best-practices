@@ -5,6 +5,7 @@ set -euo pipefail
 : "${EKS_NAMESPACE}"
 : "${RELEASE_NAME}"
 VERSION=$(cat version.txt)
+echo "Deploying app version : ${VERSION}"
 helm upgrade \
 --install \
 --wait \

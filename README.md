@@ -25,6 +25,7 @@
   - [5. DevSecOps](#5-devsecops)
     - [5.1 Dependency Vulnerability Check](#51-dependency-vulnerability-check)
     - [5.2 Docker Image Vulnerability Check](#52-docker-image-vulnerability-check)
+    - [5.3 Penetration Test](#53-penetration-test)
   - [6. Continuous Integration, Delivery and Deployment](#6-continuous-integration-delivery-and-deployment)
     - [6.1 Docker Containerization](#61-docker-containerization)
     - [6.2 CI and CD Pipeline Tools](#62-ci-and-cd-pipeline-tools)
@@ -376,24 +377,98 @@ where "companieshouse" is the context path.
 
   #### 5.2 Docker Image Vulnerability Check
 
-  **Updating instructions WIP**
-  The easiest way to start using Trivy is pull docker image:
+ Docker image security scanning should be a core part of your Docker security strategy. Although image scanning won't protect you from all possible security vulnerabilities, it's the primary means of defense against security flaws or insecure code within container images. It's therefore a foundational part of overall Docker security.
 
-  ```
-  docker pull aquasec/trivy
-  ```
+ In this section we are going to use [Trivy](https://github.com/aquasecurity/trivy).
 
-  and run the container run commands against the image to be checked as
+ * Using Local Installation:</br>
+   Click [here](https://github.com/aquasecurity/trivy#installation) to follow installation instructions.
 
-  ```
-  Syntax : docker run aquasec/trivy:latest [DOCKER_HUB_REPO]/[DOCKER_IMAGE_NAME]:[TAG]
-  Example: docker run aquasec/trivy:latest abhisheksr01/companieshouse:latest
-  ```
-  Once executed successfully it output a tabular report.
+   Example:
+   ```
+   macOS:
+   brew install aquasecurity/trivy/trivy
 
-  You can use trivy in container based Pipelines as I have used in CircleCI [config.yml](.circleci/config.yml) and GCP Cloud Build [cloudbuild.yaml](./cloudbuild.yaml).
+   or
+
+   curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/master/contrib/install.sh | sh -s -- -b /usr/local/bin
+   ```
+
+    Execute below command to scan a image:
+    ```
+    trivy [DOCKER_IMAGE:TAG]
+    ```
+    Example:</br>
+    ```
+    Local Image : trivy test-image:latest
+    Remote Image: trivy abhisheksr01/companieshouse:latest
+    ```
+
+ * [Using Docker Image Locally:](https://github.com/aquasecurity/trivy#docker)</br>
+   This is the most convenient way to use trivy(because you don't mess with local installation)
+
+   Scanning local image in macOS:
+   ```
+   docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+    -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy LOCAL_DOCKER_IMAGE:TAG
+   ```
+   Scanning Remote Image (e.g. Docker Hub)
+   ```
+   Syntax : docker run -it aquasec/trivy:latest [DOCKER_HUB_REPO]/[DOCKER_IMAGE_NAME]:[TAG]
+   Example: docker run -it aquasec/trivy:latest openjdk:8-jre-alpine
+   ```
+   Once executed successfully it output a tabular report by default(which can be changed).
+
+* [Within CI Pipeline](https://github.com/aquasecurity/trivy#continuous-integration-ci)
+  1. CircleCI:</br>
+  Search for jobs "check_image_vulnerability" in [config.yml](.circleci/config.yml). This is the example of how you can run job independently (scheduled vulnerability check or from the registry).</br>
+  Search for job "image_build_scan_push" in [config.yml](.circleci/config.yml). This is the example of how you can run scan against your local image before even pushing to the registry.
+  2. Cloud Build:</br>
+  This is very basic usage of trivy & image is pulled from GCP Registry, click [here](./cloudbuild.yaml) to GCP Cloud Build configuration.
 
   Refer the trivy [github doc](https://github.com/aquasecurity/trivy) for further reference.
+
+#### 5.3 Penetration Test
+A penetration test, colloquially known as a pen test, pentest or ethical hacking, is an authorized simulated cyberattack on a computer system, performed to evaluate the security of the system. Not to be confused with a vulnerability assessment.
+
+In this section we are going to explore [OWASP ZAP](https://www.zaproxy.org/docs/docker/) & will be penetrating through REST API's.
+
+* [PenTest using Docker Image Locally](https://www.zaproxy.org/docs/docker/about/)
+
+  We will be using the **owasp/zap2docker-weekly** to run the [ZAP Baseline Scan](https://www.zaproxy.org/  docs/docker/baseline-scan/).<br/>
+  Execute below command to test your API
+  ```
+  docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-weekly zap-baseline.py \
+      -t [TARGET_REST_API] -g gen.conf -r pentest-report.html
+  ```
+
+  | Parameter       |      Description                         |
+  |-----------------|:----------------------------------------:|
+  | $(pwd)          | Directory where report will be generated |
+  | zap-baseline.py | Zap's python script                      |
+  | -t [TARGET_URL] | URL to be Pen Tested                     |
+  | -g gen.conf     | zap-baseline rule configuration file     |
+  | -r report.html  | Name of HTML report                      |
+
+  The **gen.conf** can be changed between WARN to IGNORE (ignore rule) or FAIL (failing) if rule matches in the PenTest.
+
+* Within Pipeline:
+
+  So We have got PenTest Running after the application deployed successfully.
+  Open [config.yml](.circleci/config.yml) & search for **penetration_test** to see the implementation.</br>
+  Alternatively you can check the latest Pen Test Execution in CircleCI by clicking [here](https://app.circleci.com/pipelines/github/abhisheksr01/spring-boot-microservice-best-practices/117/workflows/1ad0442f-791c-47d1-8da9-f44f656872f5/jobs/567).
+
+  Once we run the PenTest & issues are identified we need to fix them, right?</br>
+  But how !!!!!!!!!!</br>
+  For that you should review the PenTest report closely & understand why the particular issue was raised.</br>
+
+  Let us review alerts which were identified in this app & how I fixed them.</br>
+  Click [here](https://505-229818740-gh.circle-artifacts.com/0/penetration-test-report.html) to open the Zap HTML report.</br>
+  The report has **3 Low** alerts & were raised because of response headers appended by the Kubernetes Platform where the app is deployed.</br>
+  To fix the issue I had to apply appropriate header values in the [Ingress.yaml](kubernetes/std/ingress.yaml)(Kubernetes specific config file) & once fixed app deployed [PenTest Report](https://567-229818740-gh.circle-artifacts.com/0/penetration-test-report.html) didn't raise those alert.
+
+  We can also perform Penetration Test for bunch of URLs. Click [here](https://github.com/zaproxy/community-scripts/tree/master/api/mass-baseline) to see the Mass Baseline.
+
 
 ### 6. Continuous Integration, Delivery and Deployment
 
