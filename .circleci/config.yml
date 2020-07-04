@@ -30,20 +30,20 @@ aliases:
   - &restore_gradlew_cache
     restore_cache:
       keys:
-        - v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+        - v2-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
   - &restore_gradle_cache
     restore_cache:
       keys:
-        - v1-gradle-cache-{{ checksum "build.gradle" }}
+        - v2-gradle-cache-{{ checksum "build.gradle" }}
   - &save_dependency_vulnerability_cache
     save_cache:
-      key: v1-dependency-cache-{{ checksum "build.gradle" }}
+      key: v2-dependency-cache-{{ checksum "build.gradle" }}
       paths:
         - /home/circleci/.gradle/dependency-check-data/4.0/
   - &restore_dependency_vulnerability_cache
     restore_cache:
       keys:
-        - v1-dependency-cache-{{ checksum "build.gradle" }}
+        - v2-dependency-cache-{{ checksum "build.gradle" }}
   - &only_allowed_branches
     filters:
       branches:
@@ -78,15 +78,15 @@ jobs:
       - save_cache:
           paths:
             - ~/.gradle/wrapper
-          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+          key: v2-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
       - save_cache:
           paths:
             - ~/.gradle/caches
-          key: v1-gradle-cache-{{ checksum "build.gradle" }}
+          key: v2-gradle-cache-{{ checksum "build.gradle" }}
       - *persist_to_workspace
   test:
     executor: base-jdk8
-    description: Unit Test & Code Coverage
+    description: Unit & E2E Tests
     steps:
       - *mount_workspace
       - *restore_gradlew_cache
@@ -96,6 +96,9 @@ jobs:
           command: ./gradlew test
       - store_artifacts:
           path: build/reports/tests/test
+          when: always
+      - store_artifacts:
+          path: build/reports/cucumber
           when: always
       - store_test_results:
           path: build/test-results/test

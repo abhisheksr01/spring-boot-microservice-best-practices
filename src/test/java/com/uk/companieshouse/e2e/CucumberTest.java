@@ -14,10 +14,8 @@ import org.springframework.test.context.ActiveProfiles;
         classes = CompaniesHouseApplication.class,
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @ActiveProfiles("test")
-@CucumberOptions(features = "src/test/resources",
-        plugin = {
-                "pretty", "html:build/reports/cucumber", "json:build/reports/cucumber/"
-        })
+@CucumberOptions(features = "src/test/resources", plugin = {"pretty",
+        "html:build/reports/cucumber/cucumber-report.html"})
 public class CucumberTest {
 //        TODO: Fix Cucumber report not generating issue, the plugin is not accepting the params properly
 }
