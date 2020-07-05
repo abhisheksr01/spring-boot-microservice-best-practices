@@ -43,6 +43,7 @@ dependencies {
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     //Swagger
+    implementation("io.springfox:springfox-spring-webmvc:${swaggerVersion}")
     implementation "io.springfox:springfox-swagger2:${swaggerVersion}"
     implementation "io.springfox:springfox-swagger-ui:${swaggerVersion}"
     //pitest

@@ -143,7 +143,7 @@ Open Class `CucumberTest` in package `com.uk.companieshouse.e2e` and execute Cuc
 Once the test execution completes you can see the Cucumber Test Report at :
 
 ```
-../build/reports/cucumber/index.html
+..build/reports/cucumber/cucumber-report.html
 ```
 
 #### 1.3 Mutation Testing
