@@ -259,7 +259,7 @@ workflows:
             - Build
       - check_dependency_vulnerability:
           name: Dependency Vulnerability Checks
-          timeout: 20m
+          timeout: 25m
           requires:
             - Build
       - image_build_scan_push:

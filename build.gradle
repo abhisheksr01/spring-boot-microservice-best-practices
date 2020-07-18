@@ -5,7 +5,7 @@ plugins {
     id 'jacoco'
     id 'info.solidsoft.pitest' version '1.5.1'
     id 'checkstyle'
-    id "org.owasp.dependencycheck" version "5.3.2.1"
+    id "org.owasp.dependencycheck" version "5.3.2"
 }
 
 group = 'com.uk'
@@ -50,6 +50,8 @@ dependencies {
 
     // Fixing vulnerabilities
     implementation "com.google.guava:guava:29.0-jre"
+    implementation "org.apache.tomcat.embed:tomcat-embed-core:9.0.37"
+    implementation "org.apache.tomcat.embed:tomcat-embed-websocket:9.0.37"
     /*
      *https://docs.gradle.org/current/userguide/dependency_management.html#sec:module_substitution
      * Example 109. Example: Blacklisting a version with a replacement
