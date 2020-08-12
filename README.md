@@ -55,7 +55,7 @@ per requirement.
 
 In the below section I will try to explain each integration we have made and how to use.
 
-At the moment the microservice exposes a GET API and expects the company reference as path parameter then makes a call
+At the moment the Microservice exposes a GET API and expects the company reference as path parameter then makes a call
 to the Companies House API hence returning Company Details.
 
 **Note: Texts highlighted in light blue colour are clickable hyperlinks for additional references.**
@@ -66,7 +66,7 @@ to the Companies House API hence returning Company Details.
   installed (min version 8).
 - If you wish to run the application against the actual Companies House
   API and You will need to [create a free account](https://developer.companieshouse.gov.uk/developer/signin)
-  and replace the `authUserName` in the [application.yaml](src/main/resources/application.yaml).
+  and replace the `authUserName` in the [application.yaml](src/main/resources/application.yaml) under main dir.
 
 ### Installation and Getting Started
 
@@ -300,18 +300,24 @@ build/reports/jacocoHtml/index.html
 
 ### 4. Swagger API Documentation
 
-We are using Swagger.
-To test it locally start the application to and the Swagger UI document can be accessed by URL:
+With the latest version of swagger you just need to include a single dependency as below & that's it.
+```
+implementation "io.springfox:springfox-boot-starter:${swaggerVersion}"
+```
+
+although if you are using WebMvc then you would require to additionally add @EnableWebMvc as stated in doc [here.](https://springfox.github.io/springfox/docs/snapshot/)
+
+To test it locally start the application then Swagger UI documentation can be accessed by URL:
 
 ```
-http://localhost:8080/companieshouse/swagger-ui.html
+http://localhost:8080/companieshouse/swagger-ui/index.html
 ```
 
 ![](doc-resources/images/swagger-ui.png)
 Once application is deployed in a Platform the same documentation will be accessible by below URL:
 
 ```
-http://[HOST_URL]/companieshouse/swagger-ui.html
+http://[HOST_URL]/companieshouse/swagger-ui/index.html
 ```
 
 where "companieshouse" is the context path.
@@ -377,11 +383,12 @@ where "companieshouse" is the context path.
 
   #### 5.2 Docker Image Vulnerability Check
 
- Docker image security scanning should be a core part of your Docker security strategy. Although image scanning won't protect you from all possible security vulnerabilities, it's the primary means of defense against security flaws or insecure code within container images. It's therefore a foundational part of overall Docker security.
+ Docker image security scanning should be a core part of your Docker security strategy. </br>
+ Although image scanning won't protect you from all possible security vulnerabilities, it's the primary means of defense against security flaws or insecure code within container images. It's therefore a foundational part of overall Docker security.
 
  In this section we are going to use [Trivy](https://github.com/aquasecurity/trivy).
 
- * Using Local Installation:</br>
+ - Using Local Installation:</br>
    Click [here](https://github.com/aquasecurity/trivy#installation) to follow installation instructions.
 
    Example:
@@ -404,7 +411,7 @@ where "companieshouse" is the context path.
     Remote Image: trivy abhisheksr01/companieshouse:latest
     ```
 
- * [Using Docker Image Locally:](https://github.com/aquasecurity/trivy#docker)</br>
+ - [Using Docker Image Locally:](https://github.com/aquasecurity/trivy#docker)</br>
    This is the most convenient way to use trivy(because you don't mess with local installation)
 
    Scanning local image in macOS:
@@ -419,7 +426,7 @@ where "companieshouse" is the context path.
    ```
    Once executed successfully it output a tabular report by default(which can be changed).
 
-* [Within CI Pipeline](https://github.com/aquasecurity/trivy#continuous-integration-ci)
+- [Within CI Pipeline](https://github.com/aquasecurity/trivy#continuous-integration-ci)
   1. CircleCI:</br>
   Search for jobs "check_image_vulnerability" in [config.yml](.circleci/config.yml). This is the example of how you can run job independently (scheduled vulnerability check or from the registry).</br>
   Search for job "image_build_scan_push" in [config.yml](.circleci/config.yml). This is the example of how you can run scan against your local image before even pushing to the registry.
@@ -443,7 +450,7 @@ In this section we are going to explore [OWASP ZAP](https://www.zaproxy.org/docs
   ```
 
   | Parameter       |      Description                         |
-  |-----------------|:----------------------------------------:|
+  |-----------------|:---------------------------------------- |
   | $(pwd)          | Directory where report will be generated |
   | zap-baseline.py | Zap's python script                      |
   | -t [TARGET_URL] | URL to be Pen Tested                     |
@@ -495,6 +502,189 @@ Now let us look at the key building blocks for achieving CI/CD.
 
 #### 6.1 Docker Containerization
 
+Containerization is the process of distributing and deploying applications by packaging the application components & its dependencies into a standardized, isolated, lightweight process environments called containers.
+
+Docker is the widely adapted Containerization platform developed to simplify and standardize deployment in various such environments using a specially packaged files known as **[Docker Images](https://docs.docker.com/engine/reference/builder/)**.
+
+Before we continue further make sure you have docker installed, if not [click here](https://docs.docker.com/engine/install/) to see the instructions.
+
+Docker uses a text file with set of instructions in it to build a docker image. Below given is a list of some of the most common Docker keywords used:
+
+  | KEYWORD       | Usage Description                                                                                                                    |
+  |:--------------|:-------------------------------------------------------------------------------------------------------------------------------------|
+  | FROM          | Defines the base image to use to start the build process. A image defined here will be pulled from Docker Hub or other container repository. It needs to be the first command declared inside a Dockerfile.                                                                             |
+  | WORKDIR       | Set where the command defined with CMD is to be executed.                                                                            |
+  | ENV           | Sets an Environment variable within the container & can be accessed by scripts and applications alike.                               |
+  | CMD           | Execute the given command when a container is instantiated using the image being built.                                              |
+  | RUN           | Execute any additional command when docker image is built.                                                                           |
+  | EXPOSE        | Used to associate a specified port to enable networking between the running process inside the container and the outside world (i.e. the host).                                                                                                                                             |
+  | COPY          | Takes in a src and destination arguments & copy a local file or directory from your host (the machine building the Docker image) into the Docker image itself.                                                                                                                               |
+  | ADD           | Apart from what COPY does, it also supports 2 other sources. First, you can use a URL instead of a local file / directory. Secondly, you can extract a tar file from the source directly into the destination.                                                                              |
+  | ENTRYPOINT    | Sets the concrete default application that is used every time a container is created using the image. For example, here we are using Spring Boot application inside the image. To only run that application use ENTRYPOINT and whenever a container is created our application will be the target. If we couple ENTRYPOINT with CMD, we can remove “application” from CMD and just leave “arguments” which will be passed to the ENTRYPOINT.                                                                                                                                            |
+
+Now let us have a quick look at our [ci.Dockerfile](./ci.Dockerfile) given below:
+
+  ```
+  FROM openjdk:8-jre-alpine
+
+  WORKDIR /opt
+
+  EXPOSE 8080
+
+  RUN apk update
+
+  ARG APPJAR=build/libs/companieshouse-0.0.1-SNAPSHOT.jar
+
+  COPY ${APPJAR} companieshouse-0.0.1-SNAPSHOT.jar
+
+  ENTRYPOINT exec java $JAVA_OPTS -jar companieshouse-0.0.1-SNAPSHOT.jar
+  ```
+
+  - First instruction FROM is used for pulling openjdk:8-jre-alpine from Docker Hub
+  - WORKDIR sets the opt as working directory
+  - RUN As this is an Alpine image we are using apk to update the image dependencies
+  - ARG set an argument to be used later in the file
+  - COPY copies the jar from the host machine inside the docker image
+  - ENTRYPOINT sets the spring boot application as default & starts the application when container is instantiated
+
+Here we are using two flavours of Dockerfile.
+Although in a real world scenario you will typically have only 1 Dockerfile but here for learning perspective I have got 2.
+
+6.1.1 [Dockerfile](./Dockerfile):
+
+It uses an intermediate **gradle:6.5-jdk8** container for building an executable jar and then **openjdk:8-jre-alpine** as a base image  by copying the jar for application docker image.</br>
+This Dockerfile will be handy and is an example of using intermediate containers when we do not have respective runtime (JAVA) & package manager (gradle) installed locally for building the executable application.
+
+- Execute below command to build a docker image, if no docker file is specified in CLI it defaults to **Dockerfile**.
+  ```
+  docker build -tag companieshouse:latest .
+  ```
+  where **companieshouse:latest** follows the syntax of **[IMAGE_NAME]:[TAG]**
+
+- To check the latest docker image being created execute below command:
+  ```
+  docker images
+  ```
+  Output:
+  
+  ![](doc-resources/images/docker-images.png)
+
+- To start the container using the newly created docker image
+  ```
+  docker run --rm -it -p 8080:8080 companieshouse:latest
+  ```
+  Here, --rm is used for removing the container once stopped, --it to start the application in interactive mode & -p for port forward.
+
+  Once the container is being created & application started you should see an message in the terminal as below:
+  ```
+  2020-08-11 13:44:09.679  INFO 1 --- [main] c.u.c.CompaniesHouseApplication : Started CompaniesHouseApplication in 6.565 seconds (JVM running for 7.529)
+  ```
+  To verify the application has successfully started open the swagger page using below URL in your browser of choice.
+
+  http://localhost:8080/companieshouse/swagger-ui/index.html
+
+  Open a new terminal to see the newly created container by executing below command:
+
+  ```
+  docker container ls
+  ```
+
+  alternatively:
+  ```
+  docker ps -a
+  ```
+
+  Output:
+  ![](doc-resources/images/docker-container.png)
+
+  Take note of the CONTAINER ID.
+
+- Validating the container has been removed once application stopped.
+
+  Stop the container using the **Control + C** key alternatively in the new terminal execute below command to kill the container.
+
+  ```
+  docker container kill [CONTAINER_ID]
+  ```
+
+  Execute below command to check whether the container has been removed or not.
+
+  ```
+  docker container ls
+  ```
+
+  Now try removing the **--rm** flag from the docker run command to instantiate the container then stop & check whether container has been removed or not by running container list command.
+
+6.1.2 [ci.Dockerfile](./ci.Dockerfile):
+Typically in a Pipeline we would build a executable jar as part of initial task and store it as a artifact. Once the code meets all the quality requirements instead of rebuilding the jar this Dockerfile will copy the existing one from the specified path while creating the image.
+
+You must have Java installed in your workstation if not [click here to download](https://www.oracle.com/technetwork/java/javaee/documentation/ee8-install-guide-3894351.html).
+
+- Create a executable jar by running below command
+
+  ```
+  ./gradlew clean build
+  ```
+
+- Create a docker image using the ci.Dockerfile by executing below command
+
+  ```
+  docker build -f ci.Dockerfile -t companiehouse:0.0.1 .
+  ```
+
+  Here using the -f flag we can pass a non default dockerfile. Follow the same instruction as given Section 1 to test the application.
+
+6.1.3 Pushing & Pulling image from Docker Hub
+
+Now let us focus on distribution aspect of docker, So far we have learnt how to create docker image & its basic lifecycle but how we can share it with other developers or use in the application deployment.
+
+For this purpose we will be using Docker Hub which is the free Docker Registry for storing the docker images.
+
+[Click here](https://hub.docker.com/) to create a free docker hub account.
+
+Configure docker cli to use these new credentials:
+
+```
+docker login -u [DOCKER_HUB_USERNAME] -p [DOCKER_HUB_PASSWORD]
+```
+
+Build your image by executing below command:
+
+```
+docker build -t [DOCKER_HUB_USERNAME]/companyhouse:0.0.1 .
+```
+
+Then push the image to the remote registry.
+
+```
+docker push [DOCKER_HUB_USERNAME]/companyhouse:0.0.1
+```
+
+Open Docker hub & validate whether the docker image has been pushed successfully.
+
+Now let us delete the local docker image.
+
+```
+docker rmi companieshouse:0.0.1 -f
+```
+
+Validate the same by running:
+```
+docker images
+```
+
+Now let us pull the remote docker image:
+```
+docker pull [DOCKER_HUB_USERNAME]/companyhouse:0.0.1
+```
+
+or you can pull any other public image as pull doesn't require credentials for public images.
+
+Further Reading:
+- https://www.digitalocean.com/community/tutorials/the-docker-ecosystem-an-introduction-to-common-components
+- https://docs.docker.com/engine/reference/builder/
+- https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
+
 #### 6.2 CI and CD Pipeline Tools
 
 - #### [CircleCI](https://circleci.com/)
@@ -520,7 +710,7 @@ Now let us look at the key building blocks for achieving CI/CD.
 
   4. Click [here](.circleci/config.yml) to open the CircleCI config file for this project. When this config runs for the "workflow-all-jobs" the output pipeline is shown below and deploys the app to AWS EKS Cluster.
      ![](doc-resources/images/circleci-pipeline.png)
-  5. If you wish to use this config file in your project you must create a context "credentials" and add below Environment Variables to it with appropriate values.
+  5. If you wish to use this config file in your project you must create a context "credentials" and add below Environment Variables with respective values.
 
      Follow [link](https://circleci.com/docs/2.0/env-vars/?utm_medium=SEM&utm_source=gnb&utm_campaign=SEM-gb-DSA-Eng-ni&utm_content=&utm_term=dynamicSearch-&gclid=EAIaIQobChMIm_2blLze6QIVQeztCh3FGwh0EAAYASAAEgITlPD_BwE#setting-an-environment-variable-in-a-context) to learn how to do it.
 

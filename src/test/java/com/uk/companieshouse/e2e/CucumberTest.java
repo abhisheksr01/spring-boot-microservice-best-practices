@@ -17,5 +17,4 @@ import org.springframework.test.context.ActiveProfiles;
 @CucumberOptions(features = "src/test/resources", plugin = {"pretty",
         "html:build/reports/cucumber/cucumber-report.html"})
 public class CucumberTest {
-//        TODO: Fix Cucumber report not generating issue, the plugin is not accepting the params properly
 }

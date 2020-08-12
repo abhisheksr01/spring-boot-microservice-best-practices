@@ -1,11 +1,11 @@
 plugins {
-    id 'org.springframework.boot' version '2.3.1.RELEASE'
+    id 'org.springframework.boot' version '2.3.2.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
     id 'jacoco'
     id 'info.solidsoft.pitest' version '1.5.1'
     id 'checkstyle'
-    id "org.owasp.dependencycheck" version "5.3.2"
+    id "org.owasp.dependencycheck" version "5.3.2.1"
 }
 
 group = 'com.uk'
@@ -21,7 +21,7 @@ ext {
     lombokVersion = "1.18.12"
     wireMockVersion = "2.25.1"
     ioCucumberVersion = "6.4.0"
-    swaggerVersion = "2.9.2"
+    swaggerVersion = "3.0.0"
     jacocoVersion = "0.8.5"
 }
 
@@ -43,15 +43,12 @@ dependencies {
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     //Swagger
-    implementation "io.springfox:springfox-swagger2:${swaggerVersion}"
-    implementation "io.springfox:springfox-swagger-ui:${swaggerVersion}"
+    implementation "io.springfox:springfox-boot-starter:${swaggerVersion}"
     //pitest
     implementation 'org.pitest:pitest-junit5-plugin:0.12'
 
     // Fixing vulnerabilities
     implementation "com.google.guava:guava:29.0-jre"
-    implementation "org.apache.tomcat.embed:tomcat-embed-core:9.0.37"
-    implementation "org.apache.tomcat.embed:tomcat-embed-websocket:9.0.37"
     /*
      *https://docs.gradle.org/current/userguide/dependency_management.html#sec:module_substitution
      * Example 109. Example: Blacklisting a version with a replacement
@@ -74,6 +71,7 @@ dependencies {
     }
 }
 
+// Property can be passed along with test task to avoid execution of e2e
 test {
     if (project.hasProperty('excludee2e')) {
         exclude '**/*e2e*'
@@ -159,8 +157,9 @@ dependencyCheck {
     formats = ['HTML', 'JUNIT']
     // Specifies if the build should be failed if a CVSS score equal to or above a specified level is identified.
     failBuildOnCVSS = 7
+    // Output directory where the report should be generated
     outputDirectory = "build/reports/dependency-vulnerabilities"
-    // specify a list of known issues which contain false-positives
+    // specify a list of known issues which contain false-positives to be suppressed
     suppressionFiles = ["$projectDir/config/dependencycheck/dependency-check-suppression.xml"]
     // Sets the number of hours to wait before checking for new updates from the NVD, defaults to 4.
     cveValidForHours = 24

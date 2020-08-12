@@ -104,8 +104,8 @@ jobs:
           path: build/test-results/test
           when: always
       - *persist_to_workspace
-#  This is a generic parameterized gradle task execution job.
-#  At the moment it's being used by Jacoco,Checkstyle and Mutation Test jobs
+  #  This is a generic parameterized gradle task execution job.
+  #  At the moment it's being used by Jacoco,Checkstyle and Mutation Test jobs
   gradle_execute_task:
     executor: base-jdk8
     parameters:
