@@ -1,31 +1,32 @@
 {
-  "page_number": 1,
-  "kind": "search#companies",
-  "start_index": 0,
-  "items_per_page": 20,
-  "total_results": 1,
   "items": [
     {
-      "description_identifier": [
-        "incorporated-on"
-      ],
-      "company_status": "active",
-      "kind": "searchresults#company",
-      "company_type": "ltd",
+      "title": "123456789  LIMITED",
+      "company_number": "08240241",
       "address": {
-        "postal_code": "ABC 1234",
+        "postal_code": "W1U 2EL",
         "locality": "London",
-        "address_line_1": "Speke",
-        "premises": "First Floor Roger Street"
+        "address_line_1": "Bentinck Street",
+        "premises": "9 "
       },
+      "address_snippet": "9  Bentinck Street, London, W1U 2EL",
+      "date_of_cessation": "2014-12-23",
+      "company_type": "ltd",
+      "description": "08240241 - Dissolved on 23 December 2014",
       "links": {
-        "self": "/company/111111111"
+        "self": "/company/08240241"
       },
-      "title": "My Company",
-      "address_snippet": "First Floor Roger Street, London, ABC 123",
-      "date_of_creation": "2008-10-24",
-      "description": "111111111 - Incorporated on 24 October 2008",
-      "company_number": "111111111"
+      "description_identifier": [
+        "dissolved-on"
+      ],
+      "date_of_creation": "2012-10-04",
+      "kind": "searchresults#company",
+      "company_status": "dissolved"
     }
-  ]
+  ],
+  "total_results": 1,
+  "items_per_page": 20,
+  "page_number": 1,
+  "kind": "search#companies",
+  "start_index": 0
 }

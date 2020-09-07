@@ -1,17 +1,17 @@
 [
   {
-    "companyStatus": "active",
+    "companyStatus": "dissolved",
     "companyType": "ltd",
     "address": {
-      "postalCode": "ABC 1234",
+      "postalCode": "W1U 2EL",
       "locality": "London",
-      "addressLine1": "Speke",
-      "premises": "First Floor Roger Street"
+      "addressLine1": "Bentinck Street",
+      "premises": "9 "
     },
-    "title": "My Company",
-    "addressSnippet": "First Floor Roger Street, London, ABC 123",
-    "dateOfCreation": "2008-10-24",
-    "description": "111111111 - Incorporated on 24 October 2008",
-    "companyNumber": "111111111"
+    "title": "123456789  LIMITED",
+    "addressSnippet": "9  Bentinck Street, London, W1U 2EL",
+    "dateOfCreation": "2012-10-04",
+    "description": "08240241 - Dissolved on 23 December 2014",
+    "companyNumber": "08240241"
   }
 ]

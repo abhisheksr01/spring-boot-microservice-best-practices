@@ -1,9 +1,9 @@
 plugins {
-    id 'org.springframework.boot' version '2.3.2.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'org.springframework.boot' version '2.3.3.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     id 'java'
     id 'jacoco'
-    id 'info.solidsoft.pitest' version '1.5.1'
+    id 'info.solidsoft.pitest' version '1.5.2'
     id 'checkstyle'
     id "org.owasp.dependencycheck" version "5.3.2.1"
 }
@@ -20,7 +20,7 @@ ext {
     mapstructVersion = "1.3.1.Final"
     lombokVersion = "1.18.12"
     wireMockVersion = "2.25.1"
-    ioCucumberVersion = "6.4.0"
+    ioCucumberVersion = "6.6.0"
     swaggerVersion = "3.0.0"
     jacocoVersion = "0.8.5"
 }
@@ -37,6 +37,7 @@ dependencies {
     testImplementation "com.github.tomakehurst:wiremock:${wireMockVersion}"
     //Lombok Dependencies
     implementation "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     //MapStruct Dependencies
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
@@ -74,10 +75,23 @@ dependencies {
 // Property can be passed along with test task to avoid execution of e2e
 test {
     if (project.hasProperty('excludee2e')) {
+        println '********************************************************'
+        println '                   Excluding E2E tests'
+        println '********************************************************'
         exclude '**/*e2e*'
+    }
+    if (project.hasProperty('e2e')) {
+        println '********************************************************'
+        println '                   Executing E2E tests'
+        println '********************************************************'
+        //include all tests from package
+        filter {
+            includeTestsMatching "com.uk.companieshouse.e2e.*"
+        }
     }
     useJUnitPlatform()
 }
+
 //Checkstyle for code style and quality
 checkstyle {
     toolVersion '7.8.1'

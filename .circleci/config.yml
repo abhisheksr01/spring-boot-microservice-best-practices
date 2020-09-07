@@ -105,7 +105,7 @@ jobs:
           when: always
       - *persist_to_workspace
   #  This is a generic parameterized gradle task execution job.
-  #  At the moment it's being used by Jacoco,Checkstyle and Mutation Test jobs
+  #  At the moment it's being used by Jacoco,Checkstyle, Mutation & E2E Test jobs
   gradle_execute_task:
     executor: base-jdk8
     parameters:
@@ -122,7 +122,7 @@ jobs:
       - *restore_gradle_cache
       - run:
           name: << parameters.step_name >>
-          command: ./gradlew '<< parameters.gradle_task >>'
+          command: ./gradlew << parameters.gradle_task >>
       - store_artifacts:
           path: << parameters.artifact_path >>
           when: always
@@ -285,6 +285,14 @@ workflows:
       - health_check:
           <<: *credential_context
           name: Health Check
+          requires:
+            - Deploy app to K8S
+      - gradle_execute_task:
+          <<: *credential_context
+          name: Acceptance Tests
+          step_name: Run E2E tests against app deployed
+          gradle_task: test -Pe2e
+          artifact_path: build/reports/cucumber
           requires:
             - Deploy app to K8S
       - penetration_test:

@@ -6,3 +6,5 @@ server:
 govCompaniesHouse:
   endpoint: http://localhost:8005/search/companies?q={crn}
   authUserName: dummy-auth-user
+
+defaultURL: http://localhost:8081/

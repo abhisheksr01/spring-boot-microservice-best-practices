@@ -8,7 +8,7 @@ EXPOSE 8080
 RUN apk update
 
 RUN apk add --upgrade libtasn1 sqlite-libs musl-utils libjpeg-turbo \
-openjdk8-jre openjdk8-jre-base openjdk8-jre-lib
+openjdk8-jre openjdk8-jre-base openjdk8-jre-lib libx11
 
 ARG APPJAR=build/libs/companieshouse-0.0.1-SNAPSHOT.jar
 

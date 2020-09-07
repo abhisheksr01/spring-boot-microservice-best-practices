@@ -1,4 +1,4 @@
-# Spring Boot Micro Service Template
+# Spring Boot Micro Service Best Practices & Integrations
 
 ### Table of Content
 
@@ -386,7 +386,9 @@ where "companieshouse" is the context path.
  Docker image security scanning should be a core part of your Docker security strategy. </br>
  Although image scanning won't protect you from all possible security vulnerabilities, it's the primary means of defense against security flaws or insecure code within container images. It's therefore a foundational part of overall Docker security.
 
- In this section we are going to use [Trivy](https://github.com/aquasecurity/trivy).
+To learn how to containerize application [click here.](#61-docker-containerization)
+
+ In this section we'll be using [Trivy](https://github.com/aquasecurity/trivy).
 
  - Using Local Installation:</br>
    Click [here](https://github.com/aquasecurity/trivy#installation) to follow installation instructions.
@@ -566,7 +568,7 @@ This Dockerfile will be handy and is an example of using intermediate containers
   docker images
   ```
   Output:
-  
+
   ![](doc-resources/images/docker-images.png)
 
 - To start the container using the newly created docker image

@@ -25,4 +25,6 @@ public class Item {
     private String description;
     @JsonProperty("company_number")
     private String companyNumber;
+    @JsonProperty("date_of_cessation")
+    private String dateOfCessation;
 }

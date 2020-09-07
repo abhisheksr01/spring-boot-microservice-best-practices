@@ -1,8 +1,14 @@
 package com.uk.companieshouse.e2e;
 
+import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
 
-public abstract class SpringIntegration implements com.uk.companieshouse.e2e.WireMockService {
-    protected static final String DEFAULT_URL = "http://localhost:8081/";
+@Data
+public abstract class SpringIntegration implements WireMockService {
+
+    @Value("${defaultURL}")
+    private String defaultURL;
     protected RestTemplate restTemplate = new RestTemplate();
+
 }

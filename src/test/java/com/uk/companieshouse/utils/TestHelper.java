@@ -9,7 +9,7 @@ import static com.uk.companieshouse.utils.TestUtils.convertJsonToObject;
 import static org.springframework.util.CollectionUtils.arrayToList;
 
 public class TestHelper {
-    public static final String TESTCRN = "111111111";
+    public static final String TESTCRN = "08240241";
 
     public static List<CompaniesHouseResponse> getCompaniesHouseResponseList() {
         CompaniesHouseResponse companiesHouseResponse[] =
