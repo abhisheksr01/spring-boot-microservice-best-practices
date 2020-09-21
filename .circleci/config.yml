@@ -22,6 +22,9 @@ executors:
   docker-git:
     docker:
       - image: docker:stable-git
+  loadimpact-k6:
+    docker:
+      - image: loadimpact/k6
 
 aliases:
   - &mount_workspace
@@ -224,6 +227,20 @@ jobs:
             mv wrk/* ../home/zap/project/
       - store_artifacts:
           path: .
+  load_performance_test:
+    executor: loadimpact-k6
+    steps:
+      - checkout
+      - run:
+          name: Load Performance Test - K6
+          working_directory: ~/project/performance-testing
+          command: |
+            echo "Starting load performance test"
+            k6 run -e MY_HOSTNAME=${defaultUrl} -u 50 -d 10s script.js > load_performance_test.txt
+            echo "Completed load performance test"
+      - store_artifacts:
+          path: ~/project/performance-testing/load_performance_test.txt
+          when: always
 
 workflows:
   version: 2.1
@@ -298,6 +315,11 @@ workflows:
       - penetration_test:
           <<: *credential_context
           name: Penetration Test
+          requires:
+            - Deploy app to K8S
+      - load_performance_test:
+          <<: *credential_context
+          name: Load Performance Test
           requires:
             - Deploy app to K8S
   scheduled-vulnerability-check:
