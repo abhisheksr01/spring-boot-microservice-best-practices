@@ -1,0 +1,78 @@
+Start a load test.
+
+This also exposes a REST API to interact with it. Various k6 subcommands offer
+a commandline interface for interacting with it.
+
+Usage:
+  k6 run [flags]
+
+Examples:
+  # Run a single VU, once.
+  k6 run script.js
+
+  # Run a single VU, 10 times.
+  k6 run -i 10 script.js
+
+  # Run 5 VUs, splitting 10 iterations between them.
+  k6 run -u 5 -i 10 script.js
+
+  # Run 5 VUs for 10s.
+  k6 run -u 5 -d 10s script.js
+
+  # Ramp VUs from 0 to 100 over 10s, stay there for 60s, then 10s down to 0.
+  k6 run -u 0 -s 10s:100 -s 60s -s 10s:0
+
+  # Send metrics to an influxdb server
+  k6 run -o influxdb=http://1.2.3.4:8086/k6
+
+Flags:
+  -u, --vus int                             number of virtual users (default 1)
+  -d, --duration duration                   test duration limit
+  -i, --iterations int                      script total iteration limit (among all VUs)
+  -s, --stage stage                         add a stage, as `[duration]:[target]`
+      --execution-segment string            limit execution to the specified segment, e.g. 10%, 1/3, 0.2:2/3
+      --execution-segment-sequence string   the execution segment sequence
+  -p, --paused                              start the test in a paused state
+      --no-setup                            don't run setup()
+      --no-teardown                         don't run teardown()
+      --max-redirects int                   follow at most n redirects (default 10)
+      --batch int                           max parallel batch reqs (default 20)
+      --batch-per-host int                  max parallel batch reqs per host (default 6)
+      --rps int                             limit requests per second
+      --user-agent string                   user agent for http requests (default "k6/0.27.1 (https://k6.io/)")
+      --http-debug string[="headers"]       log all HTTP requests and responses. Excludes body by default. To include body use '--http-debug=full'
+      --insecure-skip-tls-verify            skip verification of TLS certificates
+      --no-connection-reuse                 disable keep-alive connections
+      --no-vu-connection-reuse              don't reuse connections between iterations
+      --min-iteration-duration duration     minimum amount of time k6 will take executing a single iteration
+  -w, --throw                               throw warnings (like failed http requests) as errors
+      --blacklist-ip ip range               blacklist an ip range from being called
+      --summary-trend-stats stats           define stats for trend metrics (response times), one or more as 'avg,p(95),...' (default 'avg,min,med,max,p(90),p(95)')
+      --summary-time-unit string            define the time unit used to display the trend stats. Possible units are: 's', 'ms' and 'us'
+      --system-tags strings                 only include these system tags in metrics (default "proto,subproto,status,method,url,name,group,check,error,error_code,tls_version,scenario")
+      --tag tag                             add a tag to be applied to all samples, as `[name]=[value]`
+      --console-output string               redirects the console logging to the provided output file
+      --discard-response-bodies             Read but don't process or save HTTP response bodies
+      --include-system-env-vars             pass the real system environment variables to the runtime (default true)
+      --compatibility-mode string           JavaScript compiler compatibility mode, "extended" or "base"
+                                            base: pure Golang JS VM supporting ES5.1+
+                                            extended: base + Babel with ES2015 preset + core.js v2,
+                                                      slower and memory consuming but with greater JS support
+                                             (default "extended")
+  -e, --env VAR=value                       add/override environment variable with VAR=value
+  -o, --out uri                             uri for an external metrics database
+  -l, --linger                              keep the API server alive past test end
+      --no-usage-report                     don't send anonymous stats to the developers
+      --no-thresholds                       don't run thresholds
+      --no-summary                          don't show the summary at the end of the test
+      --summary-export string               output the end-of-test summary report to JSON file
+  -t, --type type                           override file type, "js" or "archive"
+  -h, --help                                help for run
+
+Global Flags:
+  -a, --address string     address for the api server (default "localhost:6565")
+  -c, --config string      JSON config file (default "/home/k6/.config/loadimpact/k6/config.json")
+      --logformat string   log output format
+      --no-color           disable colored output
+  -q, --quiet              disable progress updates
+  -v, --verbose            enable debug logging
