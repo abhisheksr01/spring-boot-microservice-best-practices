@@ -1,6 +1,6 @@
 node {
     stage("Clone the project - GitHub") {
-        git 'https://github.com/abhisheksr01/companies-house-microservice-template.git'
+        git 'https://github.com/abhisheksr01/spring-boot-microservice-best-practices.git'
     }
 
     stage("Static Code Analysis - Checkstyle") {
