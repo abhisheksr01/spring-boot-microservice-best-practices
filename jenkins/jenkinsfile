@@ -1,25 +1,25 @@
 node {
     stage("Clone the project - GitHub") {
-        git 'https://github.com/abhisheksr01/companies-house-microservice-template.git'
+        git 'https://github.com/abhisheksr01/spring-boot-microservice-best-practices.git'
     }
 
     stage("Static Code Analysis - Checkstyle") {
         sh "./gradlew clean check"
         publishHTML target: [
-                allowMissing         : false,
-                alwaysLinkToLastBuild: false,
-                keepAll              : true,
-                reportDir            : 'build/reports/checkstyle',
-                reportFiles          : 'main.html',
-                reportName           : 'CheckStyle - Main Class Report'
+            allowMissing         : false,
+            alwaysLinkToLastBuild: false,
+            keepAll              : true,
+            reportDir            : 'build/reports/checkstyle',
+            reportFiles          : 'main.html',
+            reportName           : 'CheckStyle - Main Class Report'
         ]
         publishHTML target: [
-                allowMissing         : false,
-                alwaysLinkToLastBuild: false,
-                keepAll              : true,
-                reportDir            : 'build/reports/checkstyle',
-                reportFiles          : 'test.html',
-                reportName           : 'CheckStyle - Test Class Report'
+            allowMissing         : false,
+            alwaysLinkToLastBuild: false,
+            keepAll              : true,
+            reportDir            : 'build/reports/checkstyle',
+            reportFiles          : 'test.html',
+            reportName           : 'CheckStyle - Test Class Report'
         ]
     }
 
@@ -32,16 +32,15 @@ node {
             sh "./gradlew test -Pexcludee2e=**/true*\n"
 
             publishHTML target: [
-                    allowMissing         : false,
-                    alwaysLinkToLastBuild: false,
-                    keepAll              : true,
-                    reportDir            : 'build/reports/tests/test',
-                    reportFiles          : 'index.html',
-                    reportName           : 'Unit Test Report'
+                allowMissing: false,
+                alwaysLinkToLastBuild: false,
+                keepAll: true,
+                reportDir: 'build/reports/tests/test',
+                reportFiles: 'index.html',
+                reportName: 'Unit Test Report'
             ]
         } catch (err) {
-            step([$class: 'JUnitResultArchiver', testResults:
-                    '**/target/surefire-reports/TEST-*UnitTest.xml'])
+            step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*UnitTest.xml'])
             throw err
         }
     }
@@ -51,12 +50,12 @@ node {
         sh "./gradlew jacocoTestCoverageVerification"
 
         publishHTML target: [
-                allowMissing         : false,
-                alwaysLinkToLastBuild: false,
-                keepAll              : true,
-                reportDir            : 'build/reports/jacocoHtml',
-                reportFiles          : 'index.html',
-                reportName           : 'Jacoco Coverage Report'
+            allowMissing: false,
+            alwaysLinkToLastBuild: false,
+            keepAll: true,
+            reportDir: 'build/reports/jacocoHtml',
+            reportFiles: 'index.html',
+            reportName: 'Jacoco Coverage Report'
         ]
     }
 
@@ -64,21 +63,47 @@ node {
         sh "./gradlew test --tests com.uk.companieshouse.e2e"
 
         publishHTML target: [
-                allowMissing         : false,
-                alwaysLinkToLastBuild: false,
-                keepAll              : true,
-                reportDir            : 'build/reports/cucumber',
-                reportFiles          : 'index.html',
-                reportName           : 'Cucumber BDD Report'
+            allowMissing: false,
+            alwaysLinkToLastBuild: false,
+            keepAll: true,
+            reportDir: 'build/reports/cucumber',
+            reportFiles: 'cucumber-report.html',
+            reportName: 'Cucumber BDD Report'
         ]
     }
 
     stage("Mutation Testing - Pitest") {
         try {
             sh "./gradlew pitest"
+
+            publishHTML target: [
+                allowMissing: false,
+                alwaysLinkToLastBuild: false,
+                keepAll: true,
+                reportDir: 'build/reports/cucumber',
+                reportFiles: 'index.html',
+                reportName: 'Mutation Testing Report'
+            ]
         } catch (err) {
-            step([$class: 'JUnitResultArchiver', testResults:
-                    '**/target/surefire-reports/TEST-*UnitTest.xml'])
+            step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*UnitTest.xml'])
+            throw err
+        }
+    }
+
+    stage("Dependency Vulnerability Check") {
+        try {
+            sh "./gradlew dependencyCheckAnalyze"
+
+            publishHTML target: [
+                allowMissing: false,
+                alwaysLinkToLastBuild: false,
+                keepAll: true,
+                reportDir: 'build/reports/dependency-vulnerabilities',
+                reportFiles: 'dependency-check-report.html',
+                reportName: 'Dependency Vulnerability Check Report'
+            ]
+        } catch (err) {
+            step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*UnitTest.xml'])
             throw err
         }
     }
