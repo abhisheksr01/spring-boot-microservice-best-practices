@@ -17,8 +17,8 @@ repositories {
 }
 
 ext {
-    mapstructVersion = "1.4.0.Final"
-    lombokVersion = "1.18.12"
+    mapstructVersion = "1.4.1.Final"
+    lombokVersion = "1.18.16"
     wireMockVersion = "2.25.1"
     ioCucumberVersion = "6.8.1"
     swaggerVersion = "3.0.0"
@@ -52,7 +52,7 @@ dependencies {
     implementation 'org.pitest:pitest-junit5-plugin:0.12'
 
     // Fixing vulnerabilities
-    implementation "com.google.guava:guava:29.0-jre"
+    implementation "com.google.guava:guava:30.0-jre"
     /*
      *https://docs.gradle.org/current/userguide/dependency_management.html#sec:module_substitution
      * Example 109. Example: Blacklisting a version with a replacement
@@ -60,7 +60,7 @@ dependencies {
     configurations.all {
         resolutionStrategy.eachDependency { DependencyResolveDetails details ->
             if (details.requested.group == 'com.google.guava' && details.requested.name == 'guava' && details.requested.version == '21.0') {
-                details.useVersion '29.0-jre'
+                details.useVersion '30.0-jre'
                 details.because 'Fixes vulnerability in prior guava versions'
             }
         }
