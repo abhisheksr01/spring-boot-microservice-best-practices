@@ -1,11 +1,11 @@
 plugins {
-    id 'org.springframework.boot' version '2.3.4.RELEASE'
+    id 'org.springframework.boot' version '2.3.5.RELEASE'
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     id 'java'
     id 'jacoco'
     id 'info.solidsoft.pitest' version '1.5.2'
     id 'checkstyle'
-    id "org.owasp.dependencycheck" version "6.0.2"
+    id "org.owasp.dependencycheck" version "6.0.3"
 }
 
 group = 'com.uk'
@@ -20,7 +20,7 @@ ext {
     mapstructVersion = "1.4.1.Final"
     lombokVersion = "1.18.16"
     wireMockVersion = "2.25.1"
-    ioCucumberVersion = "6.8.1"
+    ioCucumberVersion = "6.8.2"
     swaggerVersion = "3.0.0"
     jacocoVersion = "0.8.5"
 }

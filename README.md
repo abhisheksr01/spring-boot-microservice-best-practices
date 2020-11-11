@@ -559,7 +559,7 @@ This Dockerfile will be handy and is an example of using intermediate containers
 
 - Execute below command to build a docker image, if no docker file is specified in CLI it defaults to **Dockerfile**.
   ```
-  docker build -tag companieshouse:latest .
+  docker build -t companieshouse:latest .
   ```
   where **companieshouse:latest** follows the syntax of **[IMAGE_NAME]:[TAG]**
 
@@ -631,7 +631,7 @@ You must have Java installed in your workstation if not [click here to download]
 - Create a docker image using the ci.Dockerfile by executing below command
 
   ```
-  docker build -f ci.Dockerfile -t companiehouse:0.0.1 .
+  docker build -f ci.Dockerfile -t companieshouse:0.0.1 .
   ```
 
   Here using the -f flag we can pass a non default dockerfile. Follow the same instruction as given Section 1 to test the application.
