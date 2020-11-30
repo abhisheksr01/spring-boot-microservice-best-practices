@@ -5,11 +5,11 @@ resources:
     source:
       branch: master
       uri: https://github.com/abhisheksr01/spring-boot-microservice-best-practices.git
-  - name: jdk8-docker-image
+  - name: gradle-jdk8-image
     type: registry-image
     source:
-      repository: openjdk
-      tag: 8-jdk-slim
+      repository: gradle
+      tag: 6.7.1-jdk8
 
 jobs:
   - name: build
@@ -17,7 +17,14 @@ jobs:
     serial_groups: [serial-group]
     plan:
     - get: source-repo
-    - get: jdk8-docker-image
-    - task: build-project
-      file: source-repo/concourse-ci/tasks/build/build.yml
-      image: jdk8-docker-image
+    - get: gradle-jdk8-image
+    - task: Mutaion Testing
+      file: source-repo/concourse-ci/tasks/gradle/task.yml
+      image: gradle-jdk8-image
+      params:
+        GRADLE_TASK: pitest
+    - task: Static Checkstyle
+        file: source-repo/concourse-ci/tasks/gradle/task.yml
+        image: gradle-jdk8-image
+        params:
+          GRADLE_TASK: check

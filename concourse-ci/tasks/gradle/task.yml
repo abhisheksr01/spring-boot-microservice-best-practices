@@ -1,0 +1,11 @@
+---
+platform: linux
+
+inputs:
+- name: source-repo
+
+params:
+  GRADLE_TASK:
+
+run:
+  path: source-repo/concourse-ci/tasks/gradle/task.sh
