@@ -1,0 +1,23 @@
+resources:
+  - name: source-repo
+    type: git
+    icon: github
+    source:
+      branch: master
+      uri: https://github.com/abhisheksr01/spring-boot-microservice-best-practices.git
+  - name: jdk8-docker-image
+    type: registry-image
+    source:
+      repository: openjdk
+      tag: 8-jdk-slim
+
+jobs:
+  - name: build
+    serial: true
+    serial_groups: [serial-group]
+    plan:
+    - get: source-repo
+    - get: jdk8-docker-image
+    - task: build-project
+      file: source-repo/concourse-ci/tasks/build/build.yml
+      image: jdk8-docker-image
