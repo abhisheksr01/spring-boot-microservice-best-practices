@@ -176,7 +176,7 @@ jobs:
       - persist_to_workspace:
           root: /root/project
           paths:
-            - version.txt
+            - docker-version.txt
   check_image_vulnerability:
     description: Use Trivy to check the final docker image vulnerabilities before deployment
     executor: trivy

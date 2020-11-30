@@ -12,19 +12,48 @@ resources:
       tag: 6.7.1-jdk8
 
 jobs:
-  - name: build
-    serial: true
-    serial_groups: [serial-group]
+  - name: unit-e2e-tests-and-code-coverage
+    plan:
+      - get: source-repo
+        trigger: true
+      - get: gradle-jdk8-image
+      - task: unit-and-e2e-tests
+        file: source-repo/concourse-ci/tasks/gradle/task.yml
+        image: gradle-jdk8-image
+        params:
+          GRADLE_TASK: test
+      - task: jacoco-code-coverage
+        file: source-repo/concourse-ci/tasks/gradle/task.yml
+        image: gradle-jdk8-image
+        params:
+          GRADLE_TASK: jacocoTestCoverageVerification
+  - name: mutation-testing
     plan:
     - get: source-repo
+      trigger: true
     - get: gradle-jdk8-image
-    - task: Mutaion Testing
+    - task: pitest
       file: source-repo/concourse-ci/tasks/gradle/task.yml
       image: gradle-jdk8-image
       params:
         GRADLE_TASK: pitest
-    - task: Static Checkstyle
-        file: source-repo/concourse-ci/tasks/gradle/task.yml
-        image: gradle-jdk8-image
-        params:
-          GRADLE_TASK: check
+  - name: static-code-analysis
+    plan:
+    - get: source-repo
+      trigger: true
+    - get: gradle-jdk8-image
+    - task: checkstyle
+      file: source-repo/concourse-ci/tasks/gradle/task.yml
+      image: gradle-jdk8-image
+      params:
+        GRADLE_TASK: check
+  - name: dependency-vulnerability-scan
+    plan:
+    - get: source-repo
+      trigger: true
+    - get: gradle-jdk8-image
+    - task: dependency-check-analyze
+      file: source-repo/concourse-ci/tasks/gradle/task.yml
+      image: gradle-jdk8-image
+      params:
+        GRADLE_TASK: dependencyCheckAnalyze
