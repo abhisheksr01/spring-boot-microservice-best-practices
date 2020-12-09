@@ -4,7 +4,11 @@ set -euo pipefail
 
 : "${EKS_NAMESPACE}"
 : "${RELEASE_NAME}"
-VERSION=$(cat docker-version.txt)
+echo "show files in version dir"
+ls version
+echo "print content of test.txt"
+cat version/test.txt
+VERSION=$(cat version/docker-version.txt)
 echo "Deploying app version : ${VERSION}"
 helm upgrade \
 --install \

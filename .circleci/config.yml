@@ -15,7 +15,7 @@ executors:
       - image: aquasec/trivy:latest
   helm:
     docker:
-      - image: nukengprodservice/helm@sha256:9aaf8f88769c84b3e26d51dc81829a3d678770d9f83b871f4918d5b1f5dbf6fa
+      - image: nukengprodservice/helm:latest
   owasp-zap:
     docker:
       - image: owasp/zap2docker-stable:latest
@@ -174,9 +174,10 @@ jobs:
           path: reports
           when: always
       - persist_to_workspace:
-          root: /root/project
+          root: /root/project/version
           paths:
             - docker-version.txt
+            - test.txt
   check_image_vulnerability:
     description: Use Trivy to check the final docker image vulnerabilities before deployment
     executor: trivy

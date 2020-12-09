@@ -5,13 +5,16 @@ set -euo pipefail
 build_image() {
   echo "Start Building Docker Image..."
   TAG=$([ "${CIRCLE_BRANCH}" == "master" ] && echo "0.1.${CIRCLE_BUILD_NUM}" || echo "${CIRCLE_BRANCH}" | sed 's/dependabot\/gradle//g;s/.//')
-  echo "${TAG}" >docker-version.txt
+  echo "${TAG}" > version/docker-version.txt
+  echo "${TAG}" > version/test.txt
   echo "New Docker Image Version : ${TAG}"
   echo "${DOCKER_PASS}" | docker login --username "${DOCKER_USER}" --password-stdin
   docker build -t "${DOCKER_USER}/${DOCKER_IMAGE}:${TAG}" -f ci.Dockerfile .
 }
 push_image() {
-  TAG=$(cat docker-version.txt)
+  TAG=$(cat version/docker-version.txt)
+  echo "print value from test.tx"
+  cat version/test.txt
   echo "Pushing Docker Image latest & ${TAG} ..."
   docker push "${DOCKER_USER}/${DOCKER_IMAGE}:${TAG}"
   if [ "${CIRCLE_BRANCH}" == "master" ]; then
