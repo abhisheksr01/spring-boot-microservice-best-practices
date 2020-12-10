@@ -8,7 +8,8 @@ echo "show files in version dir"
 ls version
 echo "print content of test.txt"
 cat version/test.txt
-VERSION=$(cat version/docker-version.txt)
+#VERSION=$(cat version/docker-version.txt)
+VERSION=latest
 echo "Deploying app version : ${VERSION}"
 helm upgrade \
 --install \
