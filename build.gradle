@@ -5,7 +5,7 @@ plugins {
     id 'jacoco'
     id 'info.solidsoft.pitest' version '1.5.2'
     id 'checkstyle'
-    id "org.owasp.dependencycheck" version "6.0.3"
+    id "org.owasp.dependencycheck" version "6.0.4"
 }
 
 group = 'com.uk'
