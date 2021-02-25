@@ -16,9 +16,9 @@ import static org.springframework.util.CollectionUtils.isEmpty;
 @Component
 public class CompaniesHouseConnector {
 
-    private String authUsername;
-    private String govCompaniesHouseEndpoint;
-    private RestTemplate restTemplate;
+    private final String authUsername;
+    private final String govCompaniesHouseEndpoint;
+    private final RestTemplate restTemplate;
 
     public CompaniesHouseConnector(@Value("${govCompaniesHouse.endpoint}") String govCompaniesHouseEndpoint,
                                    @Value("${govCompaniesHouse.authUserName}") String authUsername,

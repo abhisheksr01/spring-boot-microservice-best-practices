@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
 class CompaniesHouseControllerTest {
     private CompaniesHouseController companiesHouseController;
     private CompaniesHouseService mockCompaniesHouseService;
-    private List<CompaniesHouseResponse> expectedCompaniesHouseResponse = getCompaniesHouseResponseList();
+    private final List<CompaniesHouseResponse> expectedCompaniesHouseResponse = getCompaniesHouseResponseList();
 
     @BeforeEach
     void setUp() {

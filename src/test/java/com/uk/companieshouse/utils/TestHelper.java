@@ -6,16 +6,16 @@ import com.uk.companieshouse.model.CompaniesHouseResponse;
 import java.util.List;
 
 import static com.uk.companieshouse.utils.TestUtils.convertJsonToObject;
-import static org.springframework.util.CollectionUtils.arrayToList;
+import static java.util.Arrays.asList;
 
 public class TestHelper {
     public static final String TESTCRN = "08240241";
 
     public static List<CompaniesHouseResponse> getCompaniesHouseResponseList() {
-        CompaniesHouseResponse companiesHouseResponse[] =
+        CompaniesHouseResponse[] companiesHouseResponse =
                 convertJsonToObject
                         ("__files/companies-house-response.json", CompaniesHouseResponse[].class);
-        return arrayToList(companiesHouseResponse);
+        return asList(companiesHouseResponse);
     }
 
     public static CompaniesHouseGovUKResponse getCompaniesHouseGovUKResponse() {

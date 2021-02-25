@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 public class CompaniesHouseController {
 
-    private CompaniesHouseService companiesHouseService;
+    private final CompaniesHouseService companiesHouseService;
 
     public CompaniesHouseController(CompaniesHouseService companiesHouseService) {
         this.companiesHouseService = companiesHouseService;

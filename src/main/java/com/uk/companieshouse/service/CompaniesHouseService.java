@@ -14,7 +14,7 @@ import static com.uk.companieshouse.mapper.CompaniesHouseGovUKResponseToCompanie
 @Service
 public class CompaniesHouseService {
 
-    private CompaniesHouseConnector companiesHouseConnector;
+    private final CompaniesHouseConnector companiesHouseConnector;
 
     public CompaniesHouseService(CompaniesHouseConnector companiesHouseService) {
         this.companiesHouseConnector = companiesHouseService;

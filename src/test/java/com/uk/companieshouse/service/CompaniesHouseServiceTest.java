@@ -17,8 +17,8 @@ class CompaniesHouseServiceTest {
 
     private CompaniesHouseService companiesHouseService;
     private CompaniesHouseConnector mockCompaniesHouseConnector;
-    private CompaniesHouseGovUKResponse companiesHouseGovUKResponse = getCompaniesHouseGovUKResponse();
-    private List<CompaniesHouseResponse> expectedCompaniesHouseResponse = getCompaniesHouseResponseList();
+    private final CompaniesHouseGovUKResponse companiesHouseGovUKResponse = getCompaniesHouseGovUKResponse();
+    private final List<CompaniesHouseResponse> expectedCompaniesHouseResponse = getCompaniesHouseResponseList();
 
     @BeforeEach
     void setUp() {
