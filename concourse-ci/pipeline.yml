@@ -1,3 +1,9 @@
+resource_types:
+  - name: build-metadata
+    type: docker-image
+    source:
+      repository: swce/metadata-resource
+
 resources:
   - name: source-repo
     type: git
@@ -10,6 +16,13 @@ resources:
     source:
       repository: gradle
       tag: 6.7.1-jdk8
+  - name: concourse-dcind-image
+    icon: docker
+    type: registry-image
+    source:
+      repository: karlkfi/concourse-dcind
+  - name: build-metadata
+    type: build-metadata
 
 jobs:
   - name: unit-e2e-tests-and-code-coverage
@@ -31,6 +44,8 @@ jobs:
     plan:
     - get: source-repo
       trigger: true
+      passed:
+        - unit-e2e-tests-and-code-coverage
     - get: gradle-jdk8-image
     - task: pitest
       file: source-repo/concourse-ci/tasks/gradle/task.yml
@@ -51,9 +66,28 @@ jobs:
     plan:
     - get: source-repo
       trigger: true
+      passed:
+        - static-code-analysis
     - get: gradle-jdk8-image
     - task: dependency-check-analyze
       file: source-repo/concourse-ci/tasks/gradle/task.yml
       image: gradle-jdk8-image
       params:
         GRADLE_TASK: dependencyCheckAnalyze
+  - name: docker-build-scan-push
+    plan:
+    - get: source-repo
+      trigger: true
+      passed:
+        - mutation-testing
+        - dependency-vulnerability-scan
+    - get: concourse-dcind-image
+    - get: build-metadata
+    - task: build-image
+      privileged: true
+      file: source-repo/concourse-ci/tasks/image-build/build.yml
+      image: concourse-dcind-image
+      params:
+        DOCKER_USER : ((docker_user))
+        DOCKER_PASS : ((docker_pass))
+        DOCKER_IMAGE : ((docker_image))

@@ -1,0 +1,27 @@
+---
+platform: linux
+
+inputs:
+  - name: source-repo
+  - name: build-metadata
+
+run:
+  path: entrypoint.sh
+  args:
+    - bash
+    - -ceu
+    - |
+      mkdir /root/.docker/
+
+      TAG="$(cat build-metadata/build-id)"
+      cd source-repo/
+      echo "${DOCKER_PASS}" | docker login --username "${DOCKER_USER}" --password-stdin
+      docker build -t "${DOCKER_USER}/${DOCKER_IMAGE}:${TAG}" -f Dockerfile .
+      docker tag "${DOCKER_USER}/${DOCKER_IMAGE}:${TAG}" "${DOCKER_USER}/${DOCKER_IMAGE}:latest"
+
+      echo "Scanning the local docker image for vulnerabilities..."
+      ./.circleci/scripts/vulnerability-checks.sh
+
+      echo "Pushing the docker images with tag ${TAG} & latest..."
+      docker push "${DOCKER_USER}/${DOCKER_IMAGE}:${TAG}"
+      docker push "${DOCKER_USER}/${DOCKER_IMAGE}:latest"
