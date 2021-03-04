@@ -91,7 +91,7 @@ jobs:
     - get: build-metadata
     - task: build-image
       privileged: true
-      file: source-repo/concourse-ci/tasks/image-build/build.yml
+      file: source-repo/concourse-ci/tasks/docker/build-image.yml
       image: concourse-dcind-image
       params:
         DOCKER_USER : ((docker_user))
