@@ -12,8 +12,8 @@ run:
     - -ceu
     - |
       mkdir /root/.docker/
-
       TAG="$(cat build-metadata/build-id)"
+
       cd source-repo/
       echo "${DOCKER_PASS}" | docker login --username "${DOCKER_USER}" --password-stdin
       docker build -t "${DOCKER_USER}/${DOCKER_IMAGE}:${TAG}" -f Dockerfile .

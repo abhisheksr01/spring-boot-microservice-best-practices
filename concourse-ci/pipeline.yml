@@ -21,6 +21,12 @@ resources:
     type: registry-image
     source:
       repository: karlkfi/concourse-dcind
+  - name: helm
+    icon: docker
+    type: registry-image
+    source:
+      repository: abhisheksr01/eks-helm
+      tag: latest
   - name: build-metadata
     type: build-metadata
 
@@ -91,3 +97,22 @@ jobs:
         DOCKER_USER : ((docker_user))
         DOCKER_PASS : ((docker_pass))
         DOCKER_IMAGE : ((docker_image))
+  - name: k8s-deploy
+    plan:
+    - get: source-repo
+      trigger: true
+      passed:
+        - docker-build-scan-push
+    - get: helm
+    - task: app-helm-deploy
+      privileged: true
+      file: source-repo/concourse-ci/tasks/helm/helm-deployment.yml
+      image: helm
+      params:
+        EKS_CLUSTER_NAME: ((eks_cluster_name))
+        AWS_DEFAULT_REGION: ((aws_default_region))
+        EKS_NAMESPACE: ((eks_namespace))
+        AUTH_USERNAME: ((auth_username))
+        RELEASE_NAME: ((release_name))
+        AWS_ACCESS_KEY_ID: ((aws_access_key_id))
+        AWS_SECRET_ACCESS_KEY: ((aws_secret_access_key))
