@@ -11,11 +11,13 @@ resources:
     source:
       branch: master
       uri: https://github.com/abhisheksr01/spring-boot-microservice-best-practices.git
+  - name: build-metadata
+    type: build-metadata
   - name: gradle-jdk8-image
     type: registry-image
     source:
       repository: gradle
-      tag: 6.7.1-jdk8
+      tag: 6.8.3-jdk8
   - name: concourse-dcind-image
     icon: docker
     type: registry-image
@@ -27,8 +29,21 @@ resources:
     source:
       repository: abhisheksr01/eks-helm
       tag: latest
-  - name: build-metadata
-    type: build-metadata
+  - name: alpine
+    type: registry-image
+    source:
+      repository: abhisheksr01/alpine
+      tag: latest
+  - name: zap
+    type: registry-image
+    source:
+      repository: owasp/zap2docker-stable
+      tag: latest
+  - name: loadimpact-k6
+    type: registry-image
+    source:
+      repository: loadimpact/k6
+      tag: latest
 
 jobs:
   - name: unit-e2e-tests-and-code-coverage
@@ -116,3 +131,84 @@ jobs:
         RELEASE_NAME: ((release_name))
         AWS_ACCESS_KEY_ID: ((aws_access_key_id))
         AWS_SECRET_ACCESS_KEY: ((aws_secret_access_key))
+  # Example of how can we execute a job with inline commands rather than task files
+  - name: health-check
+    plan:
+    - get: source-repo
+      trigger: true
+      passed:
+        - k8s-deploy
+    - get: alpine
+    - task: health-check
+      params:
+        HEALTH_ENDPOINT: ((health_endpoint))
+      image: alpine
+      config:
+        platform: linux
+        inputs:
+          - name: source-repo
+        run:
+          path: /bin/sh
+          args:
+            - -c
+            - |
+              ./source-repo/.circleci/scripts/health-check.sh
+  - name: penetration-test
+    plan:
+      - get: source-repo
+        trigger: true
+        passed:
+          - k8s-deploy
+      - get: zap
+      - task: pen-test
+        params:
+          HEALTH_ENDPOINT: ((health_endpoint))
+        image: zap
+        config:
+          platform: linux
+          inputs:
+            - name: source-repo
+          run:
+            path: /bin/sh
+            args:
+              - -c
+              - |
+                cd ../../../zap/
+                echo "Running from containers home zap directory..."
+                mkdir wrk && zap-baseline.py -t "${HEALTH_ENDPOINT}" -g gen.conf -r penetration-test-report.html || :
+  - name: load-performance-test
+    plan:
+      - get: source-repo
+        trigger: true
+        passed:
+          - k8s-deploy
+      - get: loadimpact-k6
+      - task: load-test
+        params:
+          HEALTH_ENDPOINT: ((health_endpoint))
+        image: loadimpact-k6
+        config:
+          platform: linux
+          inputs:
+            - name: source-repo
+          run:
+            path: /bin/sh
+            args:
+              - -c
+              - |
+                cd source-repo/performance-testing
+                echo "Starting load performance test"
+                k6 run -e MY_HOSTNAME=${defaultUrl} -u 50 -d 10s script.js
+                echo "Completed load performance test"
+  - name: accpetance-test
+    plan:
+    - get: source-repo
+      trigger: true
+      passed:
+        - k8s-deploy
+    - get: gradle-jdk8-image
+    - task: e2e-acceptance-test
+      file: source-repo/concourse-ci/tasks/gradle/task.yml
+      image: gradle-jdk8-image
+      params:
+        GRADLE_TASK: test -Pe2e

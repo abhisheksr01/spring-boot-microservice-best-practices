@@ -554,7 +554,7 @@ Although in a real world scenario you will typically have only 1 Dockerfile but 
 
 6.1.1 [Dockerfile](./Dockerfile):
 
-It uses an intermediate **gradle:6.5-jdk8** container for building an executable jar and then **openjdk:8-jre-alpine** as a base image  by copying the jar for application docker image.</br>
+It uses an intermediate **gradle:6.8.3-jdk8** container for building an executable jar and then **openjdk:8-jre-alpine** as a base image  by copying the jar for application docker image.</br>
 This Dockerfile will be handy and is an example of using intermediate containers when we do not have respective runtime (JAVA) & package manager (gradle) installed locally for building the executable application.
 
 - Execute below command to build a docker image, if no docker file is specified in CLI it defaults to **Dockerfile**.

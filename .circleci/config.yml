@@ -7,9 +7,9 @@ executors:
       # Configure the JVM and Gradle to avoid OOM errors
       _JAVA_OPTIONS: "-Xmx3g"
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
-  circleci-ubuntu:
+  alpine:
     docker:
-      - image: cimg/base:2020.01
+      - image: abhisheksr01/alpine:latest
   trivy:
     docker:
       - image: aquasec/trivy:latest
@@ -209,7 +209,7 @@ jobs:
             EKS_NAMESPACE="${EKS_NAMESPACE}" \
             ./.circleci/scripts/helm-deploy.sh
   health_check:
-    executor: circleci-ubuntu
+    executor: alpine
     steps:
       - checkout
       - run:
