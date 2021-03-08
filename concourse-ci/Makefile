@@ -43,5 +43,5 @@ destroy-pipeline: fly-target
 .PHONY: hijack
 ## hijack the pipeline job
 hijack: fly-target
-	@fly -t ${CI_TEAM} hijack -u http://127.0.0.1:8080/teams/main/pipelines/spring-boot-best-practices/jobs/{job_name}
+	@fly -t ${CI_TEAM} hijack -u http://127.0.0.1:8080/teams/main/pipelines/spring-boot-best-practices/jobs/${job_name}
 

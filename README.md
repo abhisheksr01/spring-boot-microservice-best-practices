@@ -734,15 +734,33 @@ Further Reading:
      <br/>What I like about this feature is we do not need to create a separate pipeline file or steps to run the jobs.
 
 - #### [Jenkins](https://jenkins.io/)
-
-  Jenkins is one of the most widely used CI/CD Build Tool preferred by many Organizations especially within Enterprises so one needs
-  to know the basics of this Mammoth Build Tool.
+  
+  Jenkins is one of the most widely used CI/CD Build Tool preferred by many Organizations especially within Enterprises.
 
   Installation Guide:
 
-  1. Jenkins Image (`Recommended`): If you have docker installed, the easiest way to get started is by getting the
-     public Jenkins image by following the
-     [instructions](https://github.com/jenkinsci/docker/blob/master/README.md).
+  1. Jenkins Image (**Recommended**): If you have docker installed, the easiest way to get started is with Jenkins public image.
+     
+      Execute below command to start jenkins at http://localhost:9090
+      ```
+      docker run -e JENKINS_OPTS="--httpPort=9090" -d -v jenkins_home:/var/jenkins_home -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts
+      ```
+
+      Get the jenkins container name: 
+      ```
+      docker ps
+      ```
+
+      After replacing the jenkins container name execute below command to get the default admin password:
+      ```
+      docker exec -it ${JENKINS_CONTAINER_NAME} cat /var/jenkins_home/secrets/initialAdminPassword
+      ```
+      Note: 
+  
+      Jenkins by default starts at port 8080 & our spring boot application also uses the same port.</br>
+      Hence to avoid the Binding Exception we are using an environment variable **-e JENKINS_OPTS="--httpPort=9090"**.
+
+      To learn more about this approach [click here.](https://github.com/jenkinsci/docker/blob/master/README.md)
 
   2. Jenkins War: Follow the [instructions](https://www.blazemeter.com/blog/how-to-install-jenkins-on-the-apache-tomcat-server/)
      to install the Jenkins and run on a Web Server.
