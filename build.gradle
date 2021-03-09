@@ -20,7 +20,7 @@ ext {
     mapstructVersion = "1.4.2.Final"
     lombokVersion = "1.18.18"
     wireMockVersion = "2.25.1"
-    ioCucumberVersion = "6.10.0"
+    ioCucumberVersion = "6.10.1"
     swaggerVersion = "3.0.0"
     jacocoVersion = "0.8.5"
 }
