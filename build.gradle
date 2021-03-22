@@ -49,7 +49,7 @@ dependencies {
     //Swagger
     implementation "io.springfox:springfox-boot-starter:${swaggerVersion}"
     //pitest
-    implementation 'org.pitest:pitest-junit5-plugin:0.12'
+    implementation 'org.pitest:pitest-junit5-plugin:0.14'
 
     // Fixing vulnerabilities
     implementation "com.google.guava:guava:30.1-jre"
