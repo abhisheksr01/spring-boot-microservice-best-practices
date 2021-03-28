@@ -1,11 +1,11 @@
 plugins {
-    id 'org.springframework.boot' version '2.4.3'
+    id 'org.springframework.boot' version '2.4.4'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'jacoco'
     id 'info.solidsoft.pitest' version '1.6.0'
     id 'checkstyle'
-    id "org.owasp.dependencycheck" version "6.1.1"
+    id "org.owasp.dependencycheck" version "6.1.3"
 }
 
 group = 'com.uk'
@@ -20,9 +20,10 @@ ext {
     mapstructVersion = "1.4.2.Final"
     lombokVersion = "1.18.18"
     wireMockVersion = "2.25.1"
-    ioCucumberVersion = "6.10.0"
+    ioCucumberVersion = "6.10.2"
     swaggerVersion = "3.0.0"
     jacocoVersion = "0.8.5"
+    pitest = "0.14"
 }
 
 dependencies {
@@ -49,7 +50,7 @@ dependencies {
     //Swagger
     implementation "io.springfox:springfox-boot-starter:${swaggerVersion}"
     //pitest
-    implementation 'org.pitest:pitest-junit5-plugin:0.12'
+    implementation "org.pitest:pitest-junit5-plugin:${pitest}"
 
     // Fixing vulnerabilities
     implementation "com.google.guava:guava:30.1-jre"
@@ -60,7 +61,7 @@ dependencies {
     configurations.all {
         resolutionStrategy.eachDependency { DependencyResolveDetails details ->
             if (details.requested.group == 'com.google.guava' && details.requested.name == 'guava' && details.requested.version == '21.0') {
-                details.useVersion '30.1-jre'
+                details.useVersion '30.1.1-jre'
                 details.because 'Fixes vulnerability in prior guava versions'
             }
         }
