@@ -163,13 +163,13 @@ jobs:
           name: Build Image
           command: |
             apk add --no-cache bash
-            ./.circleci/scripts/docker-build.sh build_image
+            ./scripts/docker-build.sh build_image
       - run:
           name: Scan Image Vulnerability
-          command: ./.circleci/scripts/vulnerability-checks.sh
+          command: ./scripts/vulnerability-checks.sh
       - run:
           name: Push Image
-          command: ./.circleci/scripts/docker-build.sh push_image
+          command: ./scripts/docker-build.sh push_image
       - store_artifacts:
           path: reports
           when: always
@@ -187,7 +187,7 @@ jobs:
           name: Trivy Image Vulnerability Check
           command: |
             apk add --no-cache bash
-            /root/project/.circleci/scripts/vulnerability-checks.sh
+            /root/project/scripts/vulnerability-checks.sh
       - store_artifacts:
           path: reports
           when: always
@@ -207,14 +207,14 @@ jobs:
           command: |
             RELEASE_NAME="<< parameters.release >>" \
             EKS_NAMESPACE="${EKS_NAMESPACE}" \
-            ./.circleci/scripts/helm-deploy.sh
+            ./scripts/helm-deploy.sh
   health_check:
     executor: alpine
     steps:
       - checkout
       - run:
           name: Perform API Health Check
-          command: ./.circleci/scripts/health-check.sh
+          command: ./scripts/health-check.sh
   penetration_test:
     executor: owasp-zap
     steps:

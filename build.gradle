@@ -5,7 +5,7 @@ plugins {
     id 'jacoco'
     id 'info.solidsoft.pitest' version '1.6.0'
     id 'checkstyle'
-    id "org.owasp.dependencycheck" version "6.1.3"
+    id "org.owasp.dependencycheck" version "6.1.5"
 }
 
 group = 'com.uk'
@@ -18,19 +18,16 @@ repositories {
 
 ext {
     mapstructVersion = "1.4.2.Final"
-    lombokVersion = "1.18.18"
+    lombokVersion = "1.18.20"
     wireMockVersion = "2.25.1"
     ioCucumberVersion = "6.10.2"
     swaggerVersion = "3.0.0"
     jacocoVersion = "0.8.5"
-    pitest = "0.12"
+    pitest = "0.14"
 }
 
 dependencies {
-    implementation ('org.springframework.boot:spring-boot-starter-web') {
-        // Excluding dependency to fix the vulnerability as this is the latest version available as of 18 sept 2020
-        exclude group: "org.springframework.boot", module: "spring-boot-starter-json"
-    }
+    implementation ('org.springframework.boot:spring-boot-starter-web')
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     // Cucumber Dependencies for BDD

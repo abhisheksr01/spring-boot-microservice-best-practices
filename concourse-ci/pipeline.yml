@@ -200,7 +200,7 @@ jobs:
                 echo "Starting load performance test"
                 k6 run -e MY_HOSTNAME=${defaultUrl} -u 50 -d 10s script.js
                 echo "Completed load performance test"
-  - name: accpetance-test
+  - name: acceptance-test
     plan:
     - get: source-repo
       trigger: true

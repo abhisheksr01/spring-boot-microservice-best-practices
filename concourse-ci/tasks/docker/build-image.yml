@@ -20,7 +20,7 @@ run:
       docker tag "${DOCKER_USER}/${DOCKER_IMAGE}:${TAG}" "${DOCKER_USER}/${DOCKER_IMAGE}:latest"
 
       echo "Scanning the local docker image for vulnerabilities..."
-      ./.circleci/scripts/vulnerability-checks.sh
+      ./scripts/vulnerability-checks.sh
 
       echo "Pushing the docker images with tag ${TAG} & latest..."
       docker push "${DOCKER_USER}/${DOCKER_IMAGE}:${TAG}"

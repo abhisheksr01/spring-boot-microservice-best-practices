@@ -13,4 +13,4 @@ run:
       echo "starting helm deploying....."
       cd source-repo/
       aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig --name ${EKS_CLUSTER_NAME}
-      ./.circleci/scripts/helm-deploy.sh
+      ./scripts/helm-deploy.sh
