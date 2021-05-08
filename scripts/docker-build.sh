@@ -15,11 +15,13 @@ push_image() {
   TAG=$(cat version/docker-version.txt)
   echo "print value from test.tx"
   cat version/test.txt
-  echo "Pushing Docker Image latest & ${TAG} ..."
-  docker push "${DOCKER_USER}/${DOCKER_IMAGE}:${TAG}"
   if [ "${CIRCLE_BRANCH}" == "master" ]; then
+    echo "Pushing Docker Image latest & ${TAG} ..."
     docker tag "${DOCKER_USER}/${DOCKER_IMAGE}:${TAG}" "${DOCKER_USER}/${DOCKER_IMAGE}:latest"
+    docker push "${DOCKER_USER}/${DOCKER_IMAGE}:${TAG}"
     docker push "${DOCKER_USER}/${DOCKER_IMAGE}:latest"
+  else
+    echo "Skipping pushing docker image for non master branch."
   fi
 }
 "$@"

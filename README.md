@@ -30,6 +30,7 @@
     - [6.1 Docker Containerization](#61-docker-containerization)
     - [6.2 CI and CD Pipeline Tools](#62-ci-and-cd-pipeline-tools)
       - [CircleCI](#circleci)
+      - [Concourse](#concourse)
       - [Jenkins](#jenkins)
       - [Google Cloud Build](#google-cloud-build)
   - [7. Platforms](#7-platforms)
@@ -733,6 +734,54 @@ Further Reading:
      Here I am checking for vulnerabilities within my code libs and docker images at scheduled intervals.
      <br/>What I like about this feature is we do not need to create a separate pipeline file or steps to run the jobs.
 
+- #### [Concourse](https://concourse-ci.org/)
+
+  [Concourse](https://concourse-ci.org/) is an open-source continuous thing-doer.
+
+  Built on the simple mechanics of resources, tasks, and jobs, Concourse presents a general approach to automation that makes it great for CI/CD.
+
+  Let us quickly spin a concourse pipeline locally and before proceeding make sure you have Docker installed.
+
+  From the root of the project change the directory:
+  ```
+  cd concourse-ci
+  ```
+
+  Execute below command to spin a local concourse tool:
+  ```
+  make spin-concourse
+
+  or 
+
+  cd local-concourse; \
+  docker compose up -d
+  ```
+
+  Access the local concourse using the URL http://127.0.0.1:8080/ and then download FLY CLI utility from the concourse home page.
+
+  Update the credentials in the [secrets/vars.yml](./concourse-ci/secrets/vars.yml)
+
+  Now execute below command to configure the pipeline job.
+  ```
+  make set-pipeline
+
+  or
+  
+  fly -t main set-pipeline -p spring-boot-best-practices -c pipeline.yml -l ./secrets/vars.yml
+  ```
+
+  Authenticate the pipeline by clicking link highlighted in CLI with USERNAME/PASSWORD as admin/admin.
+
+  Then approve the pipeline configuration by typing "y" and hit enter.
+
+  By default all the pipelines in concourse are paused, execute below command to un pause the same.
+
+  ```
+  fly -t main unpause-pipeline -p spring-boot-best-practices
+  ```
+
+  The pipeline can be accessed using the URL http://127.0.0.1:8080/teams/main/pipelines/spring-boot-best-practices
+
 - #### [Jenkins](https://jenkins.io/)
   
   Jenkins is one of the most widely used CI/CD Build Tool preferred by many Organizations especially within Enterprises.
@@ -858,8 +907,6 @@ Listing down some of the exciting features am going to work on and update the Gi
 - Chaos Monkey
 - Hystrix
 - CORS (Cross-Origin)
-- Concourse Pipeline
-- Associated Officers - Companies House API
 
 ### Versioning
 

@@ -1,15 +1,16 @@
 plugins {
-    id 'org.springframework.boot' version '2.4.4'
+    id 'org.springframework.boot' version '2.4.5'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'jacoco'
     id 'info.solidsoft.pitest' version '1.6.0'
     id 'checkstyle'
-    id "org.owasp.dependencycheck" version "6.1.5"
+    id "org.owasp.dependencycheck" version "6.1.6"
 }
 
+String buildId = project.hasProperty('buildId') ? project['buildId'] : 'DEV'
 group = 'com.uk'
-version = '0.0.1-SNAPSHOT'
+version = "${semanticVersion}.${buildId}"
 sourceCompatibility = '1.8'
 
 repositories {
@@ -19,8 +20,8 @@ repositories {
 ext {
     mapstructVersion = "1.4.2.Final"
     lombokVersion = "1.18.20"
-    wireMockVersion = "2.25.1"
-    ioCucumberVersion = "6.10.2"
+    wireMockVersion = "2.27.2"
+    ioCucumberVersion = "6.10.3"
     swaggerVersion = "3.0.0"
     jacocoVersion = "0.8.5"
     pitest = "0.14"

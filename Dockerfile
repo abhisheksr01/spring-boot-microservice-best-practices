@@ -10,5 +10,5 @@ RUN apk add --upgrade libtasn1 sqlite-libs musl-utils libjpeg-turbo \
 openjdk8-jre openjdk8-jre-base openjdk8-jre-lib
 EXPOSE 8080
 RUN mkdir /app
-COPY --from=build /home/gradle/src/build/libs/*.jar /app/companieshouse-0.0.1-SNAPSHOT.jar
-ENTRYPOINT exec java $JAVA_OPTS -jar /app/companieshouse-0.0.1-SNAPSHOT.jar
+COPY --from=build /home/gradle/src/build/libs/*.jar /app/companieshouse-*.jar
+ENTRYPOINT exec java $JAVA_OPTS -jar /app/companieshouse-*.jar

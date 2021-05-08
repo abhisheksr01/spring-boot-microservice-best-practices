@@ -15,13 +15,13 @@ help:
 ## spin's concourse locally & is accessible at http://127.0.0.1:8080
 spin-concourse:
 	cd local-concourse; \
-	docker-compose up -d;
+	docker compose up -d;
 
 .PHONY: destroy-concourse
 ## destroy concourse local
 destroy-concourse:
 	cd local-concourse; \
-	docker-compose down;
+	docker compose down;
 
 .PHONY: fly-target
 ## setup a fly target to the concourse server for this project
