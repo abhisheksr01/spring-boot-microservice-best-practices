@@ -792,7 +792,7 @@ Further Reading:
      
       Execute below command to start jenkins at http://localhost:9090
       ```
-      docker run -e JENKINS_OPTS="--httpPort=9090" -d -v jenkins_home:/var/jenkins_home -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts
+      docker run -e JENKINS_OPTS="--httpPort=9090" -d -v jenkins_home:/var/jenkins_home -p 9090:9090 -p 50000:50000 jenkins/jenkins:lts
       ```
 
       Get the jenkins container name: 
@@ -808,6 +808,11 @@ Further Reading:
   
       Jenkins by default starts at port 8080 & our spring boot application also uses the same port.</br>
       Hence to avoid the Binding Exception we are using an environment variable **-e JENKINS_OPTS="--httpPort=9090"**.
+
+      Access local Jenkins at http://localhost:9090/ and install all the recommended plugins.
+
+      Additonal Plugins:
+      * HTML Publisher
 
       To learn more about this approach [click here.](https://github.com/jenkinsci/docker/blob/master/README.md)
 
