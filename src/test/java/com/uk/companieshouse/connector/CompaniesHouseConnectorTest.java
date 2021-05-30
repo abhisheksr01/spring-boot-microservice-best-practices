@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import static com.uk.companieshouse.utils.TestHelper.*;
+import static com.uk.companieshouse.utils.TestHelper.TESTCRN;
+import static com.uk.companieshouse.utils.TestHelper.getCompaniesHouseGovUKResponse;
+import static com.uk.companieshouse.utils.TestHelper.getCompaniesHouseGovUKResponseCRNNotExist;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
