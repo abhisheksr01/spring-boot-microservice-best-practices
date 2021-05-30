@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.uk.companieshouse.utils.TestHelper.*;
+import static com.uk.companieshouse.utils.TestHelper.TESTCRN;
+import static com.uk.companieshouse.utils.TestHelper.getCompaniesHouseGovUKResponse;
+import static com.uk.companieshouse.utils.TestHelper.getCompaniesHouseResponseList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
