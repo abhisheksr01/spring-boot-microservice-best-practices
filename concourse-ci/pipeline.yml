@@ -17,7 +17,7 @@ resources:
     type: registry-image
     source:
       repository: gradle
-      tag: 6.8.3-jdk8
+      tag: 7.0.2-jdk8
   - name: concourse-dcind-image
     icon: docker
     type: registry-image
