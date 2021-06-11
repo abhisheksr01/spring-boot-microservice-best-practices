@@ -13,6 +13,13 @@ group = 'com.uk'
 version = "${semanticVersion}.${buildId}"
 sourceCompatibility = '1.8'
 
+/** Disables generating plain jar introduced in spring boot 2.5.0
+**  https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/#packaging-executable.and-plain-archives
+**/
+jar {
+    enabled = false
+}
+
 repositories {
     mavenCentral()
 }
