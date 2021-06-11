@@ -1,11 +1,11 @@
 plugins {
-    id 'org.springframework.boot' version '2.4.5'
+    id 'org.springframework.boot' version '2.5.1'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'jacoco'
     id 'info.solidsoft.pitest' version '1.6.0'
     id 'checkstyle'
-    id "org.owasp.dependencycheck" version "6.1.6"
+    id "org.owasp.dependencycheck" version "6.2.2"
 }
 
 String buildId = project.hasProperty('buildId') ? project['buildId'] : 'DEV'
