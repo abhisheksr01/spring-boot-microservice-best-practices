@@ -15,7 +15,7 @@ executors:
       - image: aquasec/trivy:latest
   helm:
     docker:
-      - image: nukengprodservice/helm:latest
+      - image: abhisheksr01/eks-helm:latest
   owasp-zap:
     docker:
       - image: owasp/zap2docker-stable:latest

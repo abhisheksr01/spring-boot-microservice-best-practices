@@ -3,7 +3,9 @@
 set -euo pipefail
 
 lint_docker_file() {
+  echo "Starting hadolinting: $1"
   hadolint $1
+  echo "Completed hadolinting: $1"
 }
 
 build_image() {
