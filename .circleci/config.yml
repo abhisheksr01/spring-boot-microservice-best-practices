@@ -21,7 +21,7 @@ executors:
       - image: owasp/zap2docker-stable:latest
   docker-git:
     docker:
-      - image: docker:stable-git
+      - image: abhisheksr01/dind-utils:latest
   loadimpact-k6:
     docker:
       - image: loadimpact/k6
@@ -154,15 +154,18 @@ jobs:
       - store_artifacts:
           path: build/reports/dependency-vulnerabilities
           when: always
-  image_build_scan_push:
+  docker_lint_build_scan_push:
     executor: docker-git
     steps:
       - *mount_workspace
       - setup_remote_docker
       - run:
+          name: Lint Docker file
+          command: |
+            ./scripts/docker-build.sh lint_docker_file "ci.Dockerfile"
+      - run:
           name: Build Image
           command: |
-            apk add --no-cache bash
             ./scripts/docker-build.sh build_image
       - run:
           name: Scan Image Vulnerability
@@ -280,9 +283,9 @@ workflows:
           timeout: 25m
           requires:
             - Build
-      - image_build_scan_push:
+      - docker_lint_build_scan_push:
           <<: *credential_context
-          name: Docker Build Scan Push
+          name: Docker Lint Build Scan Push
           requires:
             - Jacoco Code Coverage
             - Checkstyle
@@ -293,7 +296,7 @@ workflows:
           description: Not desired but added to avoid unintentional deployment
           name: Approve Deployment
           requires:
-            - Docker Build Scan Push
+            - Docker Lint Build Scan Push
       - helm_deploy:
           <<: *credential_context
           name: Deploy app to K8S

@@ -5,10 +5,9 @@ WORKDIR /home/gradle/src
 RUN gradle build -x test -x checkstyleTest --no-daemon
 
 FROM openjdk:8-jre-alpine
-RUN apk update
-RUN apk add --upgrade libtasn1 sqlite-libs musl-utils libjpeg-turbo \
-openjdk8-jre openjdk8-jre-base openjdk8-jre-lib
+RUN apk add --no-cache --upgrade libtasn1=4.14-r0 sqlite-libs=3.28.0-r3 musl-utils=1.1.20-r6 libjpeg-turbo=1.5.3-r6 \
+openjdk8-jre=8.275.01-r0 openjdk8-jre-base=8.275.01-r0 openjdk8-jre-lib=8.275.01-r0 libx11=1.6.12-r0 freetype=2.9.1-r3
 EXPOSE 8080
 RUN mkdir /app
 COPY --from=build /home/gradle/src/build/libs/*.jar /app/companieshouse-*.jar
-ENTRYPOINT exec java $JAVA_OPTS -jar /app/companieshouse-*.jar
+ENTRYPOINT ["java","-jar","companieshouse-*.jar"]

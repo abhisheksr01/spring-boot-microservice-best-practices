@@ -2,6 +2,10 @@
 
 set -euo pipefail
 
+lint_docker_file() {
+  hadolint $1
+}
+
 build_image() {
   echo "Start Building Docker Image..."
   TAG=$([ "${CIRCLE_BRANCH}" == "master" ] && echo "0.1.${CIRCLE_BUILD_NUM}" || echo "${CIRCLE_BRANCH}" | sed 's/dependabot\/gradle//g;s/.//')
