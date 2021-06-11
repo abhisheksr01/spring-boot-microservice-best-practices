@@ -180,7 +180,6 @@ jobs:
           root: /root/project/version
           paths:
             - docker-version.txt
-            - test.txt
   check_image_vulnerability:
     description: Use Trivy to check the final docker image vulnerabilities before deployment
     executor: trivy
