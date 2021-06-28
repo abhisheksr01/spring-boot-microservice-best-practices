@@ -22,7 +22,8 @@ resources:
     icon: docker
     type: registry-image
     source:
-      repository: karlkfi/concourse-dcind
+      repository: abhisheksr01/dind-utils-concourse
+      tag: 0.0.1
   - name: helm
     icon: docker
     type: registry-image
