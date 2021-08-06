@@ -18,9 +18,10 @@
     - [2.1 Mapstruct](#21-mapstruct)
     - [2.2 Lombok](#22-lombok)
     - [2.3 WireMock](#23-wiremock)
-  - [3. Code Analysis and Quality](#3-code-analysis-and-quality)
+  - [3. Analysis and Quality Checks](#3-analysis-and-quality-checks)
     - [3.1 Checkstyle](#31-checkstyle)
     - [3.2 Jacoco](#32-jacoco)
+    - [3.3 Hadolint](#33-hadolint)
   - [4. Swagger API Documentation](#4-swagger-api-documentation)
   - [5. DevSecOps](#5-devsecops)
     - [5.1 Dependency Vulnerability Check](#51-dependency-vulnerability-check)
@@ -36,7 +37,6 @@
   - [7. Platforms](#7-platforms)
     - [7.1 Kubernetes](#71-kubernetes)
     - [7.2 Google Cloud Run](#72-google-cloud-run)
-    - [7.3 Cloud Foundry](#73-cloud-foundry)
 - [What to expect Next!](#what-to-expect-next)
 - [Versioning](#versioning)
 - [Author](#author)
@@ -183,7 +183,7 @@ We will be using below annotations during this exercise:<br/>
 
 Click [here](src/test/java/com/uk/companieshouse/e2e/WireMockService.java) to see implementation.
 
-### 3. Code Analysis and Quality
+### 3. Analysis and Quality Checks
 
 #### 3.1 Checkstyle
 
@@ -217,7 +217,7 @@ Execute below command to perform static code analysis.
 
 Once successfully executed Checkstyle reports will be generated at:
 
-```
+```bash
 build/reports/checkstyle/main.html
 build/reports/checkstyle/test.html
 ```
@@ -232,7 +232,7 @@ Jacoco is a free Java code coverage library distributed under the Eclipse Public
 
 Add below configuration in [build.gradle](./build.gradle) to enable Jacoco in your project.
 
-```
+```bash
 plugins{
   id 'jacoco'
 }
@@ -293,16 +293,50 @@ Execute below commands to generate and test code coverage(jacoco tasks depends o
 
 Once successfully executed a report as shown below will be generated at path
 
-```
+```bash
 build/reports/jacocoHtml/index.html
 ```
 
 ![](doc-resources/images/jacoco-report.png)
 
+#### [3.3 Hadolint](https://github.com/hadolint/hadolint)
+
+A smarter Dockerfile linter that helps you build best practice Docker images.
+
+- Running Locally
+
+You may wish to install the tooling locally [click here](https://github.com/hadolint/hadolint#install) to see the available options.
+
+Once installed just run below command:
+```
+hadolint DOCKER_FILE
+```
+
+Example: Execute from the root of this repo as we have 2 dockerfiles in this repo.
+```bash
+hadolint testhadolinttest.Dockerfile
+```
+or
+```bash
+hadolint testhadolinttest.Dockerfile
+```
+
+or you may directly run using the docker as below:
+```bash
+docker run --rm hadolint/hadolint < testhadolinttest.Dockerfile
+```
+
+The linting errors are fixed in [Dockerfile](./Dockerfile).
+
+- In pipeline
+
+We can use hadolint to lint dockerfile in the pipeline before building the images, [click here](https://github.com/abhisheksr01/spring-boot-microservice-best-practices/blob/8a78f5c4939f2637832ed0d2f9ee6f70a351577b/.circleci/config.yml#L162) to see how we can configure in CircleCI.
+
+Hadolint allows us to add configuration file to configure rules to ignore errors, trusted registries etc, [click here](https://github.com/hadolint/hadolint#configure) to learn more.
 ### 4. Swagger API Documentation
 
 With the latest version of swagger you just need to include a single dependency as below & that's it.
-```
+```bash
 implementation "io.springfox:springfox-boot-starter:${swaggerVersion}"
 ```
 
@@ -894,10 +928,6 @@ Cloud Run is available in below two flavours:
 - Cloud Run Fully Managed
 - Cloud Run on Anthos, which supports both Google Cloud and on‐premises environments.
 
-#### 7.3 Cloud Foundry
-
-     [WIP]
-
 ### Built With
 
 - [Spring Boot](https://spring.io/projects/spring-boot) - The REST framework
@@ -909,6 +939,7 @@ Cloud Run is available in below two flavours:
 As the world of software engineering is evolving so we do.<br/>
 Listing down some of the exciting features am going to work on and update the GitHub in coming days, they are:
 
+- GitHub Actions
 - Chaos Monkey
 - Hystrix
 - CORS (Cross-Origin)
