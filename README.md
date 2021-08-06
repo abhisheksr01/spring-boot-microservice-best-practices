@@ -85,6 +85,14 @@ Execute below gradlew command to download all the dependencies specified in the 
 ./gradlew clean build
 ```
 
+As the codebase grows it becomes difficult to visualize the content in it.
+
+Visualization gives enough of a “fingerprint” that viewers can glance at it and see the structure of the codebase.
+
+Thanks to [repo-visualization](https://octo.github.com/projects/repo-visualization) for giving us enough of a “fingerprint” to glance and see the structure of the codebase as below:
+
+![Visualization of the codebase](./diagram.svg)
+
 <a propertyName = "MSStructure"></a>
 
 ### Microservice Structure
