@@ -123,13 +123,13 @@ A feature is not considered as developed until all the Unit Tests (TDD) and feat
 
 We are using JUnit 5 for running our unit test cases.
 
-```
+```bash
 ./gradlew test
 ```
 
 Once executed a report as below will be generated at local path
 
-```
+```bash
 build/reports/tests/test/index.html
 ```
 
@@ -143,7 +143,7 @@ Open Class `CucumberTest` in package `com.uk.companieshouse.e2e` and execute Cuc
 
 Once the test execution completes you can see the Cucumber Test Report at :
 
-```
+```bash
 ../build/reports/cucumber/index.html
 ```
 
@@ -158,7 +158,7 @@ To execute the mutation test run :
 
 once the test execution completes report should be accessible at:
 
-```
+```bash
 ../build/reports/pitest/[TIMESTAMP]/index.html
 ```
 
@@ -191,7 +191,7 @@ Checkstyle is a static code analysis tool used in software development for check
 
 Below config snippet is configured in the [build.gradle](./build.gradle) to include checkstyling.
 
-```
+```bash
 plugins {
     id 'checkstyle'
 }
@@ -303,7 +303,7 @@ build/reports/jacocoHtml/index.html
 
 A smarter Dockerfile linter that helps you build best practice Docker images.
 
-- Running Locally
+Running Locally:
 
 You may wish to install the tooling locally [click here](https://github.com/hadolint/hadolint#install) to see the available options.
 
@@ -328,11 +328,12 @@ docker run --rm hadolint/hadolint < testhadolinttest.Dockerfile
 
 The linting errors are fixed in [Dockerfile](./Dockerfile).
 
-- In pipeline
+In pipeline:
 
 We can use hadolint to lint dockerfile in the pipeline before building the images, [click here](https://github.com/abhisheksr01/spring-boot-microservice-best-practices/blob/8a78f5c4939f2637832ed0d2f9ee6f70a351577b/.circleci/config.yml#L162) to see how we can configure in CircleCI.
 
 Hadolint allows us to add configuration file to configure rules to ignore errors, trusted registries etc, [click here](https://github.com/hadolint/hadolint#configure) to learn more.
+
 ### 4. Swagger API Documentation
 
 With the latest version of swagger you just need to include a single dependency as below & that's it.
@@ -344,14 +345,14 @@ although if you are using WebMvc then you would require to additionally add @Ena
 
 To test it locally start the application then Swagger UI documentation can be accessed by URL:
 
-```
+```bash
 http://localhost:8080/companieshouse/swagger-ui/index.html
 ```
 
 ![](doc-resources/images/swagger-ui.png)
 Once application is deployed in a Platform the same documentation will be accessible by below URL:
 
-```
+```bash
 http://[HOST_URL]/companieshouse/swagger-ui/index.html
 ```
 
@@ -370,7 +371,7 @@ where "companieshouse" is the context path.
   Configuration:<br/>
   Add below config snippet in your [build.gradle](./build.gradle) to include dependency vulnerability checks.
 
-  ```
+  ```bash
   plugin {
     id "org.owasp.dependencycheck" version "5.3.2.1"
   }
@@ -392,7 +393,7 @@ where "companieshouse" is the context path.
   Execution:<br/>
   Run below gradle task to trigger the vulnerability checks
 
-  ```
+  ```bash
   ./gradlew dependencyCheckAnalyze
   ```
 
@@ -400,7 +401,7 @@ where "companieshouse" is the context path.
 
   Once successfully executed the task will generate a vulnerability report at path (assuming the above path was used) as below:
 
-  ```
+  ```bash
   build/reports/dependency-vulnerabilities
   ```
 
@@ -408,7 +409,7 @@ where "companieshouse" is the context path.
 
   Suppression:<br/>
   If you wish to suppress dependencies from vulnerability analysis (maybe because of breaking changes) declare them in the [dependency-check-suppression.xml](config/dependencycheck/dependency-check-suppression.xml) as below:
-  ```
+  ```bash
   <suppress>
      <notes><![CDATA[file name: checkstyle-7.8.1.jar]]></notes>
      <sha1>7b4a274696a92f3feae14d734b7b8155560a888c</sha1>
@@ -429,7 +430,7 @@ To learn how to containerize application [click here.](#61-docker-containerizati
    Click [here](https://github.com/aquasecurity/trivy#installation) to follow installation instructions.
 
    Example:
-   ```
+   ```bash
    macOS:
    brew install aquasecurity/trivy/trivy
 
@@ -439,11 +440,11 @@ To learn how to containerize application [click here.](#61-docker-containerizati
    ```
 
     Execute below command to scan a image:
-    ```
+    ```bash
     trivy [DOCKER_IMAGE:TAG]
     ```
     Example:</br>
-    ```
+    ```bash
     Local Image : trivy test-image:latest
     Remote Image: trivy abhisheksr01/companieshouse:latest
     ```
@@ -452,12 +453,12 @@ To learn how to containerize application [click here.](#61-docker-containerizati
    This is the most convenient way to use trivy(because you don't mess with local installation)
 
    Scanning local image in macOS:
-   ```
+   ```bash
    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
     -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy LOCAL_DOCKER_IMAGE:TAG
    ```
    Scanning Remote Image (e.g. Docker Hub)
-   ```
+   ```bash
    Syntax : docker run -it aquasec/trivy:latest [DOCKER_HUB_REPO]/[DOCKER_IMAGE_NAME]:[TAG]
    Example: docker run -it aquasec/trivy:latest openjdk:8-jre-alpine
    ```
@@ -481,7 +482,7 @@ In this section we are going to explore [OWASP ZAP](https://www.zaproxy.org/docs
 
   We will be using the **owasp/zap2docker-weekly** to run the [ZAP Baseline Scan](https://www.zaproxy.org/  docs/docker/baseline-scan/).<br/>
   Execute below command to test your API
-  ```
+  ```bash
   docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-weekly zap-baseline.py \
       -t [TARGET_REST_API] -g gen.conf -r pentest-report.html
   ```
@@ -561,7 +562,7 @@ Docker uses a text file with set of instructions in it to build a docker image. 
 
 Now let us have a quick look at our [ci.Dockerfile](./ci.Dockerfile) given below:
 
-  ```
+  ```bash
   FROM openjdk:8-jre-alpine
 
   WORKDIR /opt
@@ -593,13 +594,13 @@ It uses an intermediate **gradle:6.8.3-jdk8** container for building an executab
 This Dockerfile will be handy and is an example of using intermediate containers when we do not have respective runtime (JAVA) & package manager (gradle) installed locally for building the executable application.
 
 - Execute below command to build a docker image, if no docker file is specified in CLI it defaults to **Dockerfile**.
-  ```
+  ```bash
   docker build -t companieshouse:latest .
   ```
   where **companieshouse:latest** follows the syntax of **[IMAGE_NAME]:[TAG]**
 
 - To check the latest docker image being created execute below command:
-  ```
+  ```bash
   docker images
   ```
   Output:
@@ -607,7 +608,7 @@ This Dockerfile will be handy and is an example of using intermediate containers
   ![](doc-resources/images/docker-images.png)
 
 - To start the container using the newly created docker image
-  ```
+  ```bash
   docker run --rm -it -p 8080:8080 companieshouse:latest
   ```
   Here, --rm is used for removing the container once stopped, --it to start the application in interactive mode & -p for port forward.
@@ -622,12 +623,12 @@ This Dockerfile will be handy and is an example of using intermediate containers
 
   Open a new terminal to see the newly created container by executing below command:
 
-  ```
+  ```bash
   docker container ls
   ```
 
   alternatively:
-  ```
+  ```bash
   docker ps -a
   ```
 
@@ -640,13 +641,13 @@ This Dockerfile will be handy and is an example of using intermediate containers
 
   Stop the container using the **Control + C** key alternatively in the new terminal execute below command to kill the container.
 
-  ```
+  ```bash
   docker container kill [CONTAINER_ID]
   ```
 
   Execute below command to check whether the container has been removed or not.
 
-  ```
+  ```bash
   docker container ls
   ```
 
@@ -659,13 +660,13 @@ You must have Java installed in your workstation if not [click here to download]
 
 - Create a executable jar by running below command
 
-  ```
+  ```bash
   ./gradlew clean build
   ```
 
 - Create a docker image using the ci.Dockerfile by executing below command
 
-  ```
+  ```bash
   docker build -f ci.Dockerfile -t companieshouse:0.0.1 .
   ```
 
@@ -681,19 +682,19 @@ For this purpose we will be using Docker Hub which is the free Docker Registry f
 
 Configure docker cli to use these new credentials:
 
-```
+```bash
 docker login -u [DOCKER_HUB_USERNAME] -p [DOCKER_HUB_PASSWORD]
 ```
 
 Build your image by executing below command:
 
-```
+```bash
 docker build -t [DOCKER_HUB_USERNAME]/companyhouse:0.0.1 .
 ```
 
 Then push the image to the remote registry.
 
-```
+```bash
 docker push [DOCKER_HUB_USERNAME]/companyhouse:0.0.1
 ```
 
@@ -701,17 +702,17 @@ Open Docker hub & validate whether the docker image has been pushed successfully
 
 Now let us delete the local docker image.
 
-```
+```bash
 docker rmi companieshouse:0.0.1 -f
 ```
 
 Validate the same by running:
-```
+```bash
 docker images
 ```
 
 Now let us pull the remote docker image:
-```
+```bash
 docker pull [DOCKER_HUB_USERNAME]/companyhouse:0.0.1
 ```
 
@@ -751,7 +752,7 @@ Further Reading:
 
      Follow [link](https://circleci.com/docs/2.0/env-vars/?utm_medium=SEM&utm_source=gnb&utm_campaign=SEM-gb-DSA-Eng-ni&utm_content=&utm_term=dynamicSearch-&gclid=EAIaIQobChMIm_2blLze6QIVQeztCh3FGwh0EAAYASAAEgITlPD_BwE#setting-an-environment-variable-in-a-context) to learn how to do it.
 
-     ```
+     ```bash
      AWS_ACCESS_KEY_ID
      AWS_DEFAULT_REGION
      AWS_SECRET_ACCESS_KEY
@@ -777,12 +778,12 @@ Further Reading:
   Let us quickly spin a concourse pipeline locally and before proceeding make sure you have Docker installed.
 
   From the root of the project change the directory:
-  ```
+  ```bash
   cd concourse-ci
   ```
 
   Execute below command to spin a local concourse tool:
-  ```
+  ```bash
   make spin-concourse
 
   or 
@@ -796,7 +797,7 @@ Further Reading:
   Update the credentials in the [secrets/vars.yml](./concourse-ci/secrets/vars.yml)
 
   Now execute below command to configure the pipeline job.
-  ```
+  ```bash
   make set-pipeline
 
   or
@@ -810,7 +811,7 @@ Further Reading:
 
   By default all the pipelines in concourse are paused, execute below command to un pause the same.
 
-  ```
+  ```bash
   fly -t main unpause-pipeline -p spring-boot-best-practices
   ```
 
@@ -825,17 +826,17 @@ Further Reading:
   1. Jenkins Image (**Recommended**): If you have docker installed, the easiest way to get started is with Jenkins public image.
      
       Execute below command to start jenkins at http://localhost:9090
-      ```
+      ```bash
       docker run -e JENKINS_OPTS="--httpPort=9090" -d -v jenkins_home:/var/jenkins_home -p 9090:9090 -p 50000:50000 jenkins/jenkins:lts
       ```
 
       Get the jenkins container name: 
-      ```
+      ```bash
       docker ps
       ```
 
       After replacing the jenkins container name execute below command to get the default admin password:
-      ```
+      ```bash
       docker exec -it ${JENKINS_CONTAINER_NAME} cat /var/jenkins_home/secrets/initialAdminPassword
       ```
       Note: 
@@ -899,11 +900,11 @@ Further Reading:
 
   Source files at :
 
-  ```
+  ```bash
   kubernetes/std/
   ```
 
-  ```
+  ```bash
    kubectl apply -f kubernetes/std/ -n [NAMESPACE]
   ```
 
@@ -911,11 +912,11 @@ Further Reading:
 
   Source files at :
 
-  ```
+  ```bash
   kubernetes/helm-chart/
   ```
 
-  ```
+  ```bash
    kubectl apply -f kubernetes/helm-chart/ -n [NAMESPACE]
   ```
 
