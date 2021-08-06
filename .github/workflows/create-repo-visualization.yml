@@ -11,6 +11,4 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@master
       - name: Update diagram
-        uses: abhisheksr01/spring-boot-microservice-best-practices@master
-        with:
-          excluded_paths: "ignore,.github"
+        uses: githubocto/repo-visualizer@main
