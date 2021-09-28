@@ -1,11 +1,11 @@
 plugins {
-    id 'org.springframework.boot' version '2.5.4'
+    id 'org.springframework.boot' version '2.5.5'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'jacoco'
-    id 'info.solidsoft.pitest' version '1.6.0'
+    id 'info.solidsoft.pitest' version '1.7.0'
     id 'checkstyle'
-    id "org.owasp.dependencycheck" version "6.2.2"
+    id "org.owasp.dependencycheck" version "6.3.1"
 }
 
 String buildId = project.hasProperty('buildId') ? project['buildId'] : 'DEV'
@@ -31,7 +31,7 @@ ext {
     ioCucumberVersion = "6.11.0"
     swaggerVersion = "3.0.0"
     jacocoVersion = "0.8.5"
-    pitest = "0.14"
+    pitest = "0.15"
 }
 
 dependencies {
@@ -66,7 +66,7 @@ dependencies {
     configurations.all {
         resolutionStrategy.eachDependency { DependencyResolveDetails details ->
             if (details.requested.group == 'com.google.guava' && details.requested.name == 'guava' && details.requested.version == '21.0') {
-                details.useVersion '30.1.1-jre'
+                details.useVersion '30.0-jre'
                 details.because 'Fixes vulnerability in prior guava versions'
             }
         }
