@@ -26,7 +26,7 @@ repositories {
 
 ext {
     mapstructVersion = "1.4.2.Final"
-    lombokVersion = "1.18.20"
+    lombokVersion = "1.18.22"
     wireMockVersion = "2.27.2"
     ioCucumberVersion = "6.11.0"
     swaggerVersion = "3.0.0"
