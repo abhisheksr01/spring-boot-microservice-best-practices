@@ -1,6 +1,7 @@
 apiVersion: v2
 name: k8s-helm
 description: A Helm chart for Kubernetes
+icon: https://e4developer.com/wp-content/uploads/2018/01/spring-boot.png
 
 # A chart can be either an 'application' or a 'library' chart.
 #
