@@ -154,6 +154,16 @@ jobs:
       - store_artifacts:
           path: build/reports/dependency-vulnerabilities
           when: always
+  checkov-scan:
+    executor: helm
+    steps:
+      - checkout
+      - run:
+          name: Install checkov
+          command: yum install python3-pip -y && sudo python3 -m pip install -U checkov -y
+      - run:
+          name: Scan K8s manifest and Docker using checkov
+          command: checkov -d ./
   docker_lint_build_scan_push:
     executor: docker-git
     steps:
@@ -283,6 +293,10 @@ workflows:
       - check_dependency_vulnerability:
           name: Dependency Vulnerability Checks
           timeout: 25m
+          requires:
+            - Build
+      - checkov-scan:
+          name: Checkov IAC scan
           requires:
             - Build
       - docker_lint_build_scan_push:
