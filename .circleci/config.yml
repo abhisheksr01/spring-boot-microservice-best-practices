@@ -160,7 +160,7 @@ jobs:
       - checkout
       - run:
           name: Install checkov
-          command: yum install python3-pip -y && sudo python3 -m pip install -U checkov -y
+          command: yum install python3-pip -y && python3 -m pip install -U checkov
       - run:
           name: Scan K8s manifest and Docker using checkov
           command: checkov -d ./
