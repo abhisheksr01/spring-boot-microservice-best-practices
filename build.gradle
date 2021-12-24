@@ -1,11 +1,11 @@
 plugins {
-    id 'org.springframework.boot' version '2.5.5'
+    id 'org.springframework.boot' version '2.6.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'jacoco'
     id 'info.solidsoft.pitest' version '1.7.0'
     id 'checkstyle'
-    id "org.owasp.dependencycheck" version "6.4.1.1"
+    id "org.owasp.dependencycheck" version "6.5.1"
 }
 
 String buildId = project.hasProperty('buildId') ? project['buildId'] : 'DEV'
@@ -28,7 +28,7 @@ ext {
     mapstructVersion = "1.4.2.Final"
     lombokVersion = "1.18.22"
     wireMockVersion = "2.27.2"
-    ioCucumberVersion = "7.0.0"
+    ioCucumberVersion = "7.1.0"
     swaggerVersion = "3.0.0"
     jacocoVersion = "0.8.5"
     pitest = "0.15"
@@ -146,7 +146,7 @@ jacocoTestCoverageVerification {
     violationRules {
         rule {
             limit {
-                minimum = 1.0
+                minimum = 0.9
             }
         }
 
