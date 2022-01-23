@@ -13,3 +13,5 @@ ARG APPJAR=build/libs/companieshouse-*.jar
 COPY ${APPJAR} companieshouse-*.jar
 
 ENTRYPOINT ["java","-jar","companieshouse-*.jar"]
+RUN groupadd --gid 10001 rungroup && useradd --uid 10001 --gid 10001 runuser
+USER runuser:rungroup

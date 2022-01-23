@@ -11,3 +11,5 @@ EXPOSE 8080
 RUN mkdir /app
 COPY --from=build /home/gradle/src/build/libs/*.jar /app/companieshouse-*.jar
 ENTRYPOINT ["java","-jar","companieshouse-*.jar"]
+RUN groupadd --gid 10001 rungroup && useradd --uid 10001 --gid 10001 runuser
+USER runuser:rungroup
