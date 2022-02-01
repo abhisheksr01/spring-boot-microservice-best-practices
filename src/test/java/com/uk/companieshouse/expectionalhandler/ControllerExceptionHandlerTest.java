@@ -39,4 +39,16 @@ class ControllerExceptionHandlerTest {
         assertEquals(500, responseEntity.getStatusCodeValue());
         assertEquals("Internal Server Error", responseEntity.getBody());
     }
+
+    @Test
+    void handleHttpClientErrorException_shouldReturn400AndBadRequestError_whenHttpClientErrorExceptionWith400Occurs() {
+        HttpClientErrorException httpClientErrorException =
+                new HttpClientErrorException(HttpStatus.BAD_REQUEST, "CRN should only contain alphanumeric characters");
+
+        ResponseEntity responseEntity = controllerExceptionHandler.
+                handleHttpClientErrorException(httpClientErrorException);
+
+        assertEquals(400, responseEntity.getStatusCodeValue());
+        assertEquals("CRN should only contain alphanumeric characters", responseEntity.getBody());
+    }
 }

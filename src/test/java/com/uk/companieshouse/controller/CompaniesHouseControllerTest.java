@@ -33,4 +33,13 @@ class CompaniesHouseControllerTest {
 
         assertEquals(expectedCompaniesHouseResponse, actualCompaniesHouseResponseList);
     }
+
+    @Test
+    void getCompaniesHouse_whenCRNWithSpecialCharactersIsPassed_shouldThrowBadRequestError() {
+        try {
+            companiesHouseController.getCompaniesHouseResponse("msf@£@$SDFSDFSDF12313");
+        } catch (Exception exception) {
+            assertEquals("400 CRN should only contain alphanumeric characters", exception.getMessage());
+        }
+    }
 }
