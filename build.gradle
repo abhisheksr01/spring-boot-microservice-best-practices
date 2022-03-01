@@ -58,7 +58,7 @@ dependencies {
     implementation "org.pitest:pitest-junit5-plugin:${pitest}"
 
     // Fixing vulnerabilities
-    implementation "com.google.guava:guava:31.0.1-jre"
+    implementation "com.google.guava:guava:31.1-jre"
     /*
      *https://docs.gradle.org/current/userguide/dependency_management.html#sec:module_substitution
      * Example 109. Example: Blacklisting a version with a replacement
