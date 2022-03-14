@@ -3,7 +3,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'jacoco'
-    id 'info.solidsoft.pitest' version '1.7.0'
+    id 'info.solidsoft.pitest' version '1.7.4'
     id 'checkstyle'
     id "org.owasp.dependencycheck" version "6.5.3"
 }
