@@ -42,6 +42,7 @@ dependencies {
     testImplementation "io.cucumber:cucumber-java:${ioCucumberVersion}"
     testImplementation "io.cucumber:cucumber-junit:${ioCucumberVersion}"
     testImplementation "io.cucumber:cucumber-spring:${ioCucumberVersion}"
+    testImplementation "org.junit.vintage:junit-vintage-engine:5.8.2"
     //WireMock Dependencies
     testImplementation "com.github.tomakehurst:wiremock:${wireMockVersion}"
     //Lombok Dependencies
