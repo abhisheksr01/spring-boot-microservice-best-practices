@@ -295,10 +295,6 @@ workflows:
           timeout: 25m
           requires:
             - Build
-      - checkov-scan:
-          name: Checkov IAC scan
-          requires:
-            - Build
       - docker_lint_build_scan_push:
           <<: *credential_context
           name: Docker Lint Build Scan Push
@@ -354,3 +350,5 @@ workflows:
       - check_image_vulnerability:
           <<: *credential_context
           name: Image Vulnerability Check
+      - checkov-scan:
+            name: Checkov IAC scan
