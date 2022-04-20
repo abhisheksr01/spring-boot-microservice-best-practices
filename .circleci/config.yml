@@ -52,7 +52,8 @@ aliases:
       branches:
         only:
           - master
-          - /dependabot.*/
+#         We are now running all tests on PR in Github Actions
+#          - /dependabot.*/
   - &only_master
     filters:
       branches:
