@@ -10,5 +10,15 @@
         <sha1>7b4a274696a92f3feae14d734b7b8155560a888c</sha1>
         <cve>CVE-2019-9658</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-plugin-core-2.0.0.RELEASE.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.plugin/spring\-plugin\-core@.*$</packageUrl>
+        <cpe>cpe:/a:vmware:spring_framework</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-plugin-metadata-2.0.0.RELEASE.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.plugin/spring\-plugin\-metadata@.*$</packageUrl>
+        <cpe>cpe:/a:vmware:spring_framework</cpe>
+    </suppress>
     <!-- End-->
 </suppressions>
