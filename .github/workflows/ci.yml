@@ -1,0 +1,20 @@
+name: CI
+on:
+  pull_request:
+
+jobs:
+  companieshouse-api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v2
+        with:
+          distribution: adopt
+          java-version: 17
+          check-latest: true
+      - run: ( ./gradlew clean build )
+        name: "Executing unit tests and checking code coverage"
+      - run: ( ./gradlew pitest )
+        name: "Executing mutation tests"
+      - run: ( ./gradlew dependencyCheckAnalyze )
+        name: "Executing dependency vulnerability checks"
