@@ -1,14 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
-    <!-- Start: Suppressing the checkstyle vulnerabilities until the version upgrade breaking changes are taken care of.-->
-    <suppress>
-        <notes><![CDATA[file name: checkstyle-7.8.1.jar]]></notes>
-        <sha1>7b4a274696a92f3feae14d734b7b8155560a888c</sha1>
-        <cve>CVE-2019-10782</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[file name: checkstyle-7.8.1.jar]]></notes>
-        <sha1>7b4a274696a92f3feae14d734b7b8155560a888c</sha1>
-        <cve>CVE-2019-9658</cve>
-    </suppress>
-    <!-- End-->
+   <!-- Start: Suppressing the checkstyle vulnerabilities until the version upgrade breaking changes are taken care of.-->
+   <suppress>
+      <notes><![CDATA[file name: checkstyle-7.8.1.jar]]></notes>
+      <sha1>7b4a274696a92f3feae14d734b7b8155560a888c</sha1>
+      <cve>CVE-2019-10782</cve>
+   </suppress>
+   <suppress>
+      <notes><![CDATA[file name: checkstyle-7.8.1.jar]]></notes>
+      <sha1>7b4a274696a92f3feae14d734b7b8155560a888c</sha1>
+      <cve>CVE-2019-9658</cve>
+   </suppress>
+   <!-- End-->
+   <!-- Start: Suppressing the spring dependencies until a fixed version is available.-->
+   <suppress>
+      <notes><![CDATA[file name: spring-aop-5.3.20.jar]]></notes>
+      <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-aop@.*$</packageUrl>
+      <cve>CVE-2016-1000027</cve>
+   </suppress>
+   <suppress>
+      <notes><![CDATA[file name: spring-beans-5.3.20.jar]]></notes>
+      <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-beans@.*$</packageUrl>
+      <cve>CVE-2016-1000027</cve>
+   </suppress>
+   <suppress>
+      <notes><![CDATA[file name: spring-context-5.3.20.jar]]></notes>
+      <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-context@.*$</packageUrl>
+      <cve>CVE-2016-1000027</cve>
+   </suppress>
+   <suppress>
+      <notes><![CDATA[file name: spring-core-5.3.20.jar]]></notes>
+      <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-core@.*$</packageUrl>
+      <cve>CVE-2016-1000027</cve>
+   </suppress>
+   <suppress>
+      <notes><![CDATA[file name: spring-expression-5.3.20.jar]]></notes>
+      <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-expression@.*$</packageUrl>
+      <cve>CVE-2016-1000027</cve>
+   </suppress>
+   <suppress>
+      <notes><![CDATA[file name: spring-jcl-5.3.20.jar]]></notes>
+      <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-jcl@.*$</packageUrl>
+      <cve>CVE-2016-1000027</cve>
+   </suppress>
+   <suppress>
+      <notes><![CDATA[file name: spring-web-5.3.20.jar]]></notes>
+      <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-web@.*$</packageUrl>
+      <cve>CVE-2016-1000027</cve>
+   </suppress>
+   <suppress>
+      <notes><![CDATA[file name: spring-webmvc-5.3.20.jar]]></notes>
+      <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-webmvc@.*$</packageUrl>
+      <cve>CVE-2016-1000027</cve>
+   </suppress>
+   <!-- End-->
 </suppressions>
