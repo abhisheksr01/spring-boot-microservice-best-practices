@@ -4,3 +4,4 @@
 /reports/
 /concourse-ci/secrets/vars.yml
 .dccache
+.vscode
