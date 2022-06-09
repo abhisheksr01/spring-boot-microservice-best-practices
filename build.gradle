@@ -31,7 +31,7 @@ ext {
     ioCucumberVersion = "7.3.4"
     swaggerVersion = "3.0.0"
     jacocoVersion = "0.8.5"
-    pitest = "0.15"
+    pitest = "0.16"
 }
 
 dependencies {
