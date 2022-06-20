@@ -26,7 +26,8 @@
   - [5. DevSecOps](#5-devsecops)
     - [5.1 Dependency Vulnerability Check](#51-dependency-vulnerability-check)
     - [5.2 Docker Image Vulnerability Check](#52-docker-image-vulnerability-check)
-    - [5.3 Penetration Test](#53-penetration-test)
+    - [5.3 Infrastructure as code static analysis](#53-infrastructure-as-code-static-analysis)
+    - [5.4 Penetration Test](#54-penetration-test)
   - [6. Continuous Integration, Delivery and Deployment](#6-continuous-integration-delivery-and-deployment)
     - [6.1 Docker Containerization](#61-docker-containerization)
     - [6.2 CI and CD Pipeline Tools](#62-ci-and-cd-pipeline-tools)
@@ -368,6 +369,12 @@ where "companieshouse" is the context path.
 
 ### 5. DevSecOps
 
+DevSecOps stands for development, security, and operations. It's an approach to culture, automation, and platform design that integrates security as a shared responsibility throughout the entire application and infrastructure security lifecycle.
+
+![](doc-resources/images/devsecops.png)
+
+In this repo we are looking at some of the key practices to secure the application and infrastructure.
+
   #### 5.1 Dependency Vulnerability Check
 
   Introduction:<br/>
@@ -481,7 +488,19 @@ To learn how to containerize application [click here.](#61-docker-containerizati
 
   Refer the trivy [github doc](https://github.com/aquasecurity/trivy) for further reference.
 
-#### 5.3 Penetration Test
+#### 5.3 Infrastructure as Code static analysis
+
+Static analysis can be conducted on the IAC, just like it can be done on any other software programming language.
+
+The IAC static analysis can be done on configuration and code such as:
+
+- Dockerfile: It is possible to scan a Dockerfile to determine if the file contains a potential vulnerability, such as the use of root, a vulnerable base docker image, etc.
+
+- Kubernetes Configuration: Helm charts or standard k8s YAML configurations can pose security risks, exposing internal information such as NGINX Ingress through annotations, running containers with allowPrivilegeEscalation etc.
+
+- Terraform: For deploying Cloud Infrastructure, it is the most commonly used form of IAC. As a result, there is an increased risk of introducing vulnerabilities into the cloud infrastructure. Keeping the infrastructure secure is crucial since it sits at the bottom of the application architecture.
+
+#### 5.4 Penetration Test
 A penetration test, colloquially known as a pen test, pentest or ethical hacking, is an authorized simulated cyberattack on a computer system, performed to evaluate the security of the system. Not to be confused with a vulnerability assessment.
 
 In this section we are going to explore [OWASP ZAP](https://www.zaproxy.org/docs/docker/) & will be penetrating through REST API's.
