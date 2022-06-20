@@ -500,6 +500,37 @@ The IAC static analysis can be done on configuration and code such as:
 
 - Terraform: For deploying Cloud Infrastructure, it is the most commonly used form of IAC. As a result, there is an increased risk of introducing vulnerabilities into the cloud infrastructure. Keeping the infrastructure secure is crucial since it sits at the bottom of the application architecture.
 
+#### Key traits of good security tooling chain.
+
+- Easy to integrate with other tooling such as CICD pipeline, Monitoring tool, Repositories etc.
+- Developer Adaptability and ease of use: The tool should be easy to use and can educate on CVE's identified.
+- Less Noise and efficient mechanism to control it
+- Vulnerability Database
+- Relevancy to the solution we are developing
+
+One name that stands out in meeting above criteria with almost all the desired feature is [Snyk](https://snyk.io/).
+
+Snyk is Free to use and can be signed up using Github with below limitations for personal usage:
+
+```
+200 Open Source tests/month
+100 Container tests/month
+300 IaC tests/month
+100 Code tests/month
+```
+
+Snyk has some really great features, such as:
+
+- Native Github Integration allowing importing selective repositories or in bulk.
+- Great User Interface for analyzing the scan outcome.
+- Automated vulnerabilities fixes for dependencies, docker image etc through PR's.
+- IDE Plugins
+- Scheduled scans once a repository has been imported
+- Ignoring a vulnerability for a definite time
+- Snyk CLI
+
+and the list can keep on going.
+
 #### 5.4 Penetration Test
 A penetration test, colloquially known as a pen test, pentest or ethical hacking, is an authorized simulated cyberattack on a computer system, performed to evaluate the security of the system. Not to be confused with a vulnerability assessment.
 
