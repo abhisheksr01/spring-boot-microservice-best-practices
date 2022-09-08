@@ -10,7 +10,19 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: ./gradlew clean build
+- task: Gradle@2
+  inputs:
+    workingDirectory: ''
+    gradleWrapperFile: 'gradlew'
+    gradleOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: true
+    testResultsFiles: '**/TEST-*.xml'
+    tasks: 'build'
+    
+- script: ./gradlew test
   displayName: 'Build'
 
 - script: |
