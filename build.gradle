@@ -32,7 +32,7 @@ ext {
     swaggerVersion = "3.0.0"
     jacocoVersion = "0.8.5"
     pitest = "0.16"
-    junitVintage = "5.9.0"
+    junitVintage = "5.9.1"
 }
 
 dependencies {
