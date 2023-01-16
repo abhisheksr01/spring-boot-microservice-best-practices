@@ -5,7 +5,7 @@ plugins {
     id 'jacoco'
     id 'info.solidsoft.pitest' version '1.9.11'
     id 'checkstyle'
-    id "org.owasp.dependencycheck" version "7.3.2"
+    id "org.owasp.dependencycheck" version "8.0.0"
 }
 
 String buildId = project.hasProperty('buildId') ? project['buildId'] : 'DEV'
