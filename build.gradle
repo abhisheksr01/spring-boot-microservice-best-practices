@@ -59,8 +59,6 @@ dependencies {
     //pitest
     implementation "org.pitest:pitest-junit5-plugin:${pitest}"
 
-    implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
-
     /*
      *https://docs.gradle.org/current/userguide/dependency_management.html#sec:module_substitution
      * Example 109. Example: Blacklisting a version with a replacement
