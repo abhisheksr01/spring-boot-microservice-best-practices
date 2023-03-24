@@ -12,48 +12,6 @@
         <cve>CVE-2019-9658</cve>
     </suppress>
     <!-- End-->
-    <!-- Start: Suppressing the spring dependencies until a fixed version is available.-->
-    <suppress>
-        <notes><![CDATA[file name: spring-aop-5.3.20.jar]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-aop@.*$</packageUrl>
-        <cve>CVE-2016-1000027</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[file name: spring-beans-5.3.20.jar]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-beans@.*$</packageUrl>
-        <cve>CVE-2016-1000027</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[file name: spring-context-5.3.20.jar]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-context@.*$</packageUrl>
-        <cve>CVE-2016-1000027</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[file name: spring-core-5.3.20.jar]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-core@.*$</packageUrl>
-        <cve>CVE-2016-1000027</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[file name: spring-expression-5.3.20.jar]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-expression@.*$</packageUrl>
-        <cve>CVE-2016-1000027</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[file name: spring-jcl-5.3.20.jar]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-jcl@.*$</packageUrl>
-        <cve>CVE-2016-1000027</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[file name: spring-web-5.3.20.jar]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-web@.*$</packageUrl>
-        <cve>CVE-2016-1000027</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[file name: spring-webmvc-5.3.20.jar]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-webmvc@.*$</packageUrl>
-        <cve>CVE-2016-1000027</cve>
-    </suppress>
-    <!-- End-->
     <!-- Suppressing springfox-swagger-ui-3.0.0.jar: swagger-ui-bundle.js -->
     <suppress>
         <notes><![CDATA[
@@ -109,14 +67,4 @@
         <vulnerabilityName>Fixed several possible mXSS patterns, thanks @hackvertor</vulnerabilityName>
     </suppress>
     <!-- End-->
-    <!-- Suppressing snakeyaml as upgrading to 2.0 version is currently not supported by spring-boot 2.7.X :
-         https://github.com/spring-projects/spring-boot/issues/34405 -->
-    <suppress>
-        <notes><![CDATA[
-   file name: snakeyaml-1.30.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
-        <vulnerabilityName>CVE-2022-1471</vulnerabilityName>
-    </suppress>
-    <!-- -->
 </suppressions>
