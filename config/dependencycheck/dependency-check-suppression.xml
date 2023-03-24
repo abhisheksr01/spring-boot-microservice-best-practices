@@ -112,9 +112,11 @@
     <!-- Suppressing snakeyaml as upgrading to 2.0 version is currently not supported by spring-boot 2.7.X :
          https://github.com/spring-projects/spring-boot/issues/34405 -->
     <suppress>
-        <notes><![CDATA[file name: snakeyaml-1.30.jar]]></notes>
+        <notes><![CDATA[
+   file name: snakeyaml-1.30.jar
+   ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
-        <cpe>cpe:/a:snakeyaml_project:snakeyaml</cpe>
+        <vulnerabilityName>CVE-2022-1471</vulnerabilityName>
     </suppress>
     <!-- -->
 </suppressions>
