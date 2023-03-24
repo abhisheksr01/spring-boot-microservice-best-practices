@@ -60,14 +60,18 @@
    file name: springfox-swagger-ui-3.0.0.jar: swagger-ui-bundle.js
    ]]></notes>
         <packageUrl regex="true">^pkg:javascript/DOMPurify@.*$</packageUrl>
-        <vulnerabilityName>Fix a possible XSS in Chrome that is hidden behind #enable-experimental-web-platform-features</vulnerabilityName>
+        <vulnerabilityName>Fix a possible XSS in Chrome that is hidden behind
+            #enable-experimental-web-platform-features
+        </vulnerabilityName>
     </suppress>
     <suppress>
         <notes><![CDATA[
    file name: springfox-swagger-ui-3.0.0.jar: swagger-ui-bundle.js
    ]]></notes>
         <packageUrl regex="true">^pkg:javascript/DOMPurify@.*$</packageUrl>
-        <vulnerabilityName>Fixed a new MathML-based bypass submitted by PewGrand. Fixed a new SVG-related bypass submitted by SecurityMB</vulnerabilityName>
+        <vulnerabilityName>Fixed a new MathML-based bypass submitted by PewGrand. Fixed a new SVG-related bypass
+            submitted by SecurityMB
+        </vulnerabilityName>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -105,4 +109,12 @@
         <vulnerabilityName>Fixed several possible mXSS patterns, thanks @hackvertor</vulnerabilityName>
     </suppress>
     <!-- End-->
+    <!-- Suppressing snakeyaml as upgrading to 2.0 version is currently not supported by spring-boot 2.7.X :
+         https://github.com/spring-projects/spring-boot/issues/34405 -->
+    <suppress>
+        <notes><![CDATA[file name: snakeyaml-1.30.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
+        <cpe>cpe:/a:snakeyaml_project:snakeyaml</cpe>
+    </suppress>
+    <!-- -->
 </suppressions>

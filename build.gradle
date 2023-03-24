@@ -64,6 +64,10 @@ dependencies {
      * Example 109. Example: Blacklisting a version with a replacement
     */
     configurations.all {
+        /***
+         * This is how we can exclude transient dependencies
+         * exclude group: "com.google.guava", module: "guava"
+         */
         resolutionStrategy.eachDependency { DependencyResolveDetails details ->
             if (details.requested.group == 'com.google.guava' && details.requested.name == 'guava' && details.requested.version == '21.0') {
                 details.useVersion '31.1-jre'
@@ -73,10 +77,6 @@ dependencies {
                 details.useVersion '1.9.4'
                 details.because 'Fixes vulnerability in prior versions'
             }
-//            if (details.requested.group == 'org.yaml' && details.requested.name == 'snakeyaml' && details.requested.version == '1.30') {
-//                details.useVersion '2.0'
-//                details.because 'Fixes vulnerability in prior versions'
-//            }
             if (details.requested.group == 'org.apache.tomcat.embed' && details.requested.name == 'tomcat-embed-core' && details.requested.version == '9.0.68') {
                 details.useVersion '10.1.7'
                 details.because 'Fixes vulnerability in prior versions'
