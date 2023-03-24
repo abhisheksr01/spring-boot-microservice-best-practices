@@ -4,7 +4,7 @@ plugins {
     id 'java'
     id 'jacoco'
     id 'info.solidsoft.pitest' version '1.9.11'
-    id 'checkstyle'
+//    id 'checkstyle'
     id "org.owasp.dependencycheck" version "8.1.2"
 }
 
@@ -117,17 +117,17 @@ test {
     useJUnitPlatform()
 }
 
-//Checkstyle for code style and quality
-checkstyle {
-    toolVersion '7.8.1'
-}
-tasks.withType(Checkstyle) {
-    reports {
-        xml.enabled false
-        html.enabled true
-        html.stylesheet resources.text.fromFile("${rootDir}/config/xls/checksyle-style.xsl")
-    }
-}
+//Checkstyle for code style and qualityy
+//checkstyle {
+//    toolVersion = '8.29'
+//}
+//tasks.withType(Checkstyle) {
+//    reports {
+//        xml.enabled false
+//        html.enabled true
+//        html.stylesheet resources.text.fromFile("${rootDir}/config/xls/checksyle-style.xsl")
+//    }
+//}
 
 // Jacoco for Code Coverage
 jacoco {

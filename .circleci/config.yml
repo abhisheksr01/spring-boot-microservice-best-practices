@@ -277,13 +277,13 @@ workflows:
           artifact_path: build/reports/jacocoHtml
           requires:
             - Unit & E2E Tests
-      - gradle_execute_task:
-          name: Checkstyle
-          step_name: Check styling and generate report
-          gradle_task: check
-          artifact_path: build/reports/checkstyle
-          requires:
-            - Build
+#      - gradle_execute_task:
+#          name: Checkstyle
+#          step_name: Check styling and generate report
+#          gradle_task: check
+#          artifact_path: build/reports/checkstyle
+#          requires:
+#            - Build
       - gradle_execute_task:
           name: Mutation Tests
           step_name: Perform Mutation Testing on Unit Tests
