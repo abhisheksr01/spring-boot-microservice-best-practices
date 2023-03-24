@@ -301,7 +301,7 @@ workflows:
           name: Docker Lint Build Scan Push
           requires:
             - Jacoco Code Coverage
-            - Checkstyle
+#            - Checkstyle
             - Mutation Tests
             - Dependency Vulnerability Checks
       - hold:

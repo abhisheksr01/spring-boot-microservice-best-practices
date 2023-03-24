@@ -26,13 +26,13 @@ repositories {
 
 ext {
     mapstructVersion = "1.5.3.Final"
-    lombokVersion = "1.18.24"
+    lombokVersion = "1.18.26"
     wireMockVersion = "2.27.2"
-    ioCucumberVersion = "7.9.0"
+    ioCucumberVersion = "7.11.1"
     swaggerVersion = "3.0.0"
     jacocoVersion = "0.8.5"
-    pitest = "0.16"
-    junitVintage = "5.9.1"
+    pitest = "1.1.2"
+    junitVintage = "5.9.2"
 }
 
 dependencies {
