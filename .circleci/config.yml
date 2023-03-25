@@ -1,8 +1,8 @@
 version: 2.1
 executors:
-  base-jdk8:
+  base-jdk17:
     docker:
-      - image: cimg/openjdk:8.0
+      - image: cimg/openjdk:17.0.6
     environment:
       # Configure the JVM and Gradle to avoid OOM errors
       _JAVA_OPTIONS: "-Xmx3g"
@@ -69,7 +69,7 @@ aliases:
 
 jobs:
   build:
-    executor: base-jdk8
+    executor: base-jdk17
     description: Install dependencies & Build
     steps:
       - checkout
@@ -89,7 +89,7 @@ jobs:
           key: v2-gradle-cache-{{ checksum "build.gradle" }}
       - *persist_to_workspace
   test:
-    executor: base-jdk8
+    executor: base-jdk17
     description: Unit & E2E Tests
     steps:
       - *mount_workspace
@@ -111,7 +111,7 @@ jobs:
   #  This is a generic parameterized gradle task execution job.
   #  At the moment it's being used by Jacoco,Checkstyle, Mutation & E2E Test jobs
   gradle_execute_task:
-    executor: base-jdk8
+    executor: base-jdk17
     parameters:
       step_name:
         type: string
@@ -131,7 +131,7 @@ jobs:
           path: << parameters.artifact_path >>
           when: always
   check_dependency_vulnerability:
-    executor: base-jdk8
+    executor: base-jdk17
     parameters:
       timeout:
         description: Execution timeout for running the step command
