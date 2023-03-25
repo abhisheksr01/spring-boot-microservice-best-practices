@@ -273,7 +273,7 @@ workflows:
       - gradle_execute_task:
           name: Jacoco Code Coverage
           step_name: Check Jacoco code coverage & generate report
-          gradle_task: jacocoTestCoverageVerification
+          gradle_task: clean jacocoTestCoverageVerification
           artifact_path: build/reports/jacocoHtml
           requires:
             - Unit & E2E Tests
