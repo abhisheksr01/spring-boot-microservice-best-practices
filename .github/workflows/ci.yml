@@ -10,7 +10,7 @@ jobs:
       - uses: actions/setup-java@v2
         with:
           distribution: adopt
-          java-version: 8
+          java-version: 17
           check-latest: true
       - run: ( ./gradlew clean build )
         name: "Executing unit tests and checking code coverage"
