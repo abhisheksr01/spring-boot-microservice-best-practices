@@ -29,7 +29,7 @@ ext {
     lombokVersion = "1.18.26"
     wireMockVersion = "3.0.0-beta-4"
     ioCucumberVersion = "7.11.1"
-    swaggerVersion = "3.0.0"
+    springDocVersion = "2.0.4"
     jacocoVersion = "0.8.7"
     pitest = "1.1.2"
     junitVintage = "5.9.2"
@@ -54,8 +54,8 @@ dependencies {
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
-    //Swagger
-    implementation "io.springfox:springfox-boot-starter:${swaggerVersion}"
+    //SpringDoc
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}"
     //pitest
     implementation "org.pitest:pitest-junit5-plugin:${pitest}"
 

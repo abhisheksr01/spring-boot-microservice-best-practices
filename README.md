@@ -344,12 +344,18 @@ Hadolint allows us to add configuration file to configure rules to ignore errors
 
 ### 4. Swagger API Documentation
 
-With the latest version of swagger you just need to include a single dependency as below & that's it.
+With the latest version of [SpringDoc-API](https://springdoc.org/v2/) you just need to include a single dependency as below & that's it.
 ```bash
-implementation "io.springfox:springfox-boot-starter:${swaggerVersion}"
+implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4"
 ```
 
-although if you are using WebMvc then you would require to additionally add @EnableWebMvc as stated in doc [here.](https://springfox.github.io/springfox/docs/snapshot/)
+This library supports:
+- OpenAPI 3
+- Spring-boot v3 (Java 17 & Jakarta EE 9)
+- JSR-303, specifically for @NotNull, @Min, @Max, and @Size.
+- Swagger-ui
+- OAuth 2
+- GraalVM native images
 
 To test it locally start the application then Swagger UI documentation can be accessed by URL:
 
