@@ -31,7 +31,7 @@ ext {
     ioCucumberVersion = "7.12.0"
     springDocVersion = "2.1.0"
     jacocoVersion = "0.8.7"
-    pitest = "1.1.2"
+    pitest = "1.2.0"
     junitVintage = "5.9.3"
 }
 
