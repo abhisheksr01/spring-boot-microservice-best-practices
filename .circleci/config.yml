@@ -9,7 +9,7 @@ executors:
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
   alpine:
     docker:
-      - image: abhisheksr01/alpine:latest
+      - image: alpine:latest
   trivy:
     docker:
       - image: aquasec/trivy:latest

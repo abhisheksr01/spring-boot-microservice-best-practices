@@ -1,6 +1,8 @@
 # Sample Dockerfile when we want to use an existing jar file for image creation
 FROM openjdk:21-slim
 
+RUN apt-get update && apt-get upgrade -y
+
 WORKDIR /opt
 
 EXPOSE 8080
