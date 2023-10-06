@@ -1,5 +1,5 @@
-# Docker file, if we just want to create a Docker Image using the already built jar file
-FROM openjdk:17
+# Sample Dockerfile when we want to use an existing jar file for image creation
+FROM openjdk:21-slim
 
 WORKDIR /opt
 

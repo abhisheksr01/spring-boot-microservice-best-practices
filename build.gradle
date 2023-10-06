@@ -11,7 +11,7 @@ plugins {
 String buildId = project.hasProperty('buildId') ? project['buildId'] : 'DEV'
 group = 'com.uk'
 version = "${semanticVersion}.${buildId}"
-sourceCompatibility = '17'
+sourceCompatibility = '21'
 
 /** Disables generating plain jar introduced in spring boot 2.5.0
  **  https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/#packaging-executable.and-plain-archives
@@ -30,7 +30,7 @@ ext {
     wireMockVersion = "3.0.1"
     ioCucumberVersion = "7.14.0"
     springDocVersion = "2.2.0"
-    jacocoVersion = "0.8.7"
+    jacocoVersion = "0.8.9"
     pitest = "1.2.0"
     junitVintage = "5.10.0"
 }
@@ -113,7 +113,7 @@ tasks.named('test') {
 // Jacoco for Code Coverage
 jacoco {
     toolVersion = "${jacocoVersion}"
-    reportsDir = file("$buildDir/customJacocoReportDir")
+    reportsDirectory = file("$buildDir/customJacocoReportDir")
 }
 
 // Runs Jacoco tasks when build task is executed
@@ -124,9 +124,9 @@ build {
 // Setting custom parameters when executing jacocoTestReport task
 jacocoTestReport {
     reports {
-        xml.enabled false
-        csv.enabled false
-        html.destination file("${buildDir}/reports/jacocoHtml")
+        xml.required = false
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir("${buildDir}/reports/jacocoHtml")
     }
 //    afterEvaluate {
 //        classDirectories.setFrom(files(classDirectories.files.collect {
