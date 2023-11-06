@@ -32,7 +32,7 @@ ext {
     springDocVersion = "2.2.0"
     jacocoVersion = "0.8.9"
     pitest = "1.2.0"
-    junitVintage = "5.10.0"
+    junitVintage = "5.10.1"
 }
 
 dependencies {
