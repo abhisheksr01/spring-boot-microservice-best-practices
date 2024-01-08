@@ -1,11 +1,11 @@
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.1'
-    id 'io.spring.dependency-management' version '1.1.3'
+    id 'io.spring.dependency-management' version '1.1.4'
     id 'jacoco'
     id 'info.solidsoft.pitest' version '1.15.0'
 //    id 'checkstyle'
-    id "org.owasp.dependencycheck" version "8.4.0"
+    id "org.owasp.dependencycheck" version "9.0.8"
 }
 
 String buildId = project.hasProperty('buildId') ? project['buildId'] : 'DEV'
@@ -29,10 +29,10 @@ ext {
     lombokVersion = "1.18.30"
     wireMockVersion = "3.0.1"
     ioCucumberVersion = "7.15.0"
-    springDocVersion = "2.2.0"
+    springDocVersion = "2.3.0"
     jacocoVersion = "0.8.9"
-    pitest = "1.2.0"
-    junitVintage = "5.10.0"
+    pitest = "1.2.1"
+    junitVintage = "5.10.1"
 }
 
 dependencies {
@@ -181,6 +181,4 @@ dependencyCheck {
     outputDirectory = "build/reports/dependency-vulnerabilities"
     // specify a list of known issues which contain false-positives to be suppressed
     suppressionFiles = ["$projectDir/config/dependencycheck/dependency-check-suppression.xml"]
-    // Sets the number of hours to wait before checking for new updates from the NVD, defaults to 4.
-    cveValidForHours = 24
 }

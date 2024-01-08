@@ -393,7 +393,8 @@ In this repo we are looking at some of the key practices to secure the applicati
 
   ```bash
   plugin {
-    id "org.owasp.dependencycheck" version "5.3.2.1"
+    # The version may change, please check the build.gradle for the latest version used in t he project
+    id "org.owasp.dependencycheck" version "9.0.8"
   }
   dependencyCheck {
       // the default artifact types that will be analyzed.
@@ -405,8 +406,6 @@ In this repo we are looking at some of the key practices to secure the applicati
       outputDirectory = "build/reports/dependency-vulnerabilities"
       // specify a list of known issues which contain false-positives
       suppressionFiles = ["$projectDir/config/dependencycheck/dependency-check-suppression.xml"]
-      // Sets the number of hours to wait before checking for new updates from the NVD, defaults to 4.
-      cveValidForHours = 24
   }
   ```
 
