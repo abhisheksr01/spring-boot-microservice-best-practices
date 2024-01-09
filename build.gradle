@@ -61,19 +61,19 @@ dependencies {
      *https://docs.gradle.org/current/userguide/dependency_management.html#sec:module_substitution
      * Example 109. Example: Blacklisting a version with a replacement
     */
-    configurations.all {
-        /***
-         * This is how we can exclude transient dependencies
-         * exclude group: "com.google.guava", module: "guava"
-         */
-        // Replacing a transient dependency to a higher version for fixing vulnerabilities
-        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-            if (details.requested.group == 'org.yaml' && details.requested.name == 'snakeyaml' && details.requested.version == '1.33') {
-                details.useVersion '2.0'
-                details.because 'Fixes vulnerability in prior snakeyaml versions'
-            }
-        }
-    }
+//    configurations.all {
+//        /***
+//         * This is how we can exclude transient dependencies
+//         * exclude group: "com.google.guava", module: "guava"
+//         */
+//        // Replacing a transient dependency to a higher version for fixing vulnerabilities
+//        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+//            if (details.requested.group == 'org.yaml' && details.requested.name == 'snakeyaml' && details.requested.version == '1.33') {
+//                details.useVersion '2.0'
+//                details.because 'Fixes vulnerability in prior snakeyaml versions'
+//            }
+//        }
+//    }
 }
 
 // Property can be passed along with test task to avoid execution of e2e
@@ -96,7 +96,7 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-//Checkstyle for code style and qualityy
+//Checkstyle for code style and quality
 //checkstyle {
 //    toolVersion = '8.29'
 //}
@@ -126,13 +126,6 @@ jacocoTestReport {
         csv.required = false
         html.outputLocation = layout.buildDirectory.dir("${buildDir}/reports/jacocoHtml")
     }
-//    afterEvaluate {
-//        classDirectories.setFrom(files(classDirectories.files.collect {
-//            fileTree(dir: it,
-//                    exclude: ['**/mapper/**']
-//            )
-//        }))
-//    }
 }
 
 // Setting custom parameters when executing jacocoTestCoverageVerification task for setting rules
@@ -159,7 +152,6 @@ jacocoTestCoverageVerification {
     }
 }
 pitest {
-    pitestVersion = '1.15.2'
     junit5PluginVersion = '1.2.1'
     targetClasses = ['com.uk.companieshouse.*']  // by default "${project.group}.*"
     targetTests = ['com.uk.companieshouse.*']  // by default "${project.group}.*"
