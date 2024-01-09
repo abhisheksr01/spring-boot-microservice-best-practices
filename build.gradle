@@ -56,8 +56,6 @@ dependencies {
     testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     //SpringDoc
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}"
-    //pitest
-    implementation "org.pitest:pitest-junit5-plugin:${pitest}"
 
     /*
      *https://docs.gradle.org/current/userguide/dependency_management.html#sec:module_substitution
@@ -161,10 +159,12 @@ jacocoTestCoverageVerification {
     }
 }
 pitest {
-    pitestVersion = "1.5.1"
-    testPlugin = "junit5"
+    pitestVersion = '1.15.2'
+    junit5PluginVersion = '1.2.1'
     targetClasses = ['com.uk.companieshouse.*']  // by default "${project.group}.*"
     targetTests = ['com.uk.companieshouse.*']  // by default "${project.group}.*"
+    outputFormats = ['HTML']
+    timestampedReports = false
     // TODO: Mutation tests failing due to port already in use exception, fix them and then we can remove below
     excludedTestClasses = ['com.uk.companieshouse.e2e.*', 'com.uk.companieshouse.CompaniesHouseApplicationTest*']
 }
