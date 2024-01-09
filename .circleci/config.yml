@@ -40,13 +40,13 @@ aliases:
         - v2-gradle-cache-{{ checksum "build.gradle" }}
   - &save_dependency_vulnerability_cache
     save_cache:
-      key: v2-dependency-cache-{{ checksum "build.gradle" }}
+      key: v3-dependency-cache-{{ checksum "build.gradle" }}
       paths:
-        - /home/circleci/.gradle/dependency-check-data/5.0/
+        - /home/circleci/.gradle/dependency-check-data/7.0/
   - &restore_dependency_vulnerability_cache
     restore_cache:
       keys:
-        - v2-dependency-cache-{{ checksum "build.gradle" }}
+        - v3-dependency-cache-{{ checksum "build.gradle" }}
   - &only_allowed_branches
     filters:
       branches:
