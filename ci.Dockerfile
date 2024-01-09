@@ -1,7 +1,7 @@
 # Sample Dockerfile when we want to use an existing jar file for image creation
 FROM openjdk:21-slim
 
-RUN apt-get update && apt-get dist-upgrade -y && apt-get clean
+RUN apt-get update && apt-get upgrade -y && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt
 
