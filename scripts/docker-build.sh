@@ -26,6 +26,7 @@ push_image() {
     docker tag "${DOCKER_USER}/${DOCKER_IMAGE}:${TAG}" "${DOCKER_USER}/${DOCKER_IMAGE}:latest"
     docker push "${DOCKER_USER}/${DOCKER_IMAGE}:${TAG}"
     docker push "${DOCKER_USER}/${DOCKER_IMAGE}:latest"
+    printEmojiWrappedMessage "${GREEN}${HEART_ICON}" "Successfully pushed Docker Image '${DOCKER_USER}/${DOCKER_IMAGE}' with latest & ${TAG} tags..."
   else
     printEmojiWrappedMessage "${GREEN}${HEART_ICON}" "Skipping push docker image for non master branch."
   fi

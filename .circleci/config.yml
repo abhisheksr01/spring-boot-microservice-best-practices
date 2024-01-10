@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  snyk: snyk/snyk@2.0.2
 executors:
   base-jdk21:
     docker:
@@ -25,6 +27,9 @@ executors:
   loadimpact-k6:
     docker:
       - image: loadimpact/k6
+  cimgbase:
+    docker:
+      - image: cimg/base:2024.01
 
 aliases:
   - &mount_workspace
@@ -130,6 +135,17 @@ jobs:
       - store_artifacts:
           path: << parameters.artifact_path >>
           when: always
+  static_code_analysis:
+    executor: cimgbase
+    steps:
+      - checkout
+      - snyk/install
+      - run:
+          command: snyk version
+          name: Which version of snyk is installed
+      - run:
+          name: Run code scan
+          command: snyk code test
   check_dependency_vulnerability:
     executor: base-jdk21
     parameters:
@@ -277,13 +293,10 @@ workflows:
           artifact_path: build/reports/jacocoHtml
           requires:
             - Unit & E2E Tests
-#      - gradle_execute_task:
-#          name: Checkstyle
-#          step_name: Check styling and generate report
-#          gradle_task: check
-#          artifact_path: build/reports/checkstyle
-#          requires:
-#            - Build
+      - static_code_analysis:
+          name: Snyk Static Code Analysis
+          requires:
+            - Build
       - gradle_execute_task:
           name: Mutation Tests
           step_name: Perform Mutation Testing on Unit Tests
@@ -302,7 +315,7 @@ workflows:
           name: Docker Lint Build Scan Push
           requires:
             - Jacoco Code Coverage
-#            - Checkstyle
+            - Snyk Static Code Analysis
             - Mutation Tests
             - Dependency Vulnerability Checks
       - hold:
