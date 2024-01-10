@@ -168,7 +168,7 @@ dependencyCheck {
         println 'Executing DependencyCheckAnalyse with the NVD_API_KEY environment variable'
         nvd {
             apiKey = System.getenv('NVD_API_KEY')
-            delay = 350
+            delay = 3500
         }
     } else {
         println 'Executing DependencyCheckAnalyse without NVD API Key'

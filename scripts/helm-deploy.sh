@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
+source ./scripts/utils.sh
 
 set -euo pipefail
 
 : "${EKS_NAMESPACE}"
 : "${RELEASE_NAME}"
 VERSION=latest
-echo "Deploying app version : ${VERSION}"
+printMessage "$HEART_ICON" "$HEART_ICON" "Deploying app version : ${VERSION}"
 helm upgrade \
 --install \
 --wait \
