@@ -42,7 +42,7 @@ aliases:
     save_cache:
       key: v1-dependency-cache-{{ checksum "build.gradle" }}
       paths:
-        - /home/circleci/.gradle/dependency-check-data/7.0
+        - ~/.gradle/dependency-check-data/7.0/
   - &restore_dependency_vulnerability_cache
     restore_cache:
       keys:
