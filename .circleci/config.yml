@@ -139,13 +139,9 @@ jobs:
     executor: cimgbase
     steps:
       - checkout
-      - snyk/install
-      - run:
-          command: snyk version
-          name: Which version of snyk is installed
-      - run:
-          name: Run code scan
-          command: snyk code test
+      - snyk/scan:
+          token-variable: SNYK_TOKEN
+          command: code test
   check_dependency_vulnerability:
     executor: base-jdk21
     parameters:
@@ -294,6 +290,7 @@ workflows:
           requires:
             - Unit & E2E Tests
       - static_code_analysis:
+          <<: *credential_context
           name: Snyk Static Code Analysis
           requires:
             - Build
