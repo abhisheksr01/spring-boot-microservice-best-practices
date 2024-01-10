@@ -27,9 +27,6 @@ executors:
   loadimpact-k6:
     docker:
       - image: loadimpact/k6
-  cimgbase:
-    docker:
-      - image: cimg/base:2024.01
 
 aliases:
   - &mount_workspace
@@ -136,7 +133,7 @@ jobs:
           path: << parameters.artifact_path >>
           when: always
   static_code_analysis:
-    executor: cimgbase
+    executor: base-jdk21
     steps:
       - checkout
       - snyk/scan:
