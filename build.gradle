@@ -31,7 +31,6 @@ ext {
     ioCucumberVersion = "7.15.0"
     springDocVersion = "2.3.0"
     jacocoVersion = "0.8.9"
-    pitest = "1.2.1"
     junitVintage = "5.10.1"
 }
 
@@ -165,7 +164,16 @@ pitest {
 // owasp dependency vulnerability check
 // Reference doc : https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/configuration.html
 dependencyCheck {
-    // the default artifact types that will be analyzed.
+    if (project.hasProperty('UseNVDKey')) {
+        println 'Executing DependencyCheckAnalyse with the NVD_API_KEY environment variable'
+        nvd {
+            apiKey = System.getenv('NVD_API_KEY')
+            delay = 350
+        }
+    } else {
+        println 'Executing DependencyCheckAnalyse without NVD API Key'
+    }
+
     analyzedTypes = ['jar']
     // CI-tools usually needs XML-reports, but humans needs HTML.
     formats = ['HTML', 'JUNIT']

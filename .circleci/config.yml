@@ -38,15 +38,15 @@ aliases:
     restore_cache:
       keys:
         - v2-gradle-cache-{{ checksum "build.gradle" }}
-  - &save_dependency_vulnerability_cache
+  - &save_dependencycheck_vulnerability_cache
     save_cache:
-      key: v1-dependency-cache-{{ checksum "build.gradle" }}
+      key: v1-dependencycheck-cache-{{ checksum "build.gradle" }}
       paths:
         - ~/.gradle/dependency-check-data/7.0/
-  - &restore_dependency_vulnerability_cache
+  - &restore_dependencycheck_vulnerability_cache
     restore_cache:
       keys:
-        - v1-dependency-cache-{{ checksum "build.gradle" }}
+        - v1-dependencycheck-cache-{{ checksum "build.gradle" }}
   - &only_allowed_branches
     filters:
       branches:
@@ -143,12 +143,12 @@ jobs:
       - checkout
       - *restore_gradlew_cache
       - *restore_gradle_cache
-      - *restore_dependency_vulnerability_cache
+      - *restore_dependencycheck_vulnerability_cache
       - run:
           name: Perform Dependency Vulnerability Checks
           no_output_timeout: << parameters.timeout >>
-          command: ./gradlew dependencyCheckAnalyze
-      - *save_dependency_vulnerability_cache
+          command: ./gradlew dependencyCheckAnalyze -PUseNVDKey
+      - *save_dependencycheck_vulnerability_cache
       - store_test_results:
           path: build/reports/dependency-vulnerabilities
           when: always
@@ -292,6 +292,7 @@ workflows:
           requires:
             - Build
       - check_dependency_vulnerability:
+          <<: *credential_context
           name: Dependency Vulnerability Checks
           timeout: 25m
           requires:
@@ -346,6 +347,7 @@ workflows:
           <<: *only_master
     jobs:
       - check_dependency_vulnerability:
+          <<: *credential_context
           name: Dependency Vulnerability Checks
           timeout: 20m
       - check_image_vulnerability:
