@@ -16,14 +16,14 @@ steps:
     gradleWrapperFile: 'gradlew'
     gradleOptions: '-Xmx3072m'
     javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '17'
+    jdkVersionOption: '21'
     jdkArchitectureOption: 'x64'
     publishJUnitResults: true
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'build'
     
 - script: ./gradlew test
-  displayName: 'Build'
+  displayName: 'Test'
 
 - script: |
     echo Add other tasks to build, test, and deploy your project.
