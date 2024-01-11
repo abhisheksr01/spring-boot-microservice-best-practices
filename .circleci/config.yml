@@ -27,6 +27,9 @@ executors:
   loadimpact-k6:
     docker:
       - image: loadimpact/k6
+  cimg-jdk21:
+    docker:
+      - image: cimg/openjdk:21.0.0
 
 aliases:
   - &mount_workspace
@@ -133,7 +136,7 @@ jobs:
           path: << parameters.artifact_path >>
           when: always
   static_code_analysis:
-    executor: base-jdk21
+    executor: cimg-jdk21
     steps:
       - checkout
       - snyk/scan:
