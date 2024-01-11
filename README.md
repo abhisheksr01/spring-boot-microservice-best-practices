@@ -64,7 +64,7 @@ to the Companies House API hence returning Company Details.
 
 ### Prerequisites
 
-- You must have >= Java 17 Installed. You can use [SDKMAN](https://sdkman.io/install) for maintaining different JDK's in your system.
+- You must have >= Java 21 Installed. You can use [SDKMAN](https://sdkman.io/install) for maintaining different JDK's in your system.
 - If you wish to run the application against the actual Companies House
   API and then you will need to [create a free account](https://developer.companieshouse.gov.uk/developer/signin).
   Once created replace the `authUserName` in the [application.yaml](src/main/resources/application.yaml) under main dir.
@@ -351,7 +351,7 @@ implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4"
 
 This library supports:
 - OpenAPI 3
-- Spring-boot v3 (Java 17 & Jakarta EE 9)
+- Spring-boot v3 (Java 21 & Jakarta EE 9)
 - JSR-303, specifically for @NotNull, @Min, @Max, and @Size.
 - Swagger-ui
 - OAuth 2
@@ -479,7 +479,7 @@ To learn how to containerize application [click here.](#61-docker-containerizati
    Scanning Remote Image (e.g. Docker Hub)
    ```bash
    Syntax : docker run -it aquasec/trivy:latest [DOCKER_HUB_REPO]/[DOCKER_IMAGE_NAME]:[TAG]
-   Example: docker run -it aquasec/trivy:latest openjdk:17-jre-alpine
+   Example: docker run -it aquasec/trivy:latest openjdk:21-slim
    ```
    Once executed successfully it output a tabular report by default(which can be changed).
 
@@ -625,7 +625,7 @@ Docker uses a text file with set of instructions in it to build a docker image. 
 Now let us have a quick look at our [ci.Dockerfile](./ci.Dockerfile) given below:
 
   ```bash
-  FROM openjdk:17-jre-alpine
+  FROM openjdk:21-slim
 
   WORKDIR /opt
 
@@ -640,7 +640,7 @@ Now let us have a quick look at our [ci.Dockerfile](./ci.Dockerfile) given below
   ENTRYPOINT exec java $JAVA_OPTS -jar companieshouse-0.0.1-SNAPSHOT.jar
   ```
 
-  - First instruction FROM is used for pulling openjdk:17-jre-alpine from Docker Hub
+  - First instruction FROM is used for pulling openjdk:21-slim from Docker Hub
   - WORKDIR sets the opt as working directory
   - RUN As this is an Alpine image we are using apk to update the image dependencies
   - ARG set an argument to be used later in the file
@@ -652,7 +652,7 @@ Although in a real world scenario you will typically have only 1 Dockerfile but 
 
 6.1.1 [Dockerfile](./Dockerfile):
 
-It uses an intermediate **gradle:7.6.1-jdk17** container for building an executable jar and then **openjdk:17** as a base image  by copying the jar for application docker image.</br>
+It uses an intermediate **gradle:8.5-jdk21** container for building an executable jar and then **openjdk:21-slim** as a base image  by copying the jar for application docker image.</br>
 This Dockerfile will be handy and is an example of using intermediate containers when we do not have respective runtime (JAVA) & package manager (gradle) installed locally for building the executable application.
 
 - Execute below command to build a docker image, if no docker file is specified in CLI it defaults to **Dockerfile**.

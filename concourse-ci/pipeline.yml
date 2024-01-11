@@ -13,11 +13,11 @@ resources:
       uri: https://github.com/abhisheksr01/spring-boot-microservice-best-practices.git
   - name: build-metadata
     type: build-metadata
-  - name: gradle-jdk17-image
+  - name: gradle-jdk21-image
     type: registry-image
     source:
       repository: gradle
-      tag: 7.6.1-jdk17
+      tag: 8.5-jdk21
   - name: concourse-dcind-image
     icon: docker
     type: registry-image
@@ -51,15 +51,15 @@ jobs:
     plan:
       - get: source-repo
         trigger: true
-      - get: gradle-jdk17-image
+      - get: gradle-jdk21-image
       - task: unit-and-e2e-tests
         file: source-repo/concourse-ci/tasks/gradle/task.yml
-        image: gradle-jdk17-image
+        image: gradle-jdk21-image
         params:
           GRADLE_TASK: test
       - task: jacoco-code-coverage
         file: source-repo/concourse-ci/tasks/gradle/task.yml
-        image: gradle-jdk17-image
+        image: gradle-jdk21-image
         params:
           GRADLE_TASK: jacocoTestCoverageVerification
   - name: mutation-testing
@@ -68,20 +68,20 @@ jobs:
       trigger: true
       passed:
         - unit-e2e-tests-and-code-coverage
-    - get: gradle-jdk17-image
+    - get: gradle-jdk21-image
     - task: pitest
       file: source-repo/concourse-ci/tasks/gradle/task.yml
-      image: gradle-jdk17-image
+      image: gradle-jdk21-image
       params:
         GRADLE_TASK: pitest
   - name: static-code-analysis
     plan:
     - get: source-repo
       trigger: true
-    - get: gradle-jdk17-image
+    - get: gradle-jdk21-image
     - task: checkstyle
       file: source-repo/concourse-ci/tasks/gradle/task.yml
-      image: gradle-jdk17-image
+      image: gradle-jdk21-image
       params:
         GRADLE_TASK: check
   - name: dependency-vulnerability-scan
@@ -90,10 +90,10 @@ jobs:
       trigger: true
       passed:
         - static-code-analysis
-    - get: gradle-jdk17-image
+    - get: gradle-jdk21-image
     - task: dependency-check-analyze
       file: source-repo/concourse-ci/tasks/gradle/task.yml
-      image: gradle-jdk17-image
+      image: gradle-jdk21-image
       params:
         GRADLE_TASK: dependencyCheckAnalyze
   - name: docker-build-scan-push
@@ -214,9 +214,9 @@ jobs:
       trigger: true
       passed:
         - k8s-deploy
-    - get: gradle-jdk17-image
+    - get: gradle-jdk21-image
     - task: e2e-acceptance-test
       file: source-repo/concourse-ci/tasks/gradle/task.yml
-      image: gradle-jdk17-image
+      image: gradle-jdk21-image
       params:
         GRADLE_TASK: test -Pe2e
