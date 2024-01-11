@@ -4,7 +4,6 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.4'
     id 'jacoco'
     id 'info.solidsoft.pitest' version '1.15.0'
-//    id 'checkstyle'
     id "org.owasp.dependencycheck" version "9.0.8"
 }
 
@@ -96,18 +95,6 @@ tasks.named('test') {
     }
     useJUnitPlatform()
 }
-
-//Checkstyle for code style and quality
-//checkstyle {
-//    toolVersion = '8.29'
-//}
-//tasks.withType(Checkstyle) {
-//    reports {
-//        xml.enabled false
-//        html.enabled true
-//        html.stylesheet resources.text.fromFile("${rootDir}/config/xls/checksyle-style.xsl")
-//    }
-//}
 
 // Jacoco for Code Coverage
 jacoco {
