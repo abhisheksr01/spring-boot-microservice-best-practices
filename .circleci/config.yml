@@ -24,7 +24,6 @@ executors:
   docker-git:
     docker:
       - image: abhisheksr01/dind-utils:latest
-    resource_class: arm.medium
   loadimpact-k6:
     docker:
       - image: loadimpact/k6
