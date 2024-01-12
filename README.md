@@ -22,7 +22,7 @@
     - [3.1 Checkstyle](#31-checkstyle)
     - [3.2 Jacoco](#32-jacoco)
     - [3.3 Hadolint](#33-hadolint)
-  - [4. Swagger API Documentation](#4-swagger-api-documentation)
+  - [4. API Documentation](#4-api-documentation)
   - [5. DevSecOps](#5-devsecops)
     - [5.1 Dependency Vulnerability Check](#51-dependency-vulnerability-check)
     - [5.2 Docker Image Vulnerability Check](#52-docker-image-vulnerability-check)
@@ -324,17 +324,24 @@ Example: Execute from the root of this repo as we have 2 dockerfiles in this rep
 ```bash
 hadolint testhadolinttest.Dockerfile
 ```
-or
-```bash
-hadolint testhadolinttest.Dockerfile
-```
 
 or you may directly run using the docker as below:
 ```bash
 docker run --rm hadolint/hadolint < testhadolinttest.Dockerfile
 ```
 
-The linting errors are fixed in [Dockerfile](./Dockerfile).
+Expected Output:
+```agsl
+testhadolinttest.Dockerfile:8 DL3018 warning: Pin versions in apk add. Instead of `apk add <package>` use `apk add <package>=<version>`
+testhadolinttest.Dockerfile:8 DL3019 info: Use the `--no-cache` switch to avoid the need to use `--update` and remove `/var/cache/apk/*` when done installing packages
+
+```
+
+Fix:  Pin versions in apk add and Use the `--no-cache` as shown below:
+```agsl
+RUN apk add --no-cache --upgrade libtasn1=4.14-r0 sqlite-libs=3.28.0-r3 musl-utils=1.1.20-r6 libjpeg-turbo=1.5.3-r6 \
+libx11=1.6.12-r0 freetype=2.9.1-r3
+```
 
 In pipeline:
 
@@ -342,7 +349,7 @@ We can use hadolint to lint dockerfile in the pipeline before building the image
 
 Hadolint allows us to add configuration file to configure rules to ignore errors, trusted registries etc, [click here](https://github.com/hadolint/hadolint#configure) to learn more.
 
-### 4. Swagger API Documentation
+### 4. API Documentation
 
 With the latest version of [SpringDoc-API](https://springdoc.org/v2/) you just need to include a single dependency as below & that's it.
 ```bash
