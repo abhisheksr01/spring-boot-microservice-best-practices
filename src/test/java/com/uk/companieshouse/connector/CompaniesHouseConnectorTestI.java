@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @WebAppConfiguration
 @ActiveProfiles("test")
-class CompaniesHouseConnectorIT implements WireMockService {
+class CompaniesHouseConnectorTestI implements WireMockService {
 
     @Value("${govCompaniesHouse.endpoint}")
     private String govCompaniesHouseEndpoint;
