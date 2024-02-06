@@ -13,8 +13,16 @@ jobs:
           distribution: adopt
           java-version: 21
           check-latest: true
+      - name: Cached Gradle packages
+        uses: actions/cache@v4
+        with:
+          key: ${{ runner.os }}-v1-build-${{ env.cache-name }}-${{ checksum "build.gradle" }}
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
       - run: ( ./gradlew build -x test )
-        name: "Executing build stage"
+        name: "Executing build"
+
   unit-test:
     runs-on: ubuntu-latest
     needs: build
@@ -25,6 +33,13 @@ jobs:
           distribution: adopt
           java-version: 21
           check-latest: true
+      - name: Cached Gradle packages
+        uses: actions/cache@v4
+        with:
+          key: ${{ runner.os }}-v1-build-${{ env.cache-name }}-${{ checksum "build.gradle" }}
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
       - run: ( ./gradlew test )
         name: "Executing tests"
       - run: ( ./gradlew jacocoTestCoverageVerification )
@@ -39,6 +54,13 @@ jobs:
           distribution: adopt
           java-version: 21
           check-latest: true
+      - name: Cached Gradle packages
+        uses: actions/cache@v4
+        with:
+          key: ${{ runner.os }}-v1-build-${{ env.cache-name }}-${{ checksum "build.gradle" }}
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
       - run: ( ./gradlew pitest )
         name: "Executing mutation tests"
   dependency-vulnerability-analysis:
@@ -51,5 +73,14 @@ jobs:
           distribution: adopt
           java-version: 21
           check-latest: true
-      - run: ( ./gradlew dependencyCheckAnalyze )
+      - name: Cached Gradle packages
+        uses: actions/cache@v4
+        with:
+          key: ${{ runner.os }}-v1-build-${{ env.cache-name }}-${{ checksum "build.gradle" }}
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+      - run: ( ./gradlew dependencyCheckAnalyze -PUseNVDKey )
         name: "Executing dependency vulnerability checks"
+        env:
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
