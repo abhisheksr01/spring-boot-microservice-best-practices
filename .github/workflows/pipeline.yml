@@ -16,7 +16,7 @@ jobs:
       - name: Cached Gradle packages
         uses: actions/cache@v4
         with:
-          key: ${{ runner.os }}-v1-build-${{ env.cache-name }}-${{ checksum "build.gradle" }}
+          key: ${{ runner.os }}-v1-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
@@ -36,7 +36,7 @@ jobs:
       - name: Cached Gradle packages
         uses: actions/cache@v4
         with:
-          key: ${{ runner.os }}-v1-build-${{ env.cache-name }}-${{ checksum "build.gradle" }}
+          key: ${{ runner.os }}-v1-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
@@ -57,7 +57,7 @@ jobs:
       - name: Cached Gradle packages
         uses: actions/cache@v4
         with:
-          key: ${{ runner.os }}-v1-build-${{ env.cache-name }}-${{ checksum "build.gradle" }}
+          key: ${{ runner.os }}-v1-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
@@ -76,7 +76,7 @@ jobs:
       - name: Cached Gradle packages
         uses: actions/cache@v4
         with:
-          key: ${{ runner.os }}-v1-build-${{ env.cache-name }}-${{ checksum "build.gradle" }}
+          key: ${{ runner.os }}-v1-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
