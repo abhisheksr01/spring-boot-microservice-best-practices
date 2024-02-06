@@ -56,14 +56,14 @@ aliases:
     filters:
       branches:
         only:
-          - master
+          - main
 #         We are now running all tests on PR in Github Actions
 #          - /dependabot.*/
-  - &only_master
+  - &only_main
     filters:
       branches:
         only:
-          - master
+          - main
   - &persist_to_workspace
     persist_to_workspace:
       root: .
@@ -354,7 +354,7 @@ workflows:
     triggers:
       - schedule:
           cron: "0 8 * * 5"
-          <<: *only_master
+          <<: *only_main
     jobs:
       - check_dependency_vulnerability:
           <<: *credential_context

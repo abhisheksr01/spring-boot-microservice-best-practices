@@ -2,7 +2,7 @@ pull_request_rules:
   - name: Dependabot
     conditions:
       - "status-success=companieshouse-api-pr"
-      - base=master
+      - base=main
       - author~=^dependabot(|-preview)\[bot\]$
     actions:
       merge:
