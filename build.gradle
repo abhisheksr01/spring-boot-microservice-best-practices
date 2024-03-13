@@ -55,7 +55,7 @@ dependencies {
     //SpringDoc
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}"
     //Explicitly Added to fix the vulnerabilities identified in previous versions
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.0'
 
     /*
      *https://docs.gradle.org/current/userguide/dependency_management.html#sec:module_substitution
