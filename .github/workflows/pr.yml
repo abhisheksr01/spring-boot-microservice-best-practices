@@ -2,6 +2,10 @@ name: CI
 on:
   pull_request:
 
+permissions:
+    contents: read
+    actions: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,3 +31,24 @@ jobs:
         name: "Executing mutation tests"
       - run: ( ./gradlew dependencyCheckAnalyze )
         name: "Executing dependency vulnerability checks"
+  trivy-static-analysis:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+        - name: Trivy Static Security Analysis
+          run: |
+            echo "**********************************************************************************************"
+            echo "**********************************************************************************************"
+            docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+            -v $HOME/Library/Caches:/root/.cache/ \
+            -v ./:/scan -w /scan aquasec/trivy:0.50.1 \
+            config --severity "HIGH,CRITICAL" -f sarif -o results.sarif --exit-code 1 --misconfig-scanners=dockerfile /scan/Dockerfile
+        - name: Upload SARIF file
+          uses: github/codeql-action/upload-sarif@v3
+          if: always()
+          with:
+            # Path to SARIF file relative to the root of the repository
+            sarif_file: /scan/results.sarif
+            # Optional category for the results
+            # Used to differentiate multiple results for one commit
+            category: trivy-analysis
