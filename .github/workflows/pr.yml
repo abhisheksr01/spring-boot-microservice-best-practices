@@ -48,7 +48,7 @@ jobs:
           if: always()
           with:
             # Path to SARIF file relative to the root of the repository
-            sarif_file: /scan/results.sarif
+            sarif_file: results.sarif
             # Optional category for the results
             # Used to differentiate multiple results for one commit
             category: trivy-analysis
