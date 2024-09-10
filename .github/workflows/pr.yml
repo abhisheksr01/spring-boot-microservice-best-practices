@@ -29,7 +29,7 @@ jobs:
         name: "Executing unit tests and checking code coverage"
       - run: ( ./gradlew pitest )
         name: "Executing mutation tests"
-      - run: ( ./gradlew dependencyCheckAnalyze )
+      - run: ( ./gradlew dependencyCheckAnalyze -PUseNVDKey )
         name: "Executing dependency vulnerability checks"
   trivy-static-analysis:
       runs-on: ubuntu-latest
