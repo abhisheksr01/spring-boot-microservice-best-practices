@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: companies-house-microservice
-          image: abhisheksr01/companies-house-microservice:0.0.1
+          image: abhisheksr01/companieshouse:latest
           ports:
             - containerPort: 8080
           imagePullPolicy: Always

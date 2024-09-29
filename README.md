@@ -758,13 +758,19 @@ docker login -u [DOCKER_HUB_USERNAME] -p [DOCKER_HUB_PASSWORD]
 Build your image by executing below command:
 
 ```bash
-docker build -t [DOCKER_HUB_USERNAME]/companyhouse:0.0.1 .
+docker build -t [DOCKER_HUB_USERNAME]/companieshouse:0.0.1 .
 ```
 
 Then push the image to the remote registry.
 
 ```bash
-docker push [DOCKER_HUB_USERNAME]/companyhouse:0.0.1
+docker push [DOCKER_HUB_USERNAME]/companieshouse:0.0.1
+```
+
+or if you built with a `latest` tag.
+
+```bash
+docker push [DOCKER_HUB_USERNAME]/companieshouse:latest
 ```
 
 Open Docker hub & validate whether the docker image has been pushed successfully.
@@ -782,7 +788,7 @@ docker images
 
 Now let us pull the remote docker image:
 ```bash
-docker pull [DOCKER_HUB_USERNAME]/companyhouse:0.0.1
+docker pull [DOCKER_HUB_USERNAME]/companieshouse:0.0.1
 ```
 
 or you can pull any other public image as pull doesn't require credentials for public images.
@@ -963,21 +969,74 @@ Further Reading:
 
 #### 7.1 Kubernetes
 
-**Updating instructions WIP**
+Before executing below commands ensure the kubernetes cluster (Rancher, Minikube, Cloud Cluster etc) is running and kubectl CLI is able to connect.
 
-- Standard App Deployment
+> If you have your own image built and pushed to DockerHub.</br>
+Then open the [kubernetes/std/deployement.yaml](./kubernetes/std/deployement.yaml) and replace "image: abhisheksr01/companieshouse:latest" at Line 17 with your DOCKERHUB_USERNAME and imagename:tag
+
+For this exercise we are deploying the application on `default` namespace if you wish to change the namespace then apped `-n [NAMESPACE]` to each command executed below.
+
+- Application Deployment through Kubernetes yaml config file.
+
+  ```bash
+   kubectl apply -f kubernetes/std/
+  ```
+  The `Ingress` will fail if you do not have it configured (which is fine for this exercise).
+
+  Check if the pod is running and status is `Running`. Capture the name of the pod.
+
+  ```bash
+   kubectl get pods
+  ```
+
+  Check if the service is also running.
+
+  ```bash
+   kubectl get service
+  ```
+
+  Expose the Service through port-forward to access the application locally.
+
+  ```bash
+  kubectl port-forward [POD-NAME] 8080:8080
+  ```
+
+  or use below command to port-forward with dynamic retrieval of the pod name.
+
+  ```bash
+  kubectl port-forward $(kubectl get pod -l app=companies-house-microservice -o jsonpath="{.items[0].metadata.name}") 8080:8080
+  ```
+
+  You should see an terminal log as below:
+  ```
+  Forwarding from 127.0.0.1:8080 -> 8080
+  Forwarding from [::1]:8080 -> 8080
+  ```
+
+  Open a web browser and open the URL: http://localhost:8080/companieshouse/swagger-ui/index.html to access the swagger UI exposed by this service.
+
+  Terminate the terminal to end the port forwarding and execute below command to remove the application deployment.
+
+  ```
+  kubectl delete -f ./kubernetes/std/
+  ```
+
+
+- Helm Chart
 
   Source files at :
 
   ```bash
-  kubernetes/std/
+  kubernetes/helm-chart/
   ```
 
   ```bash
-   kubectl apply -f kubernetes/std/ -n [NAMESPACE]
+   kubectl apply -f kubernetes/helm-chart/ -n [NAMESPACE]
   ```
-
+  
 - Helm Chart
+
+  [Work In Progress]
 
   Source files at :
 
