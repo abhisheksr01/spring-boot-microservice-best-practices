@@ -90,17 +90,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run Snyk to static code analysis for vulnerabilities
-        uses: snyk/actions/node@master
+        uses: snyk/actions/maven-3-jdk-21@master
         env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}§
-  sast-dockerfile-trivy:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+  sast-dockerfile-trivy-hadolint:
     runs-on: ubuntu-latest
     needs: build
     steps:
       - uses: actions/checkout@v4
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
+          failure-threshold: error
       - name: Run Trivy vulnerability scanner in IaC mode
         uses: aquasecurity/trivy-action@0.29.0
         with:
-          scan-type: 'config'
+          scan-type: config
+          scanners: misconfig
           exit-code: '1'
           severity: 'CRITICAL,HIGH'
