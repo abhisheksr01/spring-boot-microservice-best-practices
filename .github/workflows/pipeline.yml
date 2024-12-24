@@ -2,6 +2,7 @@ name: CICD Pipeline
 on:
   push:
     branches: [ 'main' ]
+  pull_request:
 
 jobs:
   build:
@@ -22,7 +23,6 @@ jobs:
             ~/.gradle/wrapper
       - run: ( ./gradlew build -x test )
         name: "Executing build"
-
   unit-test:
     runs-on: ubuntu-latest
     needs: build
@@ -84,3 +84,23 @@ jobs:
         name: "Executing dependency vulnerability checks"
         env:
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+  sast-code-snyk:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Snyk to static code analysis for vulnerabilities
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}§
+  sast-dockerfile-trivy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Trivy vulnerability scanner in IaC mode
+        uses: aquasecurity/trivy-action@0.29.0
+        with:
+          scan-type: 'config'
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
