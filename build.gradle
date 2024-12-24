@@ -26,7 +26,7 @@ repositories {
 ext {
     mapstructVersion = "1.6.3"
     lombokVersion = "1.18.36"
-    wireMockVersion = "3.0.1"
+    wireMockVersion = "3.10.0"
     ioCucumberVersion = "7.20.1"
     springDocVersion = "2.7.0"
     jacocoVersion = "0.8.9"
@@ -37,13 +37,22 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     testImplementation('org.springframework.boot:spring-boot-starter-test')
+    // Upgrade transient vulnerabilities to fix vulnerabilities
+    configurations.all {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            // https://docs.gradle.org/current/userguide/resolution_rules.html
+            if (details.requested.group == 'ch.qos.logback' && details.requested.name == 'logback-classic') {
+                details.useVersion '1.5.13'
+            }
+        }
+    }
     // Cucumber Dependencies for BDD
     testImplementation "io.cucumber:cucumber-java:${ioCucumberVersion}"
     testImplementation "io.cucumber:cucumber-junit:${ioCucumberVersion}"
     testImplementation "io.cucumber:cucumber-spring:${ioCucumberVersion}"
     testImplementation "org.junit.vintage:junit-vintage-engine:${junitVintage}"
     //WireMock Dependencies
-    testImplementation "com.github.tomakehurst:wiremock-standalone:${wireMockVersion}"
+    testImplementation "org.wiremock:wiremock-standalone:${wireMockVersion}"
     //Lombok Dependencies
     implementation "org.projectlombok:lombok:${lombokVersion}"
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
