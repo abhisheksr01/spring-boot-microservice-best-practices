@@ -1,5 +1,5 @@
 from_latest_tag = true
-ignore_merge_commits = false
+ignore_merge_commits = true
 tag_prefix = "v" # This is important to enable latest tag check with you use v prefix
 #disable_changelog = false
 #disable_bump_commit = false
