@@ -1,7 +1,7 @@
 ---
 name: "Bug Report"
 about: "Report a bug or unexpected behavior in the Spring Boot microservice"
-title: "[BUG] - [Short Description of the Issue]"
+title: "[bug(scope)] - [Short description of the issue]"
 labels: "bug"
 assignees: ""
 

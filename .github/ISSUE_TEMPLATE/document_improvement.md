@@ -1,7 +1,7 @@
 ---
 name: "Documentation Improvement"
 about: "Suggest an improvement or correction to the project's documentation"
-title: "[DOCS] - [Short Description of the Documentation Issue]"
+title: "[docs(scope)] - [Short description of the documentation issue]"
 labels: "documentation"
 assignees: ""
 
