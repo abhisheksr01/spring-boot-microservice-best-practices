@@ -92,6 +92,7 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
+            ~/.gradle/dependency-check-data/
       - run: ( ./gradlew dependencyCheckAnalyze -PUseNVDKey )
         name: "Executing dependency vulnerability checks"
         env:
