@@ -1,5 +1,5 @@
 # Stage 1: Build the jar
-FROM gradle:8.5-jdk21 AS build
+FROM gradle:8.12-jdk21 AS build
 # Copy source code into the container and set the ownership to 'gradle' user
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
