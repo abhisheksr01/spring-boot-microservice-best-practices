@@ -142,12 +142,16 @@ jobs:
         run: git fetch --tags origin
         shell: bash
       - id: bump-version
-        uses: armakuni/github-actions/bump-version@main
+        uses: abhisheksr01/github-actions/cog-bump@v0.2.0
+        with:
+          dry-run: true
       - name: check-bump-version-output
         run: |
-          echo "version-was-bump: ${{ steps.bump-version.outputs.version-was-bump }}"
           echo "previous-version: ${{ steps.bump-version.outputs.previous-version }}"
+          echo "bump-version: ${{ steps.bump-version.outputs.bump-version }}"
           echo "current-version: ${{ steps.bump-version.outputs.current-version }}"
+          echo "is-version-bumped: ${{ steps.bump-version.outputs.is-version-bumped }}"
+          echo "is-dryrun-version-bumped: ${{ steps.bump-version.outputs.is-dryrun-version-bumped }}"
         shell: bash
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -164,20 +168,20 @@ jobs:
           context: git
           tags: |
             type=ref,event=pr
-            type=semver,pattern={{version}},prefix=v,value=${{ steps.bump-version.outputs.current-version }}
+            type=semver,pattern={{version}},prefix=v,value=${{ steps.bump-version.outputs.bump-version }}
           labels: |
             "org.opencontainers.image.title": "abhisheksr01/companieshouse",
             "org.opencontainers.image.description": "Best practices and integrations available for Spring Boot based Microservice in a single repository with companieshouse API use case.",
             "org.opencontainers.image.url": "https://github.com/abhisheksr01/spring-boot-microservice-best-practices",
             "org.opencontainers.image.source": "https://github.com/abhisheksr01/spring-boot-microservice-best-practices",
-            "org.opencontainers.image.version": ${{ steps.bump-version.outputs.current-version }},
+            "org.opencontainers.image.version": ${{ steps.bump-version.outputs.bump-version }},
             "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
             "org.opencontainers.image.revision": ${{ github.sha }},
             "org.opencontainers.image.licenses": "MIT"
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          push: ${{ github.event_name != 'pull_request' && steps.bump-version.outputs.version-was-bump == 'true' }} # Only push on main branch & when version is bumped
+          push: ${{ github.event_name != 'pull_request' && steps.bump-version.outputs.is-dryrun-version-bumped == 'true' }} # Only push on main branch & when version is bumped with dryrun. We will create tags and creates separately after proper testing
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           sbom: true
