@@ -1,3 +1,5 @@
+- - -
+
 ## [v0.1.0](https://github.com/abhisheksr01/spring-boot-microservice-best-practices/compare/8d0cec9dc5641d2b475eef8b6cf5c0f8d43063be..v0.1.0) - 2024-12-25
 #### Bug Fixes
 - **(#137)** remove the dependency vulnerability suppression - ([95995d0](https://github.com/abhisheksr01/spring-boot-microservice-best-practices/commit/95995d01747b101f63f3015b2493a696f419d9c3)) - abhisheksr01
@@ -191,5 +193,3 @@
 - bump gradlew & springboot version - ([1d0bd54](https://github.com/abhisheksr01/spring-boot-microservice-best-practices/commit/1d0bd54b720c2c7f9fe13ecde835687417a42858)) - abhisheksr01
 - remove trivy installation in shell script & use abhisheksr01/eks-helm image in circleci - ([cfb1e4d](https://github.com/abhisheksr01/spring-boot-microservice-best-practices/commit/cfb1e4dc5f91f50698f4853ff4578a3c61b54ee3)) - abhisheksr01
 - Add name attribute to health check job in workflow - ([72afed0](https://github.com/abhisheksr01/spring-boot-microservice-best-practices/commit/72afed05bf07f1d4ed7045f592f573a7c57c3a53)) - abhisheksr01
-
-- - -

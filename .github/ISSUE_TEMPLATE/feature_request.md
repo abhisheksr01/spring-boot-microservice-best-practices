@@ -1,14 +1,16 @@
 ---
 name: "Feature Request"
-about: "Request a new feature or enhancement for the Spring Boot microservice"
-title: "[FEATURE] - [Short Description of the Feature]"
+about: "Request a new feature or enhancement for the spring-boot-microservice-best-practices repository"
+title: "[FEATURE] - [Short Description of the Feature or enhancement]"
 labels: "enhancement"
 assignees: ""
 
 ---
 
-## Description
-A clear and concise description of the feature you're requesting.
+## Descriptiongit 
+A clear and concise description of the feature you're requesting in this repository.
+
+This can be anything from CI tool integration, Security feature (use Security-DevSecOps label), change in the code etc.
 
 ## Use Case
 Describe the problem or use case you're trying to solve with this feature.
