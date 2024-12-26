@@ -33,7 +33,7 @@ public class CompaniesHouseConnector {
         restTemplate.getInterceptors().add(
                 new BasicAuthenticationInterceptor(authUsername, ""));
 
-        log.debug("CompaniesHouseConnector:getCompaniesHouseDetails: Make External call to {} with CRN {}",
+        log.debug("CompaniesHouseConnector:getCompaniesHouseDetails: Make External call to: {} with CRN: {}",
                 govCompaniesHouseEndpoint, crn);
         ResponseEntity<CompaniesHouseGovUKResponse> responseEntity = restTemplate
                 .getForEntity(govCompaniesHouseEndpoint, CompaniesHouseGovUKResponse.class, crn);

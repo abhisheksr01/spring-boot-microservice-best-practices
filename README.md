@@ -14,6 +14,7 @@
     - [1.1 Unit Test](#11-unit-test)
     - [1.2 Cucumber End to End Test](#12-cucumber-end-to-end-test)
     - [1.3 Mutation Testing](#13-mutation-testing)
+    - [1.4 Local Testing](#14-local-testing)
   - [2. Development Accelerators](#2-development-accelerators)
     - [2.1 Mapstruct](#21-mapstruct)
     - [2.2 Lombok](#22-lombok)
@@ -49,25 +50,17 @@
 
 ### Introduction
 
-This project is intended to bring arguably best practices and integrations available for Spring Boot based Microservice
-in a single repository.
+This repository combines the best practices and essential integrations for building robust Spring Boot-based microservices, all in one place. It serves as a template, allowing developers to easily create their own microservices by adding or removing dependencies based on their needs.
 
-Developers can use this repository as a template to build there own Microservice by adding or removing dependencies as
-per requirement.
+In the sections below, I'll walk you through the various integrations included in the project and guide you on how to use them effectively.
 
-In the below section I will try to explain each integration we have made and how to use.
-
-At the moment the Microservice exposes a GET API and expects the company reference as path parameter then makes a call
-to the Companies House API hence returning Company Details.
-
-**Note: Texts highlighted in light blue colour are clickable hyperlinks for additional references.**
+Currently, the microservice exposes a simple GET API that accepts a company reference as a path parameter. It then queries the Companies House API to retrieve and return detailed company information.
 
 ### Prerequisites
 
 - You must have >= Java 21 Installed. You can use [SDKMAN](https://sdkman.io/install) for maintaining different JDK's in your system.
-- If you wish to run the application against the actual Companies House
-  API and then you will need to [create a free account](https://developer.companieshouse.gov.uk/developer/signin).
-  Once created replace the `authUserName` in the [application.yaml](src/main/resources/application.yaml) under main dir.
+- You should [register for a free Companies House account](https://developer.company-information.service.gov.uk/get-started) and then generate a REST API key. This is required for invoking the GET API exposed by this service else the API invocation will fail at runtime with auth error.
+- Replace the `authUserName` in the [application.yaml](src/main/resources/application.yaml) under main dir with the newly created API Key.
 
 ### Installation and Getting Started
 
@@ -171,6 +164,22 @@ once the test execution completes report should be accessible at:
 ```
 
 ![](doc-resources/images/pitest-report.png)
+
+#### 1.4 Local Testing
+
+The application can be started in the IDE through [CompaniesHouseApplication.java](src/main/java/com/uk/companieshouse/CompaniesHouseApplication.java) or by executing below command in the terminal
+
+```bash
+./gradlew bootRun
+```
+
+Once the application starts the application can be accessed through below URL:
+
+```
+curl --location 'http://localhost:8080/companieshouse/search/abhishek'
+```
+
+If valid Rest API Key is added in `authUserName` then we should receive all the companies details that has `abhishek` in their registered **title**
 
 ### 2. Development Accelerators
 
