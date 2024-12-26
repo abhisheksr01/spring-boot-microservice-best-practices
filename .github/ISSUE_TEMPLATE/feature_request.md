@@ -1,7 +1,7 @@
 ---
 name: "Feature Request"
 about: "Request a new feature or enhancement for the spring-boot-microservice-best-practices repository"
-title: "[FEATURE] - [Short Description of the Feature or enhancement]"
+title: "[feat(scope)] - [short description of the Feature or enhancement]"
 labels: "enhancement"
 assignees: ""
 
