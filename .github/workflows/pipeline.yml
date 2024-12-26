@@ -143,6 +143,8 @@ jobs:
       - dependency-vulnerability-analysis
       - sast-snyk
       - sast-iac-trivy-hadolint
+    outputs:
+      is-dryrun-version-bumped: ${{ steps.bump-version.outputs.is-dryrun-version-bumped }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -153,7 +155,7 @@ jobs:
       - id: bump-version
         uses: abhisheksr01/github-actions/cog-bump@v0.2.0
         with:
-          dry-run: true
+          dry-run: true # Since we are setting dryrun argument the bump-version will always be available until 'current-version' is pushed as release
       - name: check-bump-version-output
         run: |
           echo "previous-version: ${{ steps.bump-version.outputs.previous-version }}"
@@ -170,6 +172,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Docker meta
+        if: ${{ steps.bump-version.outputs.is-dryrun-version-bumped == 'true' }}
         id: meta
         uses: docker/metadata-action@v5
         with:
@@ -188,6 +191,7 @@ jobs:
             "org.opencontainers.image.revision": ${{ github.sha }},
             "org.opencontainers.image.licenses": "MIT"
       - name: Build and push
+        if: ${{ steps.bump-version.outputs.is-dryrun-version-bumped == 'true' }}
         uses: docker/build-push-action@v6
         with:
           push: ${{ github.event_name != 'pull_request' && steps.bump-version.outputs.is-dryrun-version-bumped == 'true' }} # Only push on main branch & when version is bumped with dryrun. We will create tags and creates separately after proper testing
@@ -195,3 +199,31 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           sbom: true
           provenance: true
+  create-release:
+    if: ${{ needs.docker-build-push.outputs.is-dryrun-version-bumped  == 'true' }} # Only release when new version is available
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # to be able to publish a GitHub release
+    needs:
+      - docker-build-push
+    environment:
+      name: approve-release # Manual Approval to decide if we are ready to push tags and release
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - uses: abhisheksr01/github-actions/cog-bump@v0.2.0 # Publishing the tags
+        id: bump-tag-version
+      - name: Generate changelog
+        run: cog changelog --at v${{ steps.bump-tag-version.outputs.current-version }} -t full_hash > CHANGELOG.md
+      - run: |
+          set -euo pipefail
+          echo "Creating release from tag $tag"
+          gh release create "$tag" \
+              --title="$tag" \
+              --repo="$GITHUB_REPOSITORY" \
+              --notes-file CHANGELOG.md
+        env:
+          tag: v${{ steps.bump-tag-version.outputs.current-version }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -5,7 +5,7 @@ misconfiguration:
     - kubernetes
 
 severity:
-#  - UNKNOWN # Tracking the issue here: https://github.com/abhisheksr01/spring-boot-microservice-best-practices/issues/351
+#  - UNKNOWN # TODO: Remove commented severity . Tracking the issue here: https://github.com/abhisheksr01/spring-boot-microservice-best-practices/issues/351
 #  - LOW
 #  - MEDIUM
 #  - HIGH
