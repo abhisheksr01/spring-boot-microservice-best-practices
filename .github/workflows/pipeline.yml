@@ -108,7 +108,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           args: --severity-threshold=high
-  sast-dockerfile-trivy-hadolint:
+  sast-iac-trivy-hadolint:
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -123,7 +123,6 @@ jobs:
           scan-type: config
           scan-ref: './'
           exit-code: 1
-          severity: 'CRITICAL,HIGH'
           trivy-config: ./config/trivy/trivy.yaml
   docker-build-push:
     if: github.ref == 'refs/heads/main'
@@ -133,7 +132,7 @@ jobs:
       - mutation-test
       - dependency-vulnerability-analysis
       - sast-code-snyk
-      - sast-dockerfile-trivy-hadolint
+      - sast-iac-trivy-hadolint
     steps:
       - uses: actions/checkout@v4
         with:
