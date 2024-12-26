@@ -5,7 +5,7 @@ tag_prefix = "v" # This is important to enable latest tag check with you use v p
 #disable_bump_commit = false
 #generate_mono_repository_global_tag = true
 #generate_mono_repository_package_tags = true
-branch_whitelist = []
+branch_whitelist = ['main']
 skip_ci = "[skip ci]"
 #skip_untracked = false
 pre_bump_hooks = []
@@ -16,6 +16,7 @@ post_package_bump_hooks = []
 [git_hooks]
 
 [commit_types]
+build = { changelog_title = "Build", bump_patch = true }
 
 [changelog]
 path = "CHANGELOG.md"
