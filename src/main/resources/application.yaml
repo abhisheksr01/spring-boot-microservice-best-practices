@@ -19,5 +19,5 @@ logging:
         companieshouse: DEBUG
 
 govCompaniesHouse:
-  endpoint: https://api.companieshouse.gov.uk/search/companies?q={companyRef}
+  endpoint: https://api.company-information.service.gov.uk/search/companies?q={crn}
   authUserName: dummy-auth-user

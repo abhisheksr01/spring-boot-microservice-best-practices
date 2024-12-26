@@ -37,15 +37,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     testImplementation('org.springframework.boot:spring-boot-starter-test')
-    // Upgrade transient vulnerabilities to fix vulnerabilities
-    configurations.all {
-        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-            // https://docs.gradle.org/current/userguide/resolution_rules.html
-            if (details.requested.group == 'ch.qos.logback' && details.requested.name == 'logback-classic') {
-                details.useVersion '1.5.13'
-            }
-        }
-    }
     // Cucumber Dependencies for BDD
     testImplementation "io.cucumber:cucumber-java:${ioCucumberVersion}"
     testImplementation "io.cucumber:cucumber-junit:${ioCucumberVersion}"
