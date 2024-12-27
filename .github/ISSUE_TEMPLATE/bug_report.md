@@ -26,7 +26,7 @@ assignees: ""
 ## Screenshots/Logs
 <!-- If applicable, please attach any screenshots, logs, or error messages that may help in reproducing the issue. -->
 
-## Impacted Application/Tools/Utility Version:
+## Impacted Application/Tools/Utility Version
 
 <!-- 
 - Version: [e.g. v1.0.0]
@@ -35,7 +35,7 @@ assignees: ""
 - gradle etc
 -->
 
-## Environment:
+## Environment
 <!-- 
 - OS: [e.g. Ubuntu 20.04]
 - Java Version: [e.g. OpenJDK 11] 
