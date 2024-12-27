@@ -22,7 +22,7 @@ This can be anything from CI tool integration, Security feature (use Security-De
 ## Benefits
 <!-- Describe the benefits of this feature and why it should be prioritized. -->
 
-### Example:
+### Example
 <!-- - Provide examples of how the feature will work or how it will be used, if possible. -->
 
 ## Additional Information
