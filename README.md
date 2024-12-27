@@ -5,6 +5,7 @@
 ---
 
 - [Introduction](#introduction)
+- [Built With](#built-with)
 - [Prerequisites](#prerequisites)
 - [Installation and Getting Started](#installation-and-Getting-Started)
 - [Microservice Structure](#microservice-structure)
@@ -52,6 +53,11 @@ This repository combines the best practices and essential integrations for build
 In the sections below, I'll walk you through the various integrations included in the project and guide you on how to use them effectively.
 
 Currently, the microservice exposes a simple GET API that accepts a company reference as a path parameter. It then queries the Companies House API to retrieve and return detailed company information.
+
+### Built With
+
+- [Spring Boot](https://spring.io/projects/spring-boot) - The REST framework used
+- [GRADLE](https://gradle.org/) - Dependency Management
 
 ### Prerequisites
 
@@ -552,8 +558,8 @@ In this section we are going to explore [OWASP ZAP](https://www.zaproxy.org/docs
       -t [TARGET_REST_API] -g gen.conf -r pentest-report.html
   ```
 
-  | Parameter       |      Description                         |
-  |-----------------|:---------------------------------------- |
+  | Parameter       | Description                              |
+  |-----------------|:-----------------------------------------|
   | $(pwd)          | Directory where report will be generated |
   | zap-baseline.py | Zap's python script                      |
   | -t [TARGET_URL] | URL to be Pen Tested                     |
@@ -1053,30 +1059,33 @@ Cloud Run is available in below two flavours:
 - Cloud Run Fully Managed
 - Cloud Run on Anthos, which supports both Google Cloud and on‐premises environments.
 
-### Built With
-
-- [Spring Boot](https://spring.io/projects/spring-boot) - The REST framework
-  used
-- [GRADLE](https://gradle.org/) - Dependency Management
-
 ### What to Expect Next!
 
-As the world of software engineering is evolving so we do.<br/>
-Listing down some of the exciting features am going to work on and update the GitHub in coming days, they are:
+As software engineering continues to evolve, we do too.
 
-- GitHub Actions
-- Chaos Monkey
-- Hystrix
-- CORS (Cross-Origin)
+All planned tasks for this repository are tracked in the [GitHub Issues](https://github.com/abhisheksr01/spring-boot-microservice-best-practices/issues) section.
+
+If you'd like to propose new work or enhancements for this repository, please create a [New Issue](https://github.com/abhisheksr01/spring-boot-microservice-best-practices/issues/new/choose) using the appropriate issue type.
 
 ### Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions
-available, see the
-[tags on this repository](https://github.com/your/project/tags).
+We utilize [Cocogitto](https://github.com/cocogitto/cocogitto) to automate the process of creating [Semantic SemVer](http://semver.org/) GitHub releases for this repository.
+
+For information on the latest [releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases), please visit the Releases section of the repository.
+
+The release process is automated through GitHub Actions (GHA CI), following [Cocogitto's conventional commit types](https://docs.cocogitto.io/guide/commit.html).
+
+<details>
+<summary>Click here for details on how the releases are automated in this repository.</summary>
+
+#### GHA CI Release Process
+- When a commit is made with a conventional commit type, the GHA CI pipeline is triggered.
+- After all the validations the **docker-build-push** job runs the cog-bump step, which checks whether a version bump is necessary. If a bump is needed, it calculates the new version based on the conventional commit type.
+- During this process, we pass a `dry-run: true` argument to the **cog-bump** step to only calculate (but not apply) the version bump.
+- The CI pipeline then builds the Docker image with the new version and tests the changes.
+- Once the changes are verified, the **create-release** job publishes new tags with bumped current version and a GitHub release is created.
+</details>
 
 ### License
 
-This project is licensed under the MIT License - see the
-[LICENSE.md](LICENSE.md) file for details
-
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
