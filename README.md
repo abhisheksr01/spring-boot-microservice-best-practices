@@ -41,10 +41,7 @@
     - [7.2 Google Cloud Run](#72-google-cloud-run)
 - [What to expect Next!](#what-to-expect-next)
 - [Versioning](#versioning)
-- [Author](#author)
-- [Contributors](#contributors)
 - [License](#license)
-- [Acknowledgments](#acknowledgments)
 
 ---
 
@@ -77,16 +74,6 @@ Execute below gradlew command to download all the dependencies specified in the 
 ```bash
 ./gradlew clean build
 ```
-
-As the codebase grows it becomes difficult to visualize the content in it.
-
-Visualization gives enough of a “fingerprint” that viewers can glance at it and see the structure of the codebase.
-
-Thanks to [repo-visualization](https://octo.github.com/projects/repo-visualization) for giving us enough of a “fingerprint” to glance and see the structure of the codebase as below:
-
-![Visualization of the codebase](./diagram.svg)
-
-<a propertyName = "MSStructure"></a>
 
 ### Microservice Structure
 
@@ -626,17 +613,17 @@ Before we continue further make sure you have docker installed, if not [click he
 
 Docker uses a text file with set of instructions in it to build a docker image. Below given is a list of some of the most common Docker keywords used:
 
-  | KEYWORD       | Usage Description                                                                                                                    |
-  |:--------------|:-------------------------------------------------------------------------------------------------------------------------------------|
-  | FROM          | Defines the base image to use to start the build process. A image defined here will be pulled from Docker Hub or other container repository. It needs to be the first command declared inside a Dockerfile.                                                                             |
-  | WORKDIR       | Set where the command defined with CMD is to be executed.                                                                            |
-  | ENV           | Sets an Environment variable within the container & can be accessed by scripts and applications alike.                               |
-  | CMD           | Execute the given command when a container is instantiated using the image being built.                                              |
-  | RUN           | Execute any additional command when docker image is built.                                                                           |
-  | EXPOSE        | Used to associate a specified port to enable networking between the running process inside the container and the outside world (i.e. the host).                                                                                                                                             |
-  | COPY          | Takes in a src and destination arguments & copy a local file or directory from your host (the machine building the Docker image) into the Docker image itself.                                                                                                                               |
-  | ADD           | Apart from what COPY does, it also supports 2 other sources. First, you can use a URL instead of a local file / directory. Secondly, you can extract a tar file from the source directly into the destination.                                                                              |
-  | ENTRYPOINT    | Sets the concrete default application that is used every time a container is created using the image. For example, here we are using Spring Boot application inside the image. To only run that application use ENTRYPOINT and whenever a container is created our application will be the target. If we couple ENTRYPOINT with CMD, we can remove “application” from CMD and just leave “arguments” which will be passed to the ENTRYPOINT.                                                                                                                                            |
+  | KEYWORD    | Usage Description                                                                                                                                                                                                                                                                                                                                                                                                                            |
+  |:-----------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+  | FROM       | Defines the base image to use to start the build process. A image defined here will be pulled from Docker Hub or other container repository. It needs to be the first command declared inside a Dockerfile.                                                                                                                                                                                                                                  |
+  | WORKDIR    | Set where the command defined with CMD is to be executed.                                                                                                                                                                                                                                                                                                                                                                                    |
+  | ENV        | Sets an Environment variable within the container & can be accessed by scripts and applications alike.                                                                                                                                                                                                                                                                                                                                       |
+  | CMD        | Execute the given command when a container is instantiated using the image being built.                                                                                                                                                                                                                                                                                                                                                      |
+  | RUN        | Execute any additional command when docker image is built.                                                                                                                                                                                                                                                                                                                                                                                   |
+  | EXPOSE     | Used to associate a specified port to enable networking between the running process inside the container and the outside world (i.e. the host).                                                                                                                                                                                                                                                                                              |
+  | COPY       | Takes in a src and destination arguments & copy a local file or directory from your host (the machine building the Docker image) into the Docker image itself.                                                                                                                                                                                                                                                                               |
+  | ADD        | Apart from what COPY does, it also supports 2 other sources. First, you can use a URL instead of a local file / directory. Secondly, you can extract a tar file from the source directly into the destination.                                                                                                                                                                                                                               |
+  | ENTRYPOINT | Sets the concrete default application that is used every time a container is created using the image. For example, here we are using Spring Boot application inside the image. To only run that application use ENTRYPOINT and whenever a container is created our application will be the target. If we couple ENTRYPOINT with CMD, we can remove “application” from CMD and just leave “arguments” which will be passed to the ENTRYPOINT. |
 
 Now let us have a quick look at our [ci.Dockerfile](./ci.Dockerfile) given below:
 
@@ -1088,22 +1075,8 @@ We use [SemVer](http://semver.org/) for versioning. For the versions
 available, see the
 [tags on this repository](https://github.com/your/project/tags).
 
-### Author
-
-- **Abhishek Singh Rajput** - _Initial work_ -
-  [abhisheksr01](https://github.com/abhisheksr01)
-
-### Contributors
-
-As mentioned in the [Introduction](#introduction) through this project we would like to bring the Best Practices and Integration under one umbrella.
-
-So you are most welcome to improve or add new features you could think of.
-
 ### License
 
 This project is licensed under the MIT License - see the
 [LICENSE.md](LICENSE.md) file for details
 
-### Acknowledgments
-
-- [Eugen Paraschiv](https://www.baeldung.com/) : For wonderful tutorials
