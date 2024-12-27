@@ -2,7 +2,7 @@
 
 <!-- 
 Please include a summary of the changes made to the documentation. Explain the motivation for the change and the impact on the users or developers who rely on this documentation. 
-Please specify if this PR has dependency on any other changes.
+Please specify if this PR has a dependency on any other changes.
 -->
 
 ### Affected Documentation
@@ -20,7 +20,7 @@ Affected Documentation:
 
 ## How Has This Been Tested?
 
-Please describe how the changes to documentation were reviewed. If applicable, include instructions on how to view or
+Please describe how the changes to the documentation were reviewed. If applicable, include instructions on how to view or
 test the updated documentation.
 
 - [ ] Documentation preview checked in markdown renderer
@@ -35,19 +35,19 @@ Test Configuration:
 ## Checklist for Author
 
 - [ ] The PR follows below contribution conventions
-  - [ ] PR title follows [conventional commits](https://docs.cocogitto.io/guide/commit.html) format commit_type(
+    - [ ] PR title follows [conventional commits](https://docs.cocogitto.io/guide/commit.html) format commit_type(
       scope): issue_reference message
-  - [ ] PR commits follows [conventional commits](https://docs.cocogitto.io/guide/commit.html) format commit_type(
+    - [ ] PR commits follow [conventional commits](https://docs.cocogitto.io/guide/commit.html) format commit_type(
       scope): issue_reference message
-  - [ ] PR branch follows convention of format [commit_type]-[issue-reference]-[brief-description]
+    - [ ] PR branch follows the convention of format [commit_type]-[issue-reference]-[brief-description]
 - [ ] My code follows the style guidelines of this project
 - [ ] I have performed a self-review of my documentation to reflect the code changes, spelling and is clearly accurate
-- [ ] I have tested the documentation for correctness and if required added evidences(e.g., links, images)
+- [ ] I have tested the documentation for correctness and if required added shreds of evidence (e.g., links, images)
 - [ ] My changes generate no new warnings or errors
 - [ ] Checks for unused files
 - [ ] Checks for changes not related to this issue
 
-## Additional notes for reviewer
+## Additional notes for the reviewer
 
 <!-- Add any information that can be useful to the reviewer -->
 
