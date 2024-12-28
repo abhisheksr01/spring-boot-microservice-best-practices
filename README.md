@@ -95,7 +95,7 @@ The three different takes the responsibilities as below:
 - Connector/Repository: The only responsibility of this layer is to fetch data which is required by the Service layer to perform the business logic to serve the request.<br>
   When our Microservice makes a call to another Service we would like to name it as Connector (as in our case) layer whereas when interacting with a DB commonly it's known as Repository.
 
-  ![](doc-resources/images/microservice-structure.png)
+  ![](docs/images/microservice-structure.png)
 
 ### Development Practice
 
@@ -105,7 +105,7 @@ While developing the code I followed BDD first approach where I wrote a failing 
 driving our development through behavior and then followed by Test Driven Development.<br>
 A feature is not considered as developed until all the Unit Tests (TDD) and feature (BDD) passes.
 
-![](doc-resources/images/bdd-tdd-cycle.png)
+![](docs/images/bdd-tdd-cycle.png)
 
 ## Integrations
 
@@ -125,7 +125,7 @@ Once executed a report as below will be generated at local path
 build/reports/tests/test/index.html
 ```
 
-![](doc-resources/images/unit-test-report.png)
+![](docs/images/unit-test-report.png)
 
 #### 1.2 Cucumber End-to-End Test
 
@@ -154,7 +154,7 @@ once the test execution completes report should be accessible at:
 ../build/reports/pitest/[TIMESTAMP]/index.html
 ```
 
-![](doc-resources/images/pitest-report.png)
+![](docs/images/pitest-report.png)
 
 #### 1.4 Local Testing
 
@@ -233,7 +233,7 @@ build/reports/checkstyle/main.html
 build/reports/checkstyle/test.html
 ```
 
-![](doc-resources/images/checkstyle-report.png)
+![](docs/images/checkstyle-report.png)
 
 </details>
 
@@ -313,7 +313,7 @@ Once successfully executed a report as shown below will be generated at path
 build/reports/jacocoHtml/index.html
 ```
 
-![](doc-resources/images/jacoco-report.png)
+![](docs/images/jacoco-report.png)
 
 </details>
 
@@ -385,7 +385,7 @@ To test it locally start the application then Swagger UI documentation can be ac
 http://localhost:8080/companieshouse/swagger-ui/index.html
 ```
 
-![](doc-resources/images/swagger-ui.png)
+![](docs/images/swagger-ui.png)
 Once application is deployed in a Platform the same documentation will be accessible by below URL:
 
 ```bash
@@ -398,7 +398,7 @@ where "companieshouse" is the context path.
 
 DevSecOps stands for development, security, and operations. It's an approach to culture, automation, and platform design that integrates security as a shared responsibility throughout the entire application and infrastructure security lifecycle.
 
-![](doc-resources/images/devsecops.png)
+![](docs/images/devsecops.png)
 
 In this repo we are looking at some of the key practices to secure the application and infrastructure.
 
@@ -452,7 +452,7 @@ In this section we are focusing on identifying [vulnerabilities](https://owasp.o
   build/reports/dependency-vulnerabilities
   ```
 
-  ![](doc-resources/images/dependency-check-report.png)
+  ![](docs/images/dependency-check-report.png)
 
   Suppression:<br>
   If you wish to suppress dependencies from vulnerability analysis (maybe because of breaking changes) declare them in the [dependency-check-suppression.xml](config/dependencycheck/dependency-check-suppression.xml) as below:
@@ -633,7 +633,7 @@ Continuous Integration is a key step to digital transformation.
 To do Continuous Deployment you must be doing Continuous Delivery.
 
 Pictorial representation of the above two approaches:
-![](doc-resources/images/continuous-delivery-deployment.png)
+![](docs/images/continuous-delivery-deployment.png)
 
 Reference :
 
@@ -719,7 +719,7 @@ This Dockerfile will be handy and is an example of using intermediate containers
   ```
   Output:
 
-  ![](doc-resources/images/docker-images.png)
+  ![](docs/images/docker-images.png)
 
 - To start the container using the newly created docker image
   ```bash
@@ -747,7 +747,7 @@ This Dockerfile will be handy and is an example of using intermediate containers
   ```
 
   Output:
-  ![](doc-resources/images/docker-container.png)
+  ![](docs/images/docker-container.png)
 
   Take note of the CONTAINER ID.
 
@@ -880,7 +880,7 @@ Further Reading:
      - [Executors](): Underlying technology or environment in which to run a job. Example: Docker images, Linux virtual machine (VM) image, macOS VM image, Windows VM image
      - [Orbs](https://circleci.com/docs/2.0/jobs-steps/#orbs-overview): Reusable & Shareable packages of configs which can be imported to ease the pipeline configurable.
   4. Click [here](.circleci/config.yml) to open the CircleCI config file for this project. When this config runs for the "workflow-all-jobs" the output pipeline is shown below and deploys the app to AWS EKS Cluster.
-     ![](doc-resources/images/circleci-pipeline.png)
+     ![](docs/images/circleci-pipeline.png)
   5. If you wish to use this config file in your project you must create a context "credentials" and add below Environment Variables with respective values.
 
      Follow [link](https://circleci.com/docs/2.0/env-vars/?utm_medium=SEM&utm_source=gnb&utm_campaign=SEM-gb-DSA-Eng-ni&utm_content=&utm_term=dynamicSearch-&gclid=EAIaIQobChMIm_2blLze6QIVQeztCh3FGwh0EAAYASAAEgITlPD_BwE#setting-an-environment-variable-in-a-context) to learn how to do it.
