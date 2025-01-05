@@ -28,7 +28,7 @@ ext {
     lombokVersion = "1.18.36"
     wireMockVersion = "3.10.0"
     ioCucumberVersion = "7.20.1"
-    springDocVersion = "2.7.0"
+    springDocVersion = "2.8.0"
     jacocoVersion = "0.8.9"
     junitVintage = "5.11.4"
 }
