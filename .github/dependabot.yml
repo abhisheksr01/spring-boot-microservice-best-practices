@@ -1,13 +1,18 @@
 version: 2
 updates:
   - package-ecosystem: gradle
-    directory: "/"
+    directory: /
     schedule:
       interval: daily
     open-pull-requests-limit: 10
     commit-message:
       prefix: build
       include: scope
+    groups:
+      java-dependencies:
+        applies-to: version-updates
+        patterns:
+          - "*"
   - package-ecosystem: github-actions
     directory: /
     schedule:
@@ -16,3 +21,8 @@ updates:
     commit-message:
       prefix: ci
       include: scope
+    groups:
+      github-action-dependencies:
+        applies-to: version-updates
+        patterns:
+          - "*"
