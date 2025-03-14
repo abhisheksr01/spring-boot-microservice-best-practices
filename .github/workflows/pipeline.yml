@@ -133,7 +133,7 @@ jobs:
           dockerfile: Dockerfile
           failure-threshold: error
       - name: Run Trivy vulnerability for IAC
-        uses: aquasecurity/trivy-action@0.29.0
+        uses: aquasecurity/trivy-action@0.30.0
         with:
           scan-type: config
           scan-ref: './'
