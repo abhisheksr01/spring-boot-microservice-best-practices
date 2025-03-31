@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.4.3'
+    id 'org.springframework.boot' version '3.4.4'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'jacoco'
     id 'info.solidsoft.pitest' version '1.15.0'
@@ -25,12 +25,12 @@ repositories {
 
 ext {
     mapstructVersion = "1.6.3"
-    lombokVersion = "1.18.36"
-    wireMockVersion = "3.12.0"
+    lombokVersion = "1.18.38"
+    wireMockVersion = "3.12.1"
     ioCucumberVersion = "7.21.1"
-    springDocVersion = "2.8.5"
+    springDocVersion = "2.8.6"
     jacocoVersion = "0.8.9"
-    junitVintage = "5.11.4"
+    junitVintage = "5.12.1"
 }
 
 dependencies {
