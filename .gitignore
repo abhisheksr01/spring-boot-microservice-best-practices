@@ -2,6 +2,7 @@
 /.idea/
 /build/
 /reports/
+/bin/
 /concourse-ci/secrets/vars.yml
 .dccache
 .vscode
