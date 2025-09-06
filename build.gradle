@@ -4,7 +4,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.7'
     id 'jacoco'
     id 'info.solidsoft.pitest' version '1.15.0'
-    id "org.owasp.dependencycheck" version "12.1.1"
+    id "org.owasp.dependencycheck" version "12.1.3"
 }
 
 String buildId = project.hasProperty('buildId') ? project['buildId'] : 'DEV'
@@ -28,7 +28,7 @@ ext {
     lombokVersion = "1.18.38"
     wireMockVersion = "3.12.1"
     ioCucumberVersion = "7.22.0"
-    springDocVersion = "2.8.6"
+    springDocVersion = "2.8.12"
     jacocoVersion = "0.8.9"
     junitVintage = "5.12.1"
 }
@@ -59,19 +59,22 @@ dependencies {
      *https://docs.gradle.org/current/userguide/dependency_management.html#sec:module_substitution
      * Example 109. Example: Blacklisting a version with a replacement
     */
-//    configurations.all {
-//        /***
-//         * This is how we can exclude transient dependencies
-//         * exclude group: "com.google.guava", module: "guava"
-//         */
-//        // Replacing a transient dependency to a higher version for fixing vulnerabilities
-//        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-//            if (details.requested.group == 'org.yaml' && details.requested.name == 'snakeyaml' && details.requested.version == '1.33') {
-//                details.useVersion '2.0'
-//                details.because 'Fixes vulnerability in prior snakeyaml versions'
-//            }
-//        }
-//    }
+    configurations.all {
+        /***
+         * This is how we can exclude transient dependencies
+         * EXAMPLE - exclude group: "com.google.guava", module: "guava"
+         */
+        // Replacing a transient dependency to a higher version for fixing vulnerabilities
+        resolutionStrategy {
+            eachDependency { DependencyResolveDetails details ->
+                if (details.requested.group == 'org.apache.commons' &&
+                        details.requested.name == 'commons-lang3') {
+                    details.useVersion '3.18.0'
+                    details.because 'Fixing vulnerability SNYK-JAVA-ORGAPACHECOMMONS-10734078'
+                }
+            }
+        }
+    }
 }
 
 // Property can be passed along with test task to avoid execution of e2e
