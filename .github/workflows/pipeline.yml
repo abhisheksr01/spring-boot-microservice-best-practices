@@ -154,14 +154,16 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Enable auto-merge for Dependabot PRs
-#        if: contains(steps.metadata.outputs.dependency-names, 'my-dependency') && steps.metadata.outputs.update-type == 'version-update:semver-patch'
+        if: contains(steps.metadata.outputs.dependency-names, 'my-dependency') && steps.metadata.outputs.update-type == 'version-update:semver-patch'
         run: gh pr merge --auto --merge "$PR_URL"
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
           GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-  docker-build-push:
+  docker-build-scan-push:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    env:
+      BASE_IMAGE: abhisheksr01/companieshouse
     needs:
       - unit-test
       - mutation-test
@@ -182,13 +184,13 @@ jobs:
         with:
           dry-run: true # Since we are setting dryrun argument the bump-version will always be available until 'current-version' is pushed as release
       - name: check-bump-version-output
+        shell: bash
         run: |
           echo "previous-version: ${{ steps.bump-version.outputs.previous-version }}"
           echo "bump-version: ${{ steps.bump-version.outputs.bump-version }}"
           echo "current-version: ${{ steps.bump-version.outputs.current-version }}"
           echo "is-version-bumped: ${{ steps.bump-version.outputs.is-version-bumped }}"
           echo "is-dryrun-version-bumped: ${{ steps.bump-version.outputs.is-dryrun-version-bumped }}"
-        shell: bash
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -201,7 +203,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: abhisheksr01/companieshouse
+          images: ${{ env.BASE_IMAGE }}
           context: git
           tags: |
             type=ref,event=pr
@@ -212,25 +214,56 @@ jobs:
             "org.opencontainers.image.url": "https://github.com/abhisheksr01/spring-boot-microservice-best-practices",
             "org.opencontainers.image.source": "https://github.com/abhisheksr01/spring-boot-microservice-best-practices",
             "org.opencontainers.image.version": ${{ steps.bump-version.outputs.bump-version }},
-            "org.opencontainers.image.created": "2020-01-10T00:30:00.000Z",
+            "org.opencontainers.image.created": "$(date +"%Y%m%d%H%M%S")",
             "org.opencontainers.image.revision": ${{ github.sha }},
             "org.opencontainers.image.licenses": "MIT"
-      - name: Build and push
+      - name: Build Image
         if: ${{ steps.bump-version.outputs.is-dryrun-version-bumped == 'true' }}
         uses: docker/build-push-action@v6
         with:
-          push: ${{ github.event_name != 'pull_request' && steps.bump-version.outputs.is-dryrun-version-bumped == 'true' }} # Only push on main branch & when version is bumped with dryrun. We will create tags and creates separately after proper testing
+          load: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-to: type=registry,ref=${{ env.BASE_IMAGE }}:cache
+          cache-from: type=registry,ref=${{ env.BASE_IMAGE }}:cache,mode=max
+      - name: Scan Image
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          versin: 0.66.0
+          image-ref: ${{ steps.meta.outputs.tags }}
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          scanners: 'vuln,secret,misconfig'
+      - name: Validate Container Image
+        run: |
+          docker run -d -p 8080:8080 ${{ steps.meta.outputs.tags }}
+          sleep 5  # Wait for container to start
+          HEALTH_STATUS=$(curl -s http://localhost:8080/companieshouse/actuator/health | jq -r '.status')
+          if [ "$HEALTH_STATUS" != "UP" ]; then
+            echo "Health check failed. Status: $HEALTH_STATUS"
+            exit 1
+          fi
+          echo "Health check passed. Status: $HEALTH_STATUS"
+      - name: Re-Build & Push Image
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-to: type=registry,ref=${{ env.BASE_IMAGE }}:cache
+          cache-from: type=registry,ref=${{ env.BASE_IMAGE }}:cache,mode=max
           sbom: true
           provenance: true
+
   create-release:
     if: ${{ needs.docker-build-push.outputs.is-dryrun-version-bumped  == 'true' }} # Only release when new version is available
     runs-on: ubuntu-latest
     permissions:
       contents: write # to be able to publish a GitHub release
     needs:
-      - docker-build-push
+      - docker-build-scan-push
     environment:
       name: approve-release # Manual Approval to decide if we are ready to push tags and release
     steps:
