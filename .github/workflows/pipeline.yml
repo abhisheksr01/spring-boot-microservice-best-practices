@@ -226,19 +226,10 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-to: type=registry,ref=${{ env.BASE_IMAGE }}:cache
           cache-from: type=registry,ref=${{ env.BASE_IMAGE }}:cache,mode=max
-      - name: Scan Image
-        uses: aquasecurity/trivy-action@0.33.1
-        with:
-          versin: 0.66.0
-          image-ref: ${{ steps.meta.outputs.tags }}
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          scanners: 'vuln,secret,misconfig'
       - name: Validate Container Image
+        if: ${{ steps.bump-version.outputs.is-dryrun-version-bumped == 'true' }}
         run: |
-          docker run -d -p 8080:8080 ${{ steps.meta.outputs.tags }}
+          docker run -d -p 8080:8080 ${{ env.BASE_IMAGE }}:${{ steps.bump-version.outputs.bump-version }}
           sleep 5  # Wait for container to start
           HEALTH_STATUS=$(curl -s http://localhost:8080/companieshouse/actuator/health | jq -r '.status')
           if [ "$HEALTH_STATUS" != "UP" ]; then
@@ -246,7 +237,19 @@ jobs:
             exit 1
           fi
           echo "Health check passed. Status: $HEALTH_STATUS"
+      - name: Scan Image
+        if: ${{ steps.bump-version.outputs.is-dryrun-version-bumped == 'true' }}
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          version: v0.66.0
+          image-ref: ${{ env.BASE_IMAGE }}:${{ steps.bump-version.outputs.bump-version }}
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          scanners: 'vuln,secret,misconfig'
       - name: Re-Build & Push Image
+        if: ${{ steps.bump-version.outputs.is-dryrun-version-bumped == 'true' }}
         uses: docker/build-push-action@v6
         with:
           push: true
