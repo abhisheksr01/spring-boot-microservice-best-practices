@@ -30,7 +30,7 @@ ext {
     ioCucumberVersion = "7.29.0"
     springDocVersion = "2.8.13"
     jacocoVersion = "0.8.9"
-    junitVintage = "5.13.4"
+    junitVintage = "6.0.0"
 }
 
 dependencies {
