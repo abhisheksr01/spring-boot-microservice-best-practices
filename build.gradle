@@ -27,10 +27,10 @@ ext {
     mapstructVersion = "1.6.3"
     lombokVersion = "1.18.42"
     wireMockVersion = "3.13.1"
-    ioCucumberVersion = "7.29.0"
+    ioCucumberVersion = "7.30.0"
     springDocVersion = "2.8.13"
     jacocoVersion = "0.8.9"
-    junitVintage = "5.13.4"
+    junitVintage = "6.0.0"
 }
 
 dependencies {
