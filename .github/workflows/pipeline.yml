@@ -19,7 +19,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Conventional commit check
-        uses: cocogitto/cocogitto-action@v3
+        uses: cocogitto/cocogitto-action@v4
   build:
     runs-on: ubuntu-latest
     needs: conventional-commit-check
